@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "412688341160",
+    "project_id": "find-my-tutor-f2b29",
+    "storage_bucket": "find-my-tutor-f2b29.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:412688341160:android:557840a9f4aa1834ae4a9d",
+        "android_client_info": {
+          "package_name": "com.example.findmytutor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "412688341160-n3gs4mjl5rcafn4kg00ds6eigbmf9scq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.findmytutor",
+            "certificate_hash": "efb7f0ccda52e606461cf2926c3edc06904dcdf0"
+          }
+        },
+        {
+          "client_id": "412688341160-q264hrb3bh13b0uut8mv2gh3so943hvq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiv-HMxwKj1xUfoVE3kWP0LoAxYlearF4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "412688341160-q264hrb3bh13b0uut8mv2gh3so943hvq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
