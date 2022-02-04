@@ -7,7 +7,32 @@
 
     <fragment
         android:id="@+id/splashScreenFragment"
-        android:name="com.example.findmytutor.SplashScreenFragment"
+        android:name="com.example.findmytutor.features.SplashScreenFragment"
         android:label="fragment_splash_screen"
-        tools:layout="@layout/fragment_splash_screen" />
+        tools:layout="@layout/fragment_splash_screen" >
+        <action
+            android:id="@+id/action_splashScreenFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_splashScreenFragment_to_homeStudentsFragment"
+            app:destination="@id/homeStudentsFragment" />
+        <action
+            android:id="@+id/action_splashScreenFragment_to_homeTutorsFragment"
+            app:destination="@id/homeTutorsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.findmytutor.features.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/homeStudentsFragment"
+        android:name="com.example.findmytutor.features.homeStudents.HomeStudentsFragment"
+        android:label="fragment_home_students"
+        tools:layout="@layout/fragment_home_students" />
+    <fragment
+        android:id="@+id/homeTutorsFragment"
+        android:name="com.example.findmytutor.features.homeTutors.HomeTutorsFragment"
+        android:label="fragment_homw_tutors"
+        tools:layout="@layout/fragment_homw_tutors" />
 </navigation>
