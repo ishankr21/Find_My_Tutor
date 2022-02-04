@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     fun setVisibleBottomNavigationView() {
         binding.bottomNavigation.visibility = View.VISIBLE
     }
-
+    //to hide bottom navigation
     fun hideBottomNavigationView() {
         binding.bottomNavigation.visibility = View.GONE
     }
