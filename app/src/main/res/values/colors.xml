@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="darkGrey">#2a2a2a</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="just_red">#FF7417</color>
+    <color name="mid_gray">#e9ebef</color>
+    <color name="l_just_red">#fff5eb</color>
+    <color name="green">#4fbf04</color>
+    <color name="light_green">#f6ffeb</color>
+    <color name="light_yellow">#fffaeb</color>
+    <color name="dark_yellow">#ffbb00</color>
+    <color name="background">#F5F6F8</color>
+    <color name="bittersweet">#FF6969</color>
+    <color name="outrageous_orange">#FF5722</color>
+    <color name="silver">#BBBBBB</color>
+    <color name="dodger_blue">#129AEA</color>
+    <color name="grey">#878787</color>
+    <color name="chambray">#515C6F</color>
+    <color name="light_grey">#F4F5F7</color>
+    <color name="light_red">#FF6969</color>
+    <color name="light_red_dark">#FF5555</color>
+    <color name="orange_red">#FF5722</color>
+    <color name="dark_grey">#C6CDDB</color>
+    <color name="light_pink">#FFC1C1</color>
+    <color name="Geraldine">#E56A6A</color>
+    <color name="Granny_Smith">#7D938A</color>
+    <color name="Dim_Gray">#707070</color>
+    <color name="Floral_White">#FFFCF8</color>
+    <color name="tutu">#F9E7E7</color>
+    <color name="yellow_bg">#F2CB05</color>
+    <color name="notification">#f29f05</color>
+    <color name="cashback_credit_color">#D6F8B0</color>
+    <color name="cashback_redeem_color">#B8DEFF</color>
+    <color name="zxing_possible_result_points">#FFBCA40D</color>
+
+
+</resources>
