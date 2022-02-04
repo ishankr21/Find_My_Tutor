@@ -1,13 +1,14 @@
-package com.example.findmytutor
+package com.example.findmytutor.features.homeStudents
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.findmytutor.R
 
 
-class SplashScreenFragment : Fragment() {
+class HomeStudentsFragment : Fragment() {
 
 
     override fun onCreateView(
@@ -15,7 +16,7 @@ class SplashScreenFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_splash_screen, container, false)
+        return inflater.inflate(R.layout.fragment_home_students, container, false)
     }
 
 

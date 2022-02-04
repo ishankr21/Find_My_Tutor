@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme"
         >
         <activity
-            android:name=".MainActivity"
+            android:name=".features.MainActivity"
             android:theme="@style/MaterialTheme"
             android:exported="true"
             android:screenOrientation="portrait"
