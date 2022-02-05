@@ -3,15 +3,15 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/light_red</item>
-        <item name="colorPrimaryDark">@color/light_red_dark</item>
+        <item name="colorPrimary">#FFA569</item>
+        <item name="colorPrimaryDark">#FB8E45</item>
         <item name="colorAccent">@color/darkGrey</item>
     </style>
 
     <style name="MaterialTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/light_red</item>
-        <item name="colorPrimaryDark">@color/light_red_dark</item>
+        <item name="colorPrimary">#FFA569</item>
+        <item name="colorPrimaryDark">#FB8E45</item>
         <item name="colorAccent">@color/darkGrey</item>
     </style>
 
