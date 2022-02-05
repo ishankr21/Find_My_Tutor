@@ -24,7 +24,11 @@
         android:id="@+id/loginFragment"
         android:name="com.example.findmytutor.features.login.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+    </fragment>
     <fragment
         android:id="@+id/homeStudentsFragment"
         android:name="com.example.findmytutor.features.homeStudents.HomeStudentsFragment"
@@ -35,4 +39,9 @@
         android:name="com.example.findmytutor.features.homeTutors.HomeTutorsFragment"
         android:label="fragment_homw_tutors"
         tools:layout="@layout/fragment_homw_tutors" />
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.findmytutor.features.register.RegisterFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register" />
 </navigation>

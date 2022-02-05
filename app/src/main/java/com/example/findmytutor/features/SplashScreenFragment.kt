@@ -28,7 +28,7 @@ class SplashScreenFragment : Fragment() {
         (activity as MainActivity).hideBottomNavigationView()
 
         lifecycleScope.launch {
-            delay(1000)
+            delay(3000)
 
                 view.findNavController().navigate(R.id.action_splashScreenFragment_to_loginFragment)
 
