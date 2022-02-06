@@ -1,4 +1,4 @@
-package com.example.findmytutor.features
+package com.example.findmytutor.features.splashScreen
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.example.findmytutor.R
+import com.example.findmytutor.features.MainActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
