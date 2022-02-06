@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/splashScreenFragment"
-        android:name="com.example.findmytutor.features.SplashScreenFragment"
+        android:name="com.example.findmytutor.features.splashScreen.SplashScreenFragment"
         android:label="fragment_splash_screen"
         tools:layout="@layout/fragment_splash_screen" >
         <action
@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_verifyOtpFragment"
+            app:destination="@id/verifyOtpFragment" />
     </fragment>
     <fragment
         android:id="@+id/homeStudentsFragment"
@@ -43,5 +46,21 @@
         android:id="@+id/registerFragment"
         android:name="com.example.findmytutor.features.register.RegisterFragment"
         android:label="fragment_register"
-        tools:layout="@layout/fragment_register" />
+        tools:layout="@layout/fragment_register" >
+        <action
+            android:id="@+id/action_registerFragment_to_verifyOtpFragment2"
+            app:destination="@id/verifyOtpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/verifyOtpFragment"
+        android:name="com.example.findmytutor.features.otpVerification.VerifyOtpFragment"
+        android:label="fragment_verify_otp"
+        tools:layout="@layout/fragment_verify_otp" >
+        <action
+            android:id="@+id/action_verifyOtpFragment_to_homeStudentsFragment"
+            app:destination="@id/homeStudentsFragment" />
+        <action
+            android:id="@+id/action_verifyOtpFragment_to_homeTutorsFragment"
+            app:destination="@id/homeTutorsFragment" />
+    </fragment>
 </navigation>

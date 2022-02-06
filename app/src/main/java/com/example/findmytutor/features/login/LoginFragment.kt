@@ -5,8 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.findNavController
 import com.example.findmytutor.R
+import com.example.findmytutor.dataClasses.Student
 import com.example.findmytutor.databinding.FragmentLoginBinding
 import com.example.findmytutor.databinding.FragmentRegisterBinding
 
@@ -35,6 +37,17 @@ class LoginFragment : Fragment() {
         binding.signUpTextviewButton.setOnClickListener {
             view.findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
+
+
+        binding.loginButton.setOnClickListener {
+//            var bundle=Bundle()
+//            bundle.putSerializable("student",student)
+//            bundle.putBoolean("isRegistration",false)
+//            view.findNavController().navigate(R.id.action_loginFragment_to_verifyOtpFragment,bundle)
+
+
+        }
+
     }
 
 }

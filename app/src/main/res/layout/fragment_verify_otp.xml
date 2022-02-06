@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".features.otpVerification.VerifyOtpFragment">
+
+    <ImageView
+        android:id="@+id/store_icon"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:src="@drawable/applogo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.015" />
+
+
+
+    <TextView
+        android:id="@+id/otp_verification_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OTP VERIFICATION"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:fontFamily="@font/manrope_bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/store_icon"
+        app:layout_constraintVertical_bias="0.02" />
+
+    <TextView
+        android:id="@+id/enter_otp_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:text="Please enter the OTP you have received"
+        android:textColor="@color/black"
+        android:fontFamily="@font/manrope_regular"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/otp_verification_textview"
+        app:layout_constraintVertical_bias="0.2" />
+
+
+
+    <EditText
+        android:id="@+id/otp_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/manrope_regular"
+        android:background="@color/background"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enter_otp_textview"
+        app:layout_constraintVertical_bias="0.1"
+        android:padding="16dp"
+        android:layout_margin="16dp"
+        android:hint="OTP"
+        android:maxLength="6"/>
+
+
+    <ProgressBar
+        android:id="@+id/otp_verification_progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/verify_otp_button"
+        app:layout_constraintBottom_toTopOf="@+id/resend_otp_button"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/verify_otp_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="18dp"
+        android:elevation="5dp"
+        android:text="VERIFY"
+        android:fontFamily="@font/manrope_bold"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/otp_edittext"
+        app:layout_constraintVertical_bias="0.2" />
+
+
+
+    <TextView
+        android:id="@+id/resend_otp_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="18dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:elevation="5dp"
+        android:text="Resend otp"
+        android:fontFamily="@font/manrope_bold"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/verify_otp_button" />
+
+    <TextView
+        android:id="@+id/resend_otp_timer_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="18dp"
+        android:paddingStart="16dp"
+        android:visibility="gone"
+        android:paddingEnd="16dp"
+        android:text="Resend Otp"
+        android:fontFamily="@font/manrope_bold"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/verify_otp_button" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
