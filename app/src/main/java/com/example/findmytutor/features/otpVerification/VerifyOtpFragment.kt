@@ -16,7 +16,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.findmytutor.R
+import com.example.findmytutor.base.BaseFragment
 import com.example.findmytutor.dataClasses.Student
+import com.example.findmytutor.dataClasses.Tutor
 import com.example.findmytutor.databinding.FragmentRegisterBinding
 import com.example.findmytutor.databinding.FragmentVerifyOtpBinding
 import com.example.findmytutor.features.MainActivity
@@ -28,7 +30,7 @@ import com.google.firebase.auth.PhoneAuthProvider
 import java.util.concurrent.TimeUnit
 
 
-class VerifyOtpFragment : Fragment() {
+class VerifyOtpFragment : BaseFragment() {
 
     private var _binding: FragmentVerifyOtpBinding? = null
     private val binding get() = _binding!!
@@ -37,6 +39,7 @@ class VerifyOtpFragment : Fragment() {
     private lateinit var mOtpViewModel: OtpViewModel
     private var isComingFromRegistration=false
     private var student=Student()
+    private var tutor=Tutor()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,6 +61,7 @@ class VerifyOtpFragment : Fragment() {
 
         val bundle=arguments
         student=bundle!!.getSerializable("student") as Student
+        tutor=bundle!!.getSerializable("tutor") as Tutor
         isComingFromRegistration = bundle.getBoolean("isRegistration")
 
         val content = SpannableString("Resend OTP")
@@ -83,26 +87,61 @@ class VerifyOtpFragment : Fragment() {
 
         }
         timer.start()
-
-        sendVerificationCode(student.mobile, requireActivity(), view, isComingFromRegistration)
+        if(isComingFromRegistration)
+        {
+           if(tutor.pincode=="")
+               sendVerificationCode(student.mobile, requireActivity(), view, isComingFromRegistration)
+           else
+               sendVerificationCode(tutor.mobile, requireActivity(), view, isComingFromRegistration)
+        }
+        else
+        {
+            if(tutor.mobile=="")
+            sendVerificationCode(student.mobile, requireActivity(), view, isComingFromRegistration)
+            else
+            sendVerificationCode(tutor.mobile, requireActivity(), view, isComingFromRegistration)
+        }
 
         binding.verifyOtpButton.setOnClickListener {
             Utils.hideKeyboard(requireActivity())
-            if (isAdded) {
-                binding.otpVerificationProgressbar.visibility=View.VISIBLE
-            }
-            verifyOtp(binding.otpEdittext.text.toString().trim()).observe(viewLifecycleOwner
-            ) {
-                if (isAdded) {
 
-                    binding.otpVerificationProgressbar.visibility=View.GONE
+            if(binding.otpEdittext.text.isNullOrEmpty())
+            {
+                showToast(requireContext(),"Please enter the otp")
+            }
+            else
+            {
+                if (isAdded) {
+                    binding.otpVerificationProgressbar.visibility=View.VISIBLE
+                }
+                verifyOtp(binding.otpEdittext.text.toString().trim()).observe(viewLifecycleOwner
+                ) {
+                    if (isAdded) {
+
+                        binding.otpVerificationProgressbar.visibility=View.GONE
+                    }
                 }
             }
 
 
+
         }
         binding.resendOtpButton.setOnClickListener {
-            sendVerificationCode(student.mobile, requireActivity(), view, isComingFromRegistration)
+
+            if(isComingFromRegistration)
+            {
+                if(tutor.pincode=="")
+                    sendVerificationCode(student.mobile, requireActivity(), view, isComingFromRegistration)
+                else
+                    sendVerificationCode(tutor.mobile, requireActivity(), view, isComingFromRegistration)
+            }
+            else
+            {
+                if(tutor.mobile=="")
+                    sendVerificationCode(student.mobile, requireActivity(), view, isComingFromRegistration)
+                else
+                    sendVerificationCode(tutor.mobile, requireActivity(), view, isComingFromRegistration)
+            }
             Toast.makeText(requireContext(),"Otp Sent Successfully",Toast.LENGTH_SHORT).show()
             it.visibility = View.GONE
             timer.start()
@@ -130,14 +169,14 @@ class VerifyOtpFragment : Fragment() {
             val code = phoneAuthCredential.smsCode
 
             if (code != null) {
-                binding.otpEdittext.setText(code)
-                verifyOtp(code)
+
+                showToast(requireContext(),code)
+
             }
         }
 
         override fun onVerificationFailed(e: FirebaseException) {
 
-            Log.d("ishan","${e.message}")
 
             e.printStackTrace()
         }
@@ -153,32 +192,58 @@ class VerifyOtpFragment : Fragment() {
 
     private fun verifyOtp(otp: String): MutableLiveData<Boolean> {
         val verifyOtpMutableLiveData = MutableLiveData<Boolean>()
-        if (mVerificationId != "") {
+        //showToast(requireContext(),"${otp}+${mVerificationId}")
+        if (mVerificationId != "")
+        {
 
             val credential = PhoneAuthProvider.getCredential(mVerificationId, otp)
             mOtpViewModel.signInWithPhone(credential)
             binding.verifyOtpButton.isEnabled = false
             mOtpViewModel.isSignInSuccess.observe(viewLifecycleOwner)
             { authenticatedUser ->
-                //check if user already exists
-                if (authenticatedUser ==true) {
+
+                if (authenticatedUser!=null) {
                     if (!isComingFromRegistration) {
-
-                        Toast.makeText(requireContext(),"OTP Verified!",Toast.LENGTH_SHORT).show()
-
+                        //Toast.makeText(requireContext(),"OTP Verified!",Toast.LENGTH_SHORT).show()
+                        if(student.mobile=="")
+                        {
+                            mView.findNavController()
+                                .navigate(R.id.action_verifyOtpFragment_to_homeTutorsFragment)
+                        }
+                        else
+                        {
                             mView.findNavController()
                                 .navigate(R.id.action_verifyOtpFragment_to_homeStudentsFragment)
-
+                        }
 
                     } else {
-                        mOtpViewModel.createNewStudent(student)
-                        mOtpViewModel.mCreatedUserLiveData.observe(viewLifecycleOwner)
+                        if(tutor.pincode!="")
                         {
-                            if(it)
+                            mOtpViewModel.createNewTutor(tutor,authenticatedUser)
+                            mOtpViewModel.mCreatedTutorLiveData.observe(viewLifecycleOwner)
                             {
-                                Toast.makeText(requireContext(),"Registration Successful!",Toast.LENGTH_LONG).show()
+                                if(it)
+                                {
+                                    Toast.makeText(requireContext(),"Registration Successful!",Toast.LENGTH_LONG).show()
+                                    mView.findNavController()
+                                        .navigate(R.id.action_verifyOtpFragment_to_homeTutorsFragment)
+                                }
                             }
                         }
+                        else
+                        {
+                            mOtpViewModel.createNewStudent(student,authenticatedUser)
+                            mOtpViewModel.mCreatedUserLiveData.observe(viewLifecycleOwner)
+                            {
+                                if(it)
+                                {
+                                    Toast.makeText(requireContext(),"Registration Successful!",Toast.LENGTH_LONG).show()
+                                    mView.findNavController()
+                                        .navigate(R.id.action_verifyOtpFragment_to_homeStudentsFragment)
+                                }
+                            }
+                        }
+
                     }
 
                 } else {
@@ -187,7 +252,8 @@ class VerifyOtpFragment : Fragment() {
                 binding.verifyOtpButton.isEnabled = true
             }
         }
-        else {
+        else
+        {
             binding.verifyOtpButton.isEnabled = true
             verifyOtpMutableLiveData.value = false
 
@@ -196,6 +262,5 @@ class VerifyOtpFragment : Fragment() {
 
         return verifyOtpMutableLiveData
     }
-
 
 }

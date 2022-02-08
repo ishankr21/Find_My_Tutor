@@ -5,16 +5,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.example.findmytutor.R
 import com.example.findmytutor.features.MainActivity
+import com.example.findmytutor.features.MainActivityViewModel
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
 class SplashScreenFragment : Fragment() {
-
+    private lateinit var mSplashScreenViewModel: SplashScreenViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,11 +29,24 @@ class SplashScreenFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mSplashScreenViewModel =
+            ViewModelProvider(this)[SplashScreenViewModel::class.java]
         (activity as MainActivity).hideBottomNavigationView()
 
         lifecycleScope.launch {
             delay(3000)
-
+                if(FirebaseAuth.getInstance().currentUser != null)
+                {
+                    mSplashScreenViewModel.checkUserType()
+                    mSplashScreenViewModel.mExistingUserLiveData.observe(viewLifecycleOwner)
+                    {
+                        if (it==2)
+                            view.findNavController().navigate(R.id.action_splashScreenFragment_to_homeTutorsFragment)
+                        else
+                            view.findNavController().navigate(R.id.action_splashScreenFragment_to_homeStudentsFragment)
+                    }
+                }
+                else
                 view.findNavController().navigate(R.id.action_splashScreenFragment_to_loginFragment)
 
 
