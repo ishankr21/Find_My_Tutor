@@ -50,6 +50,9 @@
         <action
             android:id="@+id/action_registerFragment_to_verifyOtpFragment2"
             app:destination="@id/verifyOtpFragment" />
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/verifyOtpFragment"
@@ -63,4 +66,28 @@
             android:id="@+id/action_verifyOtpFragment_to_homeTutorsFragment"
             app:destination="@id/homeTutorsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/chatsFragment"
+        android:name="com.example.findmytutor.features.chats.ChatsFragment"
+        android:label="fragment_chats"
+        tools:layout="@layout/fragment_chats" />
+    <fragment
+        android:id="@+id/doubtsFragment"
+        android:name="com.example.findmytutor.features.doubts.DoubtsFragment"
+        android:label="fragment_doubts"
+        tools:layout="@layout/fragment_doubts" />
+    <fragment
+        android:id="@+id/profileStudentFragment"
+        android:name="com.example.findmytutor.features.profile.ProfileStudentFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileStudentFragment_to_homeStudentsFragment"
+            app:destination="@id/homeStudentsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileTutorFragment"
+        android:name="com.example.findmytutor.features.profile.ProfileTutorFragment"
+        android:label="fragment_profile_tutor"
+        tools:layout="@layout/fragment_profile_tutor" />
 </navigation>

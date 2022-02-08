@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.navigation.findNavController
 import com.example.findmytutor.R
 import com.example.findmytutor.dataClasses.Student
+import com.example.findmytutor.dataClasses.Tutor
 import com.example.findmytutor.databinding.FragmentRegisterBinding
 import com.example.findmytutor.databinding.FragmentRegisterStudentBinding
 
@@ -77,8 +78,10 @@ class RegisterStudentFragment : Fragment() {
                         gender = spinnerArrayGender[binding.spnSelectStudentGender.selectedItemPosition],
                         parentName = binding.registerStudentParentNameEdittext.text.toString()
                     )
+                    val tutor=Tutor()
                     val bundle=Bundle()
                     bundle.putSerializable("student",student)
+                    bundle.putSerializable("tutor",tutor)
                     bundle.putBoolean("isRegistration",true)
                     view.findNavController().navigate(R.id.action_registerFragment_to_verifyOtpFragment2,bundle)
                 }

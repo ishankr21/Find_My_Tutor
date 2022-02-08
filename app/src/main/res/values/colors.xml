@@ -37,6 +37,8 @@
     <color name="cashback_credit_color">#D6F8B0</color>
     <color name="cashback_redeem_color">#B8DEFF</color>
     <color name="zxing_possible_result_points">#FFBCA40D</color>
+    <color name="enabled_color">#7C7C7C</color>
+    <color name="disabled_color">#000000</color>
 
 
 </resources>

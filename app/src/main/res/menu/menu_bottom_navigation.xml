@@ -3,12 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/homeFragment"
-
+        android:id="@+id/homeStudentsFragment"
+        android:icon="@drawable/ic_home"
         android:title="Home"
         app:showAsAction="always"
         />
-
+    <item
+        android:id="@+id/doubtsFragment"
+        android:icon="@drawable/ic_baseline_question_answer_24"
+        android:title="Doubts"
+        app:showAsAction="always"
+        />
+    <item
+        android:id="@+id/chatsFragment"
+        android:icon="@drawable/ic_baseline_message_24"
+        android:title="Chat"
+        app:showAsAction="always"
+        />
+    <item
+        android:id="@+id/profileStudentFragment"
+        android:icon="@drawable/ic_user_outline"
+        android:title="Profile"
+        app:showAsAction="always"
+        />
 
 
 </menu>
