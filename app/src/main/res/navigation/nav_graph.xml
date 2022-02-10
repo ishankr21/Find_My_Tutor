@@ -84,10 +84,33 @@
         <action
             android:id="@+id/action_profileStudentFragment_to_homeStudentsFragment"
             app:destination="@id/homeStudentsFragment" />
+        <action
+            android:id="@+id/action_profileStudentFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileTutorFragment"
         android:name="com.example.findmytutor.features.profile.ProfileTutorFragment"
         android:label="fragment_profile_tutor"
-        tools:layout="@layout/fragment_profile_tutor" />
+        tools:layout="@layout/fragment_profile_tutor" >
+        <action
+            android:id="@+id/action_profileTutorFragment_to_homeTutorsFragment"
+            app:destination="@id/homeTutorsFragment" />
+        <action
+            android:id="@+id/action_profileTutorFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_profileTutorFragment_to_doubtsFragment"
+            app:destination="@id/doubtsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/studentMyTutorsFragment"
+        android:name="com.example.findmytutor.features.myTutors.StudentMyTutorsFragment"
+        android:label="fragment_student_my_tutors"
+        tools:layout="@layout/fragment_student_my_tutors" />
+    <fragment
+        android:id="@+id/tutorRequestsFragment"
+        android:name="com.example.findmytutor.features.requests.TutorRequestsFragment"
+        android:label="fragment_tutor_requests"
+        tools:layout="@layout/fragment_tutor_requests" />
 </navigation>

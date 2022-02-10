@@ -8,6 +8,7 @@
         android:title="Home"
         app:showAsAction="always"
         />
+
     <item
         android:id="@+id/doubtsFragment"
         android:icon="@drawable/ic_baseline_question_answer_24"
@@ -15,11 +16,13 @@
         app:showAsAction="always"
         />
     <item
-        android:id="@+id/chatsFragment"
-        android:icon="@drawable/ic_baseline_message_24"
-        android:title="Chat"
+        android:id="@+id/studentMyTutorsFragment"
+        android:icon="@drawable/ic_baseline_school_24"
+        android:title="My Tutors"
         app:showAsAction="always"
         />
+
+
     <item
         android:id="@+id/profileStudentFragment"
         android:icon="@drawable/ic_user_outline"

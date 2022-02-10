@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/homeTutorsFragment"
+        android:icon="@drawable/ic_home"
+        android:title="Home"
+        app:showAsAction="always"
+        />
+    <item
+        android:id="@+id/doubtsFragment"
+        android:icon="@drawable/ic_baseline_question_answer_24"
+        android:title="Doubts"
+        app:showAsAction="always"
+        />
+
+    <item
+        android:id="@+id/tutorRequestsFragment"
+        android:icon="@drawable/ic_baseline_check_24"
+        android:title="Requests"
+        app:showAsAction="always"
+        />
+    <item
+        android:id="@+id/profileTutorFragment"
+        android:icon="@drawable/ic_user_outline"
+        android:title="Profile"
+        app:showAsAction="always"
+        />
+
+
+</menu>

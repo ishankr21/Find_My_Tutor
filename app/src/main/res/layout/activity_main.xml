@@ -24,7 +24,7 @@
         android:visibility="gone"
         app:backgroundTint="@color/cardview_light_background"
         app:labelVisibilityMode="labeled"
-        app:menu="@menu/menu_bottom_navigation" />
+        app:menu="@menu/menu_tutor_bottom_navigation" />
 
 
 

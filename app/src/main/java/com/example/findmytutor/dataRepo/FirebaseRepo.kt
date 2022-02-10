@@ -44,7 +44,7 @@ class FirebaseRepo: FirebaseMessagingService() {
 
     fun createStudent(student: Student,userId:String): MutableLiveData<Boolean> {
 
-        var mStudentCreatedSuccess= MutableLiveData<Boolean>()
+        val mStudentCreatedSuccess= MutableLiveData<Boolean>()
 
         mFirestore.collection(COLLECTION_STUDENT).document(userId).set(student)
             .addOnSuccessListener {
@@ -63,7 +63,7 @@ class FirebaseRepo: FirebaseMessagingService() {
     }
 
     fun createTutor(tutor: Tutor,userId: String): MutableLiveData<Boolean> {
-        var mTutorCreatedSuccess= MutableLiveData<Boolean>()
+        val mTutorCreatedSuccess= MutableLiveData<Boolean>()
 
         mFirestore.collection(COLLECTION_TUTOR).document(userId).set(tutor)
             .addOnSuccessListener {
@@ -176,6 +176,58 @@ class FirebaseRepo: FirebaseMessagingService() {
             }
 
         return mStudentLiveData
+    }
+
+    fun saveStudent(student: Student): MutableLiveData<Boolean> {
+       val mStudentStoreSuccess = MutableLiveData<Boolean>()
+
+        mFirestore.collection(COLLECTION_STUDENT).document(mAuth.currentUser!!.uid).set(student)
+            .addOnSuccessListener {
+                mStudentStoreSuccess.value=true
+            }
+            .addOnFailureListener {
+                mStudentStoreSuccess.value = false
+            }
+
+
+
+
+       return mStudentStoreSuccess
+
+
+    }
+    fun userSignOut() {
+        mAuth.signOut()
+    }
+
+    fun getTutor(): MutableLiveData<Tutor> {
+
+        val mTutorLiveData = MutableLiveData<Tutor>()
+        mFirestore.collection(COLLECTION_TUTOR).document(mAuth.currentUser!!.uid).get()
+            .addOnSuccessListener {
+                mTutorLiveData.value=it.toObject(Tutor::class.java)
+            }
+
+        return mTutorLiveData
+
+    }
+
+    fun saveTutor(tutor: Tutor): MutableLiveData<Boolean> {
+
+        val mTutorStoreSuccess = MutableLiveData<Boolean>()
+
+        mFirestore.collection(COLLECTION_TUTOR).document(mAuth.currentUser!!.uid).set(tutor)
+            .addOnSuccessListener {
+                mTutorStoreSuccess.value=true
+            }
+            .addOnFailureListener {
+                mTutorStoreSuccess.value = false
+            }
+
+
+
+
+        return mTutorStoreSuccess
     }
 
 
