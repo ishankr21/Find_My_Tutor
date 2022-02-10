@@ -1,14 +1,258 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".features.profile.ProfileTutorFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/profile_tutor_page_toolBar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="profile tutor" />
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-</FrameLayout>
+        <ImageButton
+            android:id="@+id/profile_tutor_back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="8sp"
+            android:src="@drawable/ic_baseline_arrow_back_ios_24" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toRightOf="@+id/profile_tutor_back_button"
+            app:layout_constraintRight_toLeftOf="@+id/profile_tutor_logout_button"
+            android:fontFamily="@font/manrope_bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:gravity="center"
+            android:paddingEnd="24sp"
+            android:text="Profile"
+            android:textColor="@color/black"
+            android:id="@+id/textProfileToolbar"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            tools:ignore="RtlSymmetry" />
+
+        <ImageButton
+            android:id="@+id/profile_tutor_logout_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_toEndOf="@id/textProfileToolbar"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="8sp"
+            android:src="@drawable/ic_baseline_logout_24" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_tutor_page_toolBar"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageViewProfileTutor"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/ic_user"
+            app:civ_border_color="@color/darkGrey"
+            app:civ_border_width="0dp" />
+
+
+        <ProgressBar
+            android:id="@+id/loading_animation"
+            android:layout_width="80dp"
+            android:layout_height="60dp"
+            android:layout_centerInParent="true"
+            />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabEditProfilePictureTutor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/imageViewProfileTutor"
+            android:layout_alignBottom="@id/imageViewProfileTutor"
+            android:background="@drawable/fab"
+            android:src="@drawable/ic_camera_alt_black_24dp"
+            android:tint="@color/white"
+            app:backgroundTint="@color/light_red"
+            app:borderWidth="0dp"
+            app:elevation="8dp"
+            app:fabSize="mini"
+            app:tint="@color/white"
+            tools:ignore="ContentDescription" />
+
+    </RelativeLayout>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rl1"
+        app:layout_constraintBottom_toTopOf="@+id/save_profile_Tutor_button"
+        >
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:padding="16dp"
+                android:hint="MOBILE NUMBER"
+                android:background="@color/background"
+                android:textColor="@drawable/edittext_textcolor"
+                android:maxLength="13"
+                android:inputType="phone"
+                android:id="@+id/profile_tutor_phone_edittext"
+                app:layout_constraintTop_toTopOf="parent"
+                android:autofillHints="phone"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:padding="16dp"
+                android:hint="NAME"
+                android:textColor="@drawable/edittext_textcolor"
+                android:background="@color/background"
+                android:inputType="text"
+                android:id="@+id/profile_tutor_name_edittext"
+                app:layout_constraintTop_toBottomOf="@+id/profile_tutor_phone_edittext"
+                />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:padding="16dp"
+                android:hint="AGE"
+                android:textColor="@drawable/edittext_textcolor"
+                android:background="@color/background"
+                android:inputType="number"
+                android:id="@+id/profile_tutor_age_edittext"
+                app:layout_constraintTop_toBottomOf="@+id/profile_tutor_name_edittext"
+                />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:padding="16dp"
+                android:hint="GENDER"
+                android:textColor="@drawable/edittext_textcolor"
+                android:background="@color/background"
+                android:inputType="number"
+                android:id="@+id/profile_tutor_gender_edittext"
+                app:layout_constraintTop_toBottomOf="@+id/profile_tutor_age_edittext"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:padding="16dp"
+                android:hint="PINCODE"
+                android:textColor="@drawable/edittext_textcolor"
+                android:background="@color/background"
+                android:inputType="text"
+                android:id="@+id/register_tutor_pincode_edittext"
+                app:layout_constraintTop_toBottomOf="@+id/profile_tutor_gender_edittext"
+                />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:padding="16dp"
+                android:hint="EMAIL ID"
+                android:textColor="@drawable/edittext_textcolor"
+                android:background="@color/background"
+                android:inputType="textEmailAddress"
+                android:id="@+id/register_tutor_emailID_edittext"
+                app:layout_constraintTop_toBottomOf="@+id/register_tutor_pincode_edittext"
+                />
+            <Spinner
+                android:id="@+id/spnSelectProfileTutorClass"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_margin="16dp"
+                android:padding="8dp"
+                android:background="@drawable/bg_spinner"
+                android:popupBackground="@color/white"
+                android:spinnerMode="dropdown"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/register_tutor_emailID_edittext" />
+            <Spinner
+                android:id="@+id/spnSelectTutorEmploymentStatus"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_margin="16dp"
+                android:padding="8dp"
+                android:background="@drawable/bg_spinner"
+                android:popupBackground="@color/white"
+                android:spinnerMode="dropdown"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/spnSelectProfileTutorClass" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:padding="16dp"
+                android:hint="DESIRED FEES"
+                android:background="@color/background"
+                android:inputType="text"
+                android:textColor="@drawable/edittext_textcolor"
+                android:id="@+id/register_tutor_desired_fees_edittext"
+                app:layout_constraintTop_toBottomOf="@+id/spnSelectTutorEmploymentStatus"
+                />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:padding="16dp"
+                android:hint="SPECIALIZATION IN(SUBJECT) "
+                android:background="@color/background"
+                android:inputType="text"
+                android:textColor="@drawable/edittext_textcolor"
+                android:id="@+id/register_tutor_favourite_subject_edittext"
+                app:layout_constraintTop_toBottomOf="@+id/register_tutor_desired_fees_edittext"
+                />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+    <Button
+        android:id="@+id/save_profile_Tutor_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="18dp"
+        android:textSize="18sp"
+        android:elevation="5dp"
+        android:text="Save"
+        android:fontFamily="@font/manrope_bold"
+        android:textColor="@color/white"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

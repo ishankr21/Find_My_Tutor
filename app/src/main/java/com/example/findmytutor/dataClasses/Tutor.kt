@@ -11,5 +11,9 @@ data class Tutor(
     var emailId:String="",
     var age:Int=0,
     var pincode:String="",
-    var profilePicturePath:String=""
+    var profilePicturePath:String="",
+    var employmentStatus:String="",
+    var preferredClass:String="",
+    var desiredFees:Float=0.0f,
+    var tutorFavouriteSubject:String=""
 ):Serializable

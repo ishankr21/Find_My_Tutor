@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".features.profile.ProfileStudentFragment">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/profile_page_toolBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,25 +18,43 @@
             android:id="@+id/profile_back_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+             app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="8sp"
             android:src="@drawable/ic_baseline_arrow_back_ios_24" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/profile_back_button"
+            app:layout_constraintLeft_toRightOf="@+id/profile_back_button"
+            app:layout_constraintRight_toLeftOf="@+id/profile_logout_button"
             android:fontFamily="@font/manrope_bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:gravity="center"
             android:paddingEnd="24sp"
             android:text="Profile"
             android:textColor="@color/black"
+            android:id="@+id/textProfileToolbar"
             android:textSize="30sp"
             android:textStyle="bold"
             tools:ignore="RtlSymmetry" />
 
-    </RelativeLayout>
+        <ImageButton
+            android:id="@+id/profile_logout_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_toEndOf="@id/textProfileToolbar"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="8sp"
+            android:src="@drawable/ic_baseline_logout_24" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <RelativeLayout
         android:id="@+id/rl1"
@@ -164,7 +182,7 @@
                 android:hint="EMAIL ID"
                 android:textColor="@drawable/edittext_textcolor"
                 android:background="@color/background"
-                android:inputType="text"
+                android:inputType="textEmailAddress"
                 android:id="@+id/register_student_emailID_edittext"
                 app:layout_constraintTop_toBottomOf="@+id/register_student_parentName_edittext"
                 />

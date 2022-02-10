@@ -203,6 +203,7 @@ class VerifyOtpFragment : BaseFragment() {
             { authenticatedUser ->
 
                 if (authenticatedUser!=null) {
+                    (activity as MainActivity).setBottomNavigationMenu()
                     if (!isComingFromRegistration) {
                         //Toast.makeText(requireContext(),"OTP Verified!",Toast.LENGTH_SHORT).show()
                         if(student.mobile=="")

@@ -3,6 +3,7 @@ package com.example.findmytutor.features
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -31,48 +32,25 @@ class MainActivity : AppCompatActivity() {
         navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_main_fragment) as NavHostFragment
         navController = navHostFragment.navController
+
         bottomNavigationView = binding.bottomNavigation
         bottomNavigationView.setupWithNavController(navController)
+       setBottomNavigationMenu()
+
         bottomNavigationView.setOnItemSelectedListener{ menuItem ->
-                if(menuItem.itemId==R.id.profileStudentFragment||menuItem.itemId==R.id.homeStudentsFragment)
-                {
-                    mMainActivityViewModel.checkUserType()
-                    mMainActivityViewModel.mExistingUserLiveData.observe(this)
-                    {
-                        if(menuItem.itemId==R.id.profileStudentFragment)
-                        {
-                            if(it==2)
-                            {
-                                navController.navigate(R.id.profileTutorFragment)
-                            }
-                            else
-                            {
-                                navController.navigate(menuItem.itemId)
-                            }
-                        }
-                        else
-                        {
-                            if(it==2)
-                            {
-                                navController.navigate(R.id.homeTutorsFragment)
-                            }
-                            else
-                            {
-                                navController.navigate(menuItem.itemId)
-                            }
-                        }
 
-                    }
-                }
-                else
-                {
                     navController.navigate(menuItem.itemId)
+                    return@setOnItemSelectedListener true
                 }
 
 
-                return@setOnItemSelectedListener true
 
-        }
+
+
+
+
+
+
     }
 
     fun setVisibleBottomNavigationView() {
@@ -81,6 +59,26 @@ class MainActivity : AppCompatActivity() {
     //to hide bottom navigation
     fun hideBottomNavigationView() {
         binding.bottomNavigation.visibility = View.GONE
+    }
+    fun setBottomNavigationMenu()
+    {
+        mMainActivityViewModel.checkUserType()
+        mMainActivityViewModel.mExistingUserLiveData.observe(this)
+        {
+            if(it==2)
+            {
+                bottomNavigationView.menu.clear()
+                bottomNavigationView.inflateMenu(R.menu.menu_tutor_bottom_navigation)
+
+
+            }
+            else
+            {
+                bottomNavigationView.menu.clear()
+                bottomNavigationView.inflateMenu(R.menu.menu_student_bottom_navigation)
+
+            }
+        }
     }
 
 }

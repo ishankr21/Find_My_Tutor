@@ -21,23 +21,22 @@ import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.example.findmytutor.R
 import com.example.findmytutor.base.BaseFragment
+import com.example.findmytutor.dataClasses.Student
 import com.example.findmytutor.databinding.FragmentProfileBinding
 import com.example.findmytutor.features.MainActivity
+import com.example.findmytutor.utilities.Constants
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 
 
-const val CAMERA_REQUEST_CODE = 200
-const val STORAGE_REQUEST_CODE = 400
-const val IMAGE_PICK_GALLERY = 1000
-const val IMAGE_PICK_CAMERA = 100
+
 
 var imageURI: Uri? = null
 lateinit var cameraPermission: Array<String>
 lateinit var storagePermission: Array<String>
-var spinnerArrayClass: ArrayList<String> = arrayListOf()
-var spinnerArraySchoolBoard: ArrayList<String> = arrayListOf()
+private var spinnerArrayClass: ArrayList<String> = arrayListOf()
+private var spinnerArraySchoolBoard: ArrayList<String> = arrayListOf()
 
 class ProfileStudentFragment : BaseFragment() {
 
@@ -112,7 +111,13 @@ class ProfileStudentFragment : BaseFragment() {
             binding.registerStudentParentNameEdittext.setText(it.parentName)
 
             if(it?.emailId!="")
-                binding.registerStudentEmailIDEdittext.setText(it.parentName)
+            {
+                binding.registerStudentEmailIDEdittext.setText(it.emailId)
+            }
+
+
+            if(it?.leastFavouriteSubject!="")
+                binding.registerStudentLeastFavouriteSubjectEdittext.setText(it.leastFavouriteSubject)
 
             if(it?.studentClass!="") {
                 binding.spnSelectProfileStudentClass.setSelection(it?.studentClass?.drop(6)!!.toInt())
@@ -140,8 +145,6 @@ class ProfileStudentFragment : BaseFragment() {
 
 
 
-            if(it?.leastFavouriteSubject!="")
-                binding.registerStudentEmailIDEdittext.setText(it.parentName)
 
 
 
@@ -175,6 +178,41 @@ class ProfileStudentFragment : BaseFragment() {
         binding.fabEditProfilePicture.setOnClickListener {
             showImportImageDialog()
         }
+
+        binding.saveProfileButton.setOnClickListener {
+            mProfileFragmentViewModel.getStudent()
+            mProfileFragmentViewModel.mStudentLiveData.observe(viewLifecycleOwner)
+            {
+                val studentFinalData = Student(
+                    mobile = it.mobile,
+                    name = it.name,
+                    gender = it.gender,
+                    emailId = binding.registerStudentEmailIDEdittext.text.toString(),
+                    parentName = it.parentName,
+                    age = it.age,
+                    profilePicturePath = it.profilePicturePath,
+                    studentClass = binding.spnSelectProfileStudentClass.selectedItem.toString(),
+                    leastFavouriteSubject = binding.registerStudentLeastFavouriteSubjectEdittext.text.toString(),
+                    schoolBoard = binding.spnSelectProfileStudentSchoolBoard.selectedItem.toString(),
+                    schoolName = binding.registerStudentSchoolNameEdittext.text.toString()
+                )
+                mProfileFragmentViewModel.storeStudent(studentFinalData)
+                mProfileFragmentViewModel.mStudentDataUpdated.observe(viewLifecycleOwner)
+                {
+                    if(it)
+                    {
+                        showToast(requireContext(),"Data saved successfully!")
+                        view.findNavController().navigate(R.id.action_profileStudentFragment_to_homeStudentsFragment)
+                    }
+                }
+            }
+        }
+
+        binding.profileLogoutButton.setOnClickListener {
+            mProfileFragmentViewModel.signOut()
+            mView.findNavController().navigate(R.id.action_profileStudentFragment_to_loginFragment)
+        }
+
     }
 
     private fun initSpinners() {
@@ -261,7 +299,7 @@ class ProfileStudentFragment : BaseFragment() {
     }
 
     private fun requestCameraPermission() {
-        requestPermissions(cameraPermission, CAMERA_REQUEST_CODE)
+        requestPermissions(cameraPermission, Constants.CAMERA_REQUEST_CODE)
     }
     private fun pickCamera() {
         val contentValues = ContentValues()
@@ -274,7 +312,7 @@ class ProfileStudentFragment : BaseFragment() {
 
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageURI)
-        startActivityForResult(cameraIntent, IMAGE_PICK_CAMERA)
+        startActivityForResult(cameraIntent, Constants.IMAGE_PICK_CAMERA)
     }
 
     private fun checkStoragePermission(): Boolean {
@@ -287,14 +325,14 @@ class ProfileStudentFragment : BaseFragment() {
     private fun requestStoragePermission() {
         requestPermissions(
             storagePermission,
-            STORAGE_REQUEST_CODE
+            Constants.STORAGE_REQUEST_CODE
         )
     }
 
     private fun pickGallery() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
-        startActivityForResult(intent, IMAGE_PICK_GALLERY)
+        startActivityForResult(intent, Constants.IMAGE_PICK_GALLERY)
     }
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -303,7 +341,7 @@ class ProfileStudentFragment : BaseFragment() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
-            CAMERA_REQUEST_CODE -> {
+            Constants.CAMERA_REQUEST_CODE -> {
                 if (grantResults.isNotEmpty()) {
                     val cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED
                     val writeStorageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED
@@ -319,7 +357,7 @@ class ProfileStudentFragment : BaseFragment() {
                     }
                 }
             }
-            STORAGE_REQUEST_CODE -> {
+            Constants.STORAGE_REQUEST_CODE -> {
                 if (grantResults.isNotEmpty()) {
                     val writeStorageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED
 
@@ -342,14 +380,14 @@ class ProfileStudentFragment : BaseFragment() {
 
 
             when (requestCode) {
-                IMAGE_PICK_CAMERA -> {
+                Constants.IMAGE_PICK_CAMERA -> {
                     CropImage.activity(imageURI).setGuidelines(CropImageView.Guidelines.ON)
                         .setAspectRatio(1, 1)
                         .setFixAspectRatio(true)
                         .start(requireContext(), this@ProfileStudentFragment)
                     //showToast(requireContext(),"${imageURI}")
                 }
-                IMAGE_PICK_GALLERY -> {
+                Constants.IMAGE_PICK_GALLERY -> {
                     CropImage.activity(data!!.data).setGuidelines(CropImageView.Guidelines.ON)
                         .setAspectRatio(1, 1)
                         .setFixAspectRatio(true)
