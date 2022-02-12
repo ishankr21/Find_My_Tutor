@@ -35,13 +35,13 @@ import com.theartofdev.edmodo.cropper.CropImageView
 var imageURI: Uri? = null
 lateinit var cameraPermission: Array<String>
 lateinit var storagePermission: Array<String>
-private var spinnerArrayClass: ArrayList<String> = arrayListOf()
-private var spinnerArraySchoolBoard: ArrayList<String> = arrayListOf()
+
 
 class ProfileStudentFragment : BaseFragment() {
 
     private lateinit var mProfileFragmentViewModel: ProfileViewModel
-
+    private var spinnerArrayClass: ArrayList<String> = arrayListOf()
+    private var spinnerArraySchoolBoard: ArrayList<String> = arrayListOf()
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
@@ -54,6 +54,11 @@ class ProfileStudentFragment : BaseFragment() {
         // Inflate the layout for this fragment
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
 
+        spinnerArrayClass= arrayListOf("Select Your Class", "Class 1", "Class 2", "Class 3", "Class 4", "Class 5",
+            "Class 6", "Class 7", "Class 8", "Class 9", "Class 10", "Class 11", "Class 12")
+        spinnerArraySchoolBoard= arrayListOf("Select Your School Board","CBSE","ICSE","State Board")
+
+
         return binding.root
     }
     override fun onDestroyView() {
@@ -63,15 +68,7 @@ class ProfileStudentFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        spinnerArrayClass.add("Select Your Class")
-        for(i in 1..12)
-        {
-            spinnerArrayClass.add("Class $i")
-        }
-        spinnerArraySchoolBoard.add("Select Your School Board")
-        spinnerArraySchoolBoard.add("CBSE")
-        spinnerArraySchoolBoard.add("ICSE")
-        spinnerArraySchoolBoard.add("State Board")
+
         initSpinners()
 
 
@@ -100,7 +97,7 @@ class ProfileStudentFragment : BaseFragment() {
         binding.profileStudentAgeEdittext.isEnabled=false
         binding.profileStudentGenderEdittext.isEnabled=false
         binding.registerStudentParentNameEdittext.isEnabled=false
-
+        showProgressDialog("Loading")
         mProfileFragmentViewModel.getStudent()
         mProfileFragmentViewModel.mStudentLiveData.observe(viewLifecycleOwner)
         {
@@ -141,16 +138,6 @@ class ProfileStudentFragment : BaseFragment() {
             {
                 binding.registerStudentSchoolNameEdittext.setText(it.schoolName)
             }
-
-
-
-
-
-
-
-
-
-
             if (it?.profilePicturePath != "") {
                 Glide.with(requireContext()).load(it?.profilePicturePath)
                     .into(binding.imageViewProfile)
@@ -170,7 +157,7 @@ class ProfileStudentFragment : BaseFragment() {
         }
 
 
-
+            dismissProgressDialog()
 
 
 
@@ -194,7 +181,9 @@ class ProfileStudentFragment : BaseFragment() {
                     studentClass = binding.spnSelectProfileStudentClass.selectedItem.toString(),
                     leastFavouriteSubject = binding.registerStudentLeastFavouriteSubjectEdittext.text.toString(),
                     schoolBoard = binding.spnSelectProfileStudentSchoolBoard.selectedItem.toString(),
-                    schoolName = binding.registerStudentSchoolNameEdittext.text.toString()
+                    schoolName = binding.registerStudentSchoolNameEdittext.text.toString(),
+                    tokenId = it.tokenId,
+                    fcmTokens = it.fcmTokens
                 )
                 mProfileFragmentViewModel.storeStudent(studentFinalData)
                 mProfileFragmentViewModel.mStudentDataUpdated.observe(viewLifecycleOwner)
@@ -237,6 +226,7 @@ class ProfileStudentFragment : BaseFragment() {
                 return item
             }
         }
+
 
         binding.spnSelectProfileStudentClass.adapter = arrayAdapterClass
 
@@ -401,6 +391,7 @@ class ProfileStudentFragment : BaseFragment() {
 
                         if (isAdded) {
                             binding.loadingAnimation.visibility=View.VISIBLE
+                            showProgressDialog("Saving")
                         }
                         mProfileFragmentViewModel.uploadPictureToFirebase(resultUri,"Students")
                         mProfileFragmentViewModel.mUserPuploaded.observe(viewLifecycleOwner
@@ -408,8 +399,10 @@ class ProfileStudentFragment : BaseFragment() {
                             if (it) {
                                 if (isAdded) {
                                     binding.loadingAnimation.visibility=View.GONE
+
                                 }
                                 binding.imageViewProfile.setImageURI(resultUri)
+                                dismissProgressDialog()
                             }
                         }
                     }

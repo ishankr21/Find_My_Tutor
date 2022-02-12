@@ -15,5 +15,7 @@ data class Student(
     var studentClass:String="",
     var leastFavouriteSubject:String="",
     var schoolBoard:String="",
-    var schoolName:String=""
+    var schoolName:String="",
+    var tokenId:String="",
+    var fcmTokens:ArrayList<String> = arrayListOf()
 ): Serializable

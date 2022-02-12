@@ -5,22 +5,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.findmytutor.R
+import com.example.findmytutor.base.BaseFragment
 import com.example.findmytutor.dataClasses.Student
 import com.example.findmytutor.dataClasses.Tutor
 import com.example.findmytutor.databinding.FragmentRegisterTutorBinding
 
 
 
-class RegisterTutorFragment : Fragment() {
+class RegisterTutorFragment : BaseFragment() {
     private var _binding: FragmentRegisterTutorBinding? = null
     private val binding get() = _binding!!
     var spinnerArrayGender: ArrayList<String> = arrayListOf()
+    private lateinit var mRegisterViewModel: RegisterViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,10 +37,11 @@ class RegisterTutorFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.registerTutorButton.setOnClickListener {
 
-            view.findNavController().navigate(R.id.action_registerFragment_to_verifyOtpFragment2)
-        }
+        mRegisterViewModel =
+            ViewModelProvider(this)[RegisterViewModel::class.java]
+
+
 
         spinnerArrayGender.add("Select Gender")
         spinnerArrayGender.add("FEMALE")
@@ -71,6 +72,12 @@ class RegisterTutorFragment : Fragment() {
             }
             else
             {
+
+                mRegisterViewModel.checkUserExists("+91"+binding.registerTutorPhoneEdittext.text.toString())
+                mRegisterViewModel.mExistingUserLiveData.observe(viewLifecycleOwner)
+                {
+                    if(it==0)
+                    {
                 val tutor= Tutor(
                     name = binding.registerTutorNameEdittext.text.toString(),
                     mobile = "+91"+binding.registerTutorPhoneEdittext.text.toString(),
@@ -84,7 +91,12 @@ class RegisterTutorFragment : Fragment() {
                 bundle.putSerializable("tutor",tutor)
                 bundle.putBoolean("isRegistration",true)
                 view.findNavController().navigate(R.id.action_registerFragment_to_verifyOtpFragment2,bundle)
-
+                    }
+                    else
+                    {
+                        showToast(requireContext(),"Phone number already registered!")
+                    }
+                }
             }
         }
 

@@ -46,6 +46,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx:21.0.1'
     implementation 'com.google.firebase:firebase-firestore-ktx:24.0.1'
     implementation 'com.google.firebase:firebase-storage-ktx:20.0.0'
+    implementation "com.google.firebase:firebase-messaging:23.0.0"
+    implementation 'com.google.firebase:firebase-functions:20.0.1'
     def nav_version = '2.4.0'
 
     // Java language implementation
@@ -88,5 +90,20 @@ dependencies {
 
     implementation "com.github.bumptech.glide:glide:4.12.0"
     kapt "com.github.bumptech.glide:compiler:4.12.0"
+
+    implementation 'com.github.d-max:spots-dialog:1.1@aar'
+    //loaderViewLibrary
+    //Provide both TextView and ImageView the ability to show shimmer (animation loader)
+    // before any text or image is shown.
+    // Useful when waiting for data to be loaded from the network.
+    implementation 'io.github.elye:loaderviewlibrary:3.0.0'
+
+
+    // Shimmer
+    //used for adding shimmer effect
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+    //Change layout manager in runtime LinearLayoutManager to GridLayoutManager
+    // and Shimmer will adopt accordingly.
+    implementation 'com.todkars:shimmer-recyclerview:0.4.0'
 
 }
