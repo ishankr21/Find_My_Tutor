@@ -9,18 +9,22 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.findmytutor.R
+import com.example.findmytutor.base.BaseFragment
 import com.example.findmytutor.dataClasses.Student
 import com.example.findmytutor.dataClasses.Tutor
 import com.example.findmytutor.databinding.FragmentRegisterBinding
 import com.example.findmytutor.databinding.FragmentRegisterStudentBinding
+import com.example.findmytutor.features.profile.ProfileViewModel
 
 
-class RegisterStudentFragment : Fragment() {
+class RegisterStudentFragment : BaseFragment() {
     private var _binding: FragmentRegisterStudentBinding? = null
     private val binding get() = _binding!!
     var spinnerArrayGender: ArrayList<String> = arrayListOf()
+    private lateinit var mRegisterViewModel: RegisterViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,7 +40,8 @@ class RegisterStudentFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        mRegisterViewModel =
+            ViewModelProvider(this)[RegisterViewModel::class.java]
         binding.registerStudentButton.setOnClickListener {
 
             view.findNavController().navigate(R.id.action_registerFragment_to_verifyOtpFragment2)
@@ -71,19 +76,31 @@ class RegisterStudentFragment : Fragment() {
                 }
                 else
                 {
-                    val student=Student(
-                        name = binding.registerStudentNameEdittext.text.toString(),
-                        mobile = "+91"+binding.registerStudentPhoneEdittext.text.toString(),
-                        age = binding.registerStudentAgeEdittext.text.toString().toInt(),
-                        gender = spinnerArrayGender[binding.spnSelectStudentGender.selectedItemPosition],
-                        parentName = binding.registerStudentParentNameEdittext.text.toString()
-                    )
-                    val tutor=Tutor()
-                    val bundle=Bundle()
-                    bundle.putSerializable("student",student)
-                    bundle.putSerializable("tutor",tutor)
-                    bundle.putBoolean("isRegistration",true)
-                    view.findNavController().navigate(R.id.action_registerFragment_to_verifyOtpFragment2,bundle)
+                    mRegisterViewModel.checkUserExists("+91"+binding.registerStudentPhoneEdittext.text.toString())
+                    mRegisterViewModel.mExistingUserLiveData.observe(viewLifecycleOwner)
+                    {
+                        if(it==0)
+                        {
+                            val student=Student(
+                                name = binding.registerStudentNameEdittext.text.toString(),
+                                mobile = "+91"+binding.registerStudentPhoneEdittext.text.toString(),
+                                age = binding.registerStudentAgeEdittext.text.toString().toInt(),
+                                gender = spinnerArrayGender[binding.spnSelectStudentGender.selectedItemPosition],
+                                parentName = binding.registerStudentParentNameEdittext.text.toString()
+                            )
+                            val tutor=Tutor()
+                            val bundle=Bundle()
+                            bundle.putSerializable("student",student)
+                            bundle.putSerializable("tutor",tutor)
+                            bundle.putBoolean("isRegistration",true)
+                            view.findNavController().navigate(R.id.action_registerFragment_to_verifyOtpFragment2,bundle)
+                        }
+                        else
+                        {
+                            showToast(requireContext(),"Phone number already registered!")
+                        }
+                    }
+
                 }
             }
 

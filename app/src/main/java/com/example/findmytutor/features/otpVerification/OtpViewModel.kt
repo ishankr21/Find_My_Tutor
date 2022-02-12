@@ -12,6 +12,8 @@ class OtpViewModel : ViewModel(){
     var isSignInSuccess = MutableLiveData<String?>()
     var mCreatedUserLiveData: MutableLiveData<Boolean> = MutableLiveData()
     var mCreatedTutorLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    var tutorData:MutableLiveData<Tutor> = MutableLiveData()
+    var studentData:MutableLiveData<Student> = MutableLiveData()
 
 
     fun signInWithPhone(authCredential: PhoneAuthCredential)
@@ -32,5 +34,24 @@ class OtpViewModel : ViewModel(){
 
 
 
+    }
+
+    fun getTutorWithMobileNumber(mobile:String)
+    {
+        tutorData=FirebaseRepo().getTutorByMobileNumber(mobile)
+    }
+
+    fun updateFcmListTutor(tutor: Tutor)
+    {
+        FirebaseRepo().updateFcmTokenListOfTutor(tutor)
+    }
+    fun updateFcmListStudent(student: Student)
+    {
+        FirebaseRepo().updateFcmTokenListOfStudent(student)
+    }
+
+    fun getStudentWithMobileNumber(mobile:String)
+    {
+        studentData=FirebaseRepo().getStudentByMobileNumber(mobile)
     }
 }

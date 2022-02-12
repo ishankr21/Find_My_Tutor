@@ -6,8 +6,6 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +17,6 @@ import com.example.findmytutor.R
 import com.example.findmytutor.base.BaseFragment
 import com.example.findmytutor.dataClasses.Student
 import com.example.findmytutor.dataClasses.Tutor
-import com.example.findmytutor.databinding.FragmentRegisterBinding
 import com.example.findmytutor.databinding.FragmentVerifyOtpBinding
 import com.example.findmytutor.features.MainActivity
 import com.example.findmytutor.utilities.Utils
@@ -170,7 +167,7 @@ class VerifyOtpFragment : BaseFragment() {
 
             if (code != null) {
 
-                showToast(requireContext(),code)
+
 
             }
         }
@@ -192,7 +189,7 @@ class VerifyOtpFragment : BaseFragment() {
 
     private fun verifyOtp(otp: String): MutableLiveData<Boolean> {
         val verifyOtpMutableLiveData = MutableLiveData<Boolean>()
-        //showToast(requireContext(),"${otp}+${mVerificationId}")
+
         if (mVerificationId != "")
         {
 
@@ -203,23 +200,53 @@ class VerifyOtpFragment : BaseFragment() {
             { authenticatedUser ->
 
                 if (authenticatedUser!=null) {
-                    (activity as MainActivity).setBottomNavigationMenu()
+
                     if (!isComingFromRegistration) {
-                        //Toast.makeText(requireContext(),"OTP Verified!",Toast.LENGTH_SHORT).show()
+
                         if(student.mobile=="")
                         {
-                            mView.findNavController()
-                                .navigate(R.id.action_verifyOtpFragment_to_homeTutorsFragment)
+                            (activity as MainActivity).setBottomNavigationMenu(2)
+
+                            mOtpViewModel.getTutorWithMobileNumber(tutor.mobile)
+                            mOtpViewModel.tutorData.observe(viewLifecycleOwner)
+                            {
+                                if(it.mobile!="")
+                                {
+                                    mOtpViewModel.updateFcmListTutor(it)
+                                    mView.findNavController()
+                                        .navigate(R.id.action_verifyOtpFragment_to_homeTutorsFragment)
+                                }
+                                else
+                                {
+                                    showToast(requireContext(),"Some Error Occurred")
+                                }
+                            }
+
+
                         }
                         else
                         {
-                            mView.findNavController()
-                                .navigate(R.id.action_verifyOtpFragment_to_homeStudentsFragment)
+                            (activity as MainActivity).setBottomNavigationMenu(1)
+                            mOtpViewModel.getStudentWithMobileNumber(student.mobile)
+                            mOtpViewModel.studentData.observe(viewLifecycleOwner)
+                            {
+                                if(it.mobile!="")
+                                {
+                                    mOtpViewModel.updateFcmListStudent(it)
+                                    mView.findNavController()
+                                        .navigate(R.id.action_verifyOtpFragment_to_homeStudentsFragment)
+                                }
+                                else
+                                {
+                                    showToast(requireContext(),"Some Error Occurred")
+                                }
+                            }
                         }
 
                     } else {
                         if(tutor.pincode!="")
                         {
+                            (activity as MainActivity).setBottomNavigationMenu(2)
                             mOtpViewModel.createNewTutor(tutor,authenticatedUser)
                             mOtpViewModel.mCreatedTutorLiveData.observe(viewLifecycleOwner)
                             {
@@ -233,6 +260,7 @@ class VerifyOtpFragment : BaseFragment() {
                         }
                         else
                         {
+                            (activity as MainActivity).setBottomNavigationMenu(1)
                             mOtpViewModel.createNewStudent(student,authenticatedUser)
                             mOtpViewModel.mCreatedUserLiveData.observe(viewLifecycleOwner)
                             {
@@ -249,6 +277,7 @@ class VerifyOtpFragment : BaseFragment() {
 
                 } else {
                     verifyOtpMutableLiveData.value = false
+                    Toast.makeText(requireContext(),"Incorrect otp",Toast.LENGTH_SHORT).show()
                 }
                 binding.verifyOtpButton.isEnabled = true
             }

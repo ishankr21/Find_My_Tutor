@@ -196,7 +196,9 @@ class ProfileTutorFragment : BaseFragment() {
                     tutorFavouriteSubject = binding.registerTutorFavouriteSubjectEdittext.text.toString(),
                     desiredFees = binding.registerTutorDesiredFeesEdittext.text.toString().toFloat(),
                     employmentStatus = binding.spnSelectTutorEmploymentStatus.selectedItem.toString(),
-                    pincode = binding.registerTutorPincodeEdittext.text.toString()
+                    pincode = binding.registerTutorPincodeEdittext.text.toString(),
+                    tokenId = it.tokenId,
+                    fcmTokens = it.fcmTokens
                 )
                 mProfileFragmentViewModel.storeTutor(tutorFinalData)
                 mProfileFragmentViewModel.mTutorDataUploaded.observe(viewLifecycleOwner)

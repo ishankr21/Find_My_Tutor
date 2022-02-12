@@ -15,5 +15,8 @@ data class Tutor(
     var employmentStatus:String="",
     var preferredClass:String="",
     var desiredFees:Float=0.0f,
-    var tutorFavouriteSubject:String=""
+    var tutorFavouriteSubject:String="",
+    var rating:Int=0,
+    var tokenId:String="",
+    var fcmTokens:ArrayList<String> = arrayListOf()
 ):Serializable

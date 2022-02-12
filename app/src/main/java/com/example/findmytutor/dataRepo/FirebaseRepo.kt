@@ -7,7 +7,9 @@ import com.example.findmytutor.dataClasses.Student
 import com.example.findmytutor.dataClasses.Tutor
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.storage.FirebaseStorage
 
@@ -27,14 +29,15 @@ class FirebaseRepo: FirebaseMessagingService() {
         val authenticatedUserLiveData = MutableLiveData<String?>()
 
         mAuth.signInWithCredential(credential)
-            .addOnCompleteListener {
+            .addOnSuccessListener {
 
                     authenticatedUserLiveData.value = mAuth.currentUser!!.uid
+                    Log.d("ishan","Nothing here")
 
             }
             .addOnFailureListener {
                     authenticatedUserLiveData.value = null
-                    Log.d("ishan","${it.message}")
+                    Log.d("ishan error","${it.message}")
 
             }
 
@@ -45,6 +48,9 @@ class FirebaseRepo: FirebaseMessagingService() {
     fun createStudent(student: Student,userId:String): MutableLiveData<Boolean> {
 
         val mStudentCreatedSuccess= MutableLiveData<Boolean>()
+        val firebaseToken = FirebaseMessaging.getInstance().token.result
+        student.tokenId = firebaseToken
+        student.fcmTokens.add(firebaseToken)
 
         mFirestore.collection(COLLECTION_STUDENT).document(userId).set(student)
             .addOnSuccessListener {
@@ -64,7 +70,9 @@ class FirebaseRepo: FirebaseMessagingService() {
 
     fun createTutor(tutor: Tutor,userId: String): MutableLiveData<Boolean> {
         val mTutorCreatedSuccess= MutableLiveData<Boolean>()
-
+        val firebaseToken = FirebaseMessaging.getInstance().token.result
+        tutor.tokenId = firebaseToken
+        tutor.fcmTokens.add(firebaseToken)
         mFirestore.collection(COLLECTION_TUTOR).document(userId).set(tutor)
             .addOnSuccessListener {
                 mTutorCreatedSuccess.value=true
@@ -88,7 +96,7 @@ class FirebaseRepo: FirebaseMessagingService() {
             .whereEqualTo("mobile", phone).limit(1L).get().addOnCompleteListener { it1 ->
 
                 if (it1.isSuccessful) {
-                    Log.d("ishan","$phone+student")
+
                     if(it1.result.isEmpty)
                     {
                         mFirestore.collection(COLLECTION_TUTOR)
@@ -229,6 +237,97 @@ class FirebaseRepo: FirebaseMessagingService() {
 
         return mTutorStoreSuccess
     }
+    fun getAllTutor():MutableLiveData<ArrayList<Tutor>> {
+        val tutorList = MutableLiveData<ArrayList<Tutor>>()
+        mFirestore.collection(COLLECTION_TUTOR)
+            .addSnapshotListener { value, error ->
+                if (error == null)
+                {
 
+                val arrayList= arrayListOf<Tutor>()
+                for (snapshot in value!!) {
+
+                    val order = snapshot.toObject(Tutor::class.java)
+
+
+                    arrayList.add(order)
+                }
+                tutorList.value = arrayList
+            } else {
+          Log.d("fireStore", "tutor error: $error")
+        }
+            }
+
+
+        return tutorList
+
+    }
+
+    fun updateFcmTokenListOfTutor(tutor: Tutor) {
+
+        if (!tutor.fcmTokens.contains(FirebaseMessaging.getInstance().token.result)) {
+
+            val reference = mFirestore.collection(COLLECTION_TUTOR)
+                .document(mAuth.currentUser!!.uid)
+            reference.update("tokenId", FirebaseMessaging.getInstance().token.result.toString())
+            reference.update(
+                "fcmTokens",
+                FieldValue.arrayUnion(FirebaseMessaging.getInstance().token.result.toString())
+            )
+        }
+    }
+    fun updateFcmTokenListOfStudent(student: Student) {
+
+        if (!student.fcmTokens.contains(FirebaseMessaging.getInstance().token.result)) {
+
+            val reference = mFirestore.collection(COLLECTION_STUDENT)
+                .document(mAuth.currentUser!!.uid)
+            reference.update("tokenId", FirebaseMessaging.getInstance().token.result.toString())
+            reference.update(
+                "fcmTokens",
+                FieldValue.arrayUnion(FirebaseMessaging.getInstance().token.result.toString())
+            )
+        }
+    }
+
+    fun getTutorByMobileNumber(mobile: String): MutableLiveData<Tutor> {
+
+        val tutorLiveData = MutableLiveData<Tutor>()
+
+        mFirestore.collection(COLLECTION_TUTOR).whereEqualTo("mobile",mobile)
+            .get()
+            .addOnSuccessListener {
+                var tutor=Tutor()
+                for (doc in it)
+                {
+                    tutor= doc.toObject(Tutor::class.java)
+                }
+                tutorLiveData.value=tutor
+            }
+            .addOnFailureListener {
+                tutorLiveData.value = Tutor()
+            }
+            return tutorLiveData
+    }
+
+    fun getStudentByMobileNumber(mobile: String): MutableLiveData<Student> {
+
+        val studentLiveData = MutableLiveData<Student>()
+
+        mFirestore.collection(COLLECTION_STUDENT).whereEqualTo("mobile",mobile)
+            .get()
+            .addOnSuccessListener {
+                var student=Student()
+                for (doc in it)
+                {
+                    student= doc.toObject(Student::class.java)
+                }
+                studentLiveData.value=student
+            }
+            .addOnFailureListener {
+                studentLiveData.value = Student()
+            }
+        return studentLiveData
+    }
 
 }

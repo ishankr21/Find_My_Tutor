@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
         bottomNavigationView = binding.bottomNavigation
         bottomNavigationView.setupWithNavController(navController)
-       setBottomNavigationMenu()
+       setBottomNavigationMenu(2)
 
         bottomNavigationView.setOnItemSelectedListener{ menuItem ->
 
@@ -60,11 +60,9 @@ class MainActivity : AppCompatActivity() {
     fun hideBottomNavigationView() {
         binding.bottomNavigation.visibility = View.GONE
     }
-    fun setBottomNavigationMenu()
+    fun setBottomNavigationMenu(it:Int)
     {
-        mMainActivityViewModel.checkUserType()
-        mMainActivityViewModel.mExistingUserLiveData.observe(this)
-        {
+
             if(it==2)
             {
                 bottomNavigationView.menu.clear()
@@ -78,7 +76,7 @@ class MainActivity : AppCompatActivity() {
                 bottomNavigationView.inflateMenu(R.menu.menu_student_bottom_navigation)
 
             }
-        }
+
     }
 
 }

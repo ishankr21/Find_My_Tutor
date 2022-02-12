@@ -40,11 +40,18 @@ class SplashScreenFragment : Fragment() {
                     mSplashScreenViewModel.checkUserType()
                     mSplashScreenViewModel.mExistingUserLiveData.observe(viewLifecycleOwner)
                     {
-                        if (it==2)
-                            view.findNavController().navigate(R.id.action_splashScreenFragment_to_homeTutorsFragment)
-                        else
-                            view.findNavController().navigate(R.id.action_splashScreenFragment_to_homeStudentsFragment)
-                    }
+                        if (it==2) {
+                            (activity as MainActivity).setBottomNavigationMenu(it)
+                            view.findNavController()
+                                .navigate(R.id.action_splashScreenFragment_to_homeTutorsFragment)
+                        }
+                            else {
+                            (activity as MainActivity).setBottomNavigationMenu(it)
+                            view.findNavController()
+                                .navigate(R.id.action_splashScreenFragment_to_homeStudentsFragment)
+
+                            }
+                        }
                 }
                 else
                 view.findNavController().navigate(R.id.action_splashScreenFragment_to_loginFragment)
