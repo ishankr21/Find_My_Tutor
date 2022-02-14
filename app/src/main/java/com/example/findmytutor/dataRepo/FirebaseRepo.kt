@@ -3,6 +3,7 @@ package com.example.findmytutor.dataRepo
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.example.findmytutor.dataClasses.RequestTutor
 import com.example.findmytutor.dataClasses.Student
 import com.example.findmytutor.dataClasses.Tutor
 import com.google.firebase.auth.FirebaseAuth
@@ -17,6 +18,8 @@ class FirebaseRepo: FirebaseMessagingService() {
     private var mAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private var COLLECTION_STUDENT:String = "Students"
     private var COLLECTION_TUTOR:String = "Tutor"
+    private var COLLECTION_TUTOR_STUDENTS = "studentRequests"
+    private var COLLECTION_STUDENT_TUTORS = "requestsSent"
     private var mFirestore = FirebaseFirestore.getInstance()
 
     override fun onNewToken(p0: String) {
@@ -328,6 +331,55 @@ class FirebaseRepo: FirebaseMessagingService() {
                 studentLiveData.value = Student()
             }
         return studentLiveData
+    }
+
+    fun sendTutorRequest(requestTutor: RequestTutor):MutableLiveData<Boolean>
+    {
+        val success=MutableLiveData<Boolean>()
+
+       val tutorStudentsRef= mFirestore.collection(COLLECTION_TUTOR).document(requestTutor.tutorId).collection(COLLECTION_TUTOR_STUDENTS).document()
+       val studentTutorRef = mFirestore.collection(COLLECTION_STUDENT).document(requestTutor.studentId).collection(COLLECTION_STUDENT_TUTORS).document()
+
+               mFirestore.runBatch{
+
+                   it.set(tutorStudentsRef,requestTutor)
+                   it.set(studentTutorRef,requestTutor)
+
+        }
+
+            .addOnSuccessListener {
+                success.value=true
+            }
+            .addOnFailureListener {
+                success.value=false
+            }
+
+        return success
+    }
+
+    fun getAllTutorRequests(): MutableLiveData<ArrayList<RequestTutor>> {
+
+        val tutorRequests=MutableLiveData<ArrayList<RequestTutor>>()
+        mFirestore.collection(COLLECTION_TUTOR).document(mAuth.currentUser!!.uid)
+            .collection(COLLECTION_TUTOR_STUDENTS)
+            .addSnapshotListener { value, error ->
+                if (error == null)
+                {
+
+                    val arrayList= arrayListOf<RequestTutor>()
+                    for (snapshot in value!!) {
+
+                        val eachRequest= snapshot.toObject(RequestTutor::class.java)
+
+
+                        arrayList.add(eachRequest)
+                    }
+                    tutorRequests.value = arrayList
+                } else {
+                    Log.d("fireStore", "tutor error: $error")
+                }
+            }
+        return tutorRequests
     }
 
 }
