@@ -9,8 +9,11 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.findmytutor.R
 import com.example.findmytutor.base.BaseFragment
+import com.example.findmytutor.dataClasses.Tutor
 import com.example.findmytutor.databinding.FragmentHomeStudentsBinding
 import com.example.findmytutor.features.MainActivity
 
@@ -75,8 +78,12 @@ class HomeStudentsFragment : BaseFragment(), TutorAdapter.OnItemClickListener {
 
     }
 
-    override fun onItemClicked() {
-        TODO("Not yet implemented")
+    override fun onItemClicked(tutor: Tutor) {
+        val bundle=Bundle()
+        bundle.putSerializable("tutor",tutor)
+        findNavController().navigate(R.id.action_homeStudentsFragment_to_tutorDetailsFragment,bundle)
+//        showToast(requireContext(),"${tutor.tutorId}")
+
     }
 
 

@@ -36,7 +36,11 @@
         android:id="@+id/homeStudentsFragment"
         android:name="com.example.findmytutor.features.homeStudents.HomeStudentsFragment"
         android:label="fragment_home_students"
-        tools:layout="@layout/fragment_home_students" />
+        tools:layout="@layout/fragment_home_students" >
+        <action
+            android:id="@+id/action_homeStudentsFragment_to_tutorDetailsFragment"
+            app:destination="@id/tutorDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/homeTutorsFragment"
         android:name="com.example.findmytutor.features.homeTutors.HomeTutorsFragment"
@@ -113,4 +117,9 @@
         android:name="com.example.findmytutor.features.requests.TutorRequestsFragment"
         android:label="fragment_tutor_requests"
         tools:layout="@layout/fragment_tutor_requests" />
+    <fragment
+        android:id="@+id/tutorDetailsFragment"
+        android:name="com.example.findmytutor.features.tutorDetails.TutorDetailsFragment"
+        android:label="fragment_tutor_details"
+        tools:layout="@layout/fragment_tutor_details" />
 </navigation>

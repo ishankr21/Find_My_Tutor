@@ -247,6 +247,7 @@ class VerifyOtpFragment : BaseFragment() {
                         if(tutor.pincode!="")
                         {
                             (activity as MainActivity).setBottomNavigationMenu(2)
+                            tutor.tutorId=authenticatedUser
                             mOtpViewModel.createNewTutor(tutor,authenticatedUser)
                             mOtpViewModel.mCreatedTutorLiveData.observe(viewLifecycleOwner)
                             {
@@ -261,6 +262,7 @@ class VerifyOtpFragment : BaseFragment() {
                         else
                         {
                             (activity as MainActivity).setBottomNavigationMenu(1)
+                            student.studentId=authenticatedUser
                             mOtpViewModel.createNewStudent(student,authenticatedUser)
                             mOtpViewModel.mCreatedUserLiveData.observe(viewLifecycleOwner)
                             {

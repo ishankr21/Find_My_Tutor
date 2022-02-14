@@ -5,6 +5,7 @@ import java.io.Serializable
 
 @IgnoreExtraProperties
 data class Tutor(
+    var tutorId:String="",
     var mobile:String="",
     var name:String="",
     var gender:String="",

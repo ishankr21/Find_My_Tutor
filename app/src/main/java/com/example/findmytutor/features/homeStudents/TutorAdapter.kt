@@ -79,7 +79,7 @@ class TutorAdapter(
                         binding.tutorRating.text= "${tutor.rating}/5"
 
                     binding.root.setOnClickListener{
-                        clickListener.onItemClicked()
+                        clickListener.onItemClicked(tutor)
                     }
                 }
 
@@ -128,7 +128,7 @@ class TutorAdapter(
     }
 
     interface OnItemClickListener {
-        fun onItemClicked()
+        fun onItemClicked(tutor: Tutor)
     }
 
 }
