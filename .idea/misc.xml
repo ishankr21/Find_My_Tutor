@@ -29,12 +29,15 @@
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_register_student.xml" value="0.3625" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_register_tutor.xml" value="0.3625" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_splash_screen.xml" value="0.2526041666666667" />
+        <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_student_my_tutor_accepted.xml" value="0.3625" />
+        <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_student_my_tutor_rejected.xml" value="0.3625" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_student_my_tutors.xml" value="0.3625" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_tutor_details.xml" value="0.3625" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_tutor_requests.xml" value="0.3625" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_verify_otp.xml" value="0.3625" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/item_request_tutor.xml" value="0.3625" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/round_corners_search_view.xml" value="0.3625" />
+        <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/tutor_accept_student_request_dialog.xml" value="0.25" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/tutor_item_layout.xml" value="0.3625" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/menu/main_menu.xml" value="0.3625" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/menu/menu_bottom_navigation.xml" value="0.2526041666666667" />

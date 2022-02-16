@@ -10,6 +10,7 @@ data class RequestTutor(
     var isCompleted:Boolean=false,
     var isDeclined:Boolean=false,
     var studentName:String="",
-    var tutorName:String=""
+    var tutorName:String="",
+    var requestId:String=""
 
     )

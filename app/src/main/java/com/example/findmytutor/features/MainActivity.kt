@@ -1,7 +1,9 @@
 package com.example.findmytutor.features
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.ViewModelProvider
@@ -12,6 +14,8 @@ import com.example.findmytutor.R
 import com.example.findmytutor.databinding.ActivityMainBinding
 import com.example.findmytutor.features.profile.ProfileViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.messaging.FirebaseMessaging
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,7 +32,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+        if(FirebaseAuth.getInstance().currentUser != null)
+        FirebaseMessaging.getInstance().subscribeToTopic("/topics/${FirebaseAuth.getInstance().currentUser!!.uid}")
 
+        
         navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_main_fragment) as NavHostFragment
         navController = navHostFragment.navController
@@ -44,7 +51,20 @@ class MainActivity : AppCompatActivity() {
                 }
 
 
+        if (intent.extras != null) {
 
+
+
+            if (intent.extras!!["intentType"].toString() == "approvalIntent") {
+
+                val inflater = navController.navInflater
+                val graph = inflater.inflate(R.navigation.nav_graph)
+                graph.setStartDestination(R.id.tutorRequestsFragment)
+                navController.graph=graph
+
+
+            }
+        }
 
 
 

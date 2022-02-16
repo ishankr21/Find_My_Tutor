@@ -1,21 +1,29 @@
 package com.example.findmytutor.features.homeStudents
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.example.findmytutor.R
 import com.example.findmytutor.base.BaseFragment
 import com.example.findmytutor.dataClasses.Tutor
 import com.example.findmytutor.databinding.FragmentHomeStudentsBinding
 import com.example.findmytutor.features.MainActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.messaging.FirebaseMessaging
+import org.json.JSONException
+import org.json.JSONObject
 
 class HomeStudentsFragment : BaseFragment(), TutorAdapter.OnItemClickListener {
 
@@ -23,6 +31,7 @@ class HomeStudentsFragment : BaseFragment(), TutorAdapter.OnItemClickListener {
     private val binding get() = _binding!!
     private lateinit var tutorListAdapter: TutorAdapter
     private lateinit var mHomeStudentViewModel: HomeStudentViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,6 +55,7 @@ class HomeStudentsFragment : BaseFragment(), TutorAdapter.OnItemClickListener {
                     requireActivity().finishAffinity()
                 }
             }
+
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,callback)
         mHomeStudentViewModel = ViewModelProvider(this)[HomeStudentViewModel::class.java]
 
@@ -79,9 +89,12 @@ class HomeStudentsFragment : BaseFragment(), TutorAdapter.OnItemClickListener {
     }
 
     override fun onItemClicked(tutor: Tutor) {
-        val bundle=Bundle()
-        bundle.putSerializable("tutor",tutor)
-        findNavController().navigate(R.id.action_homeStudentsFragment_to_tutorDetailsFragment,bundle)
+        val bundle = Bundle()
+        bundle.putSerializable("tutor", tutor)
+        findNavController().navigate(
+            R.id.action_homeStudentsFragment_to_tutorDetailsFragment,
+            bundle
+        )
 //        showToast(requireContext(),"${tutor.tutorId}")
 
     }

@@ -1,6 +1,7 @@
 package com.example.findmytutor.dataRepo
 
 import android.net.Uri
+import android.os.SystemClock
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.findmytutor.dataClasses.RequestTutor
@@ -336,9 +337,9 @@ class FirebaseRepo: FirebaseMessagingService() {
     fun sendTutorRequest(requestTutor: RequestTutor):MutableLiveData<Boolean>
     {
         val success=MutableLiveData<Boolean>()
-
-       val tutorStudentsRef= mFirestore.collection(COLLECTION_TUTOR).document(requestTutor.tutorId).collection(COLLECTION_TUTOR_STUDENTS).document()
-       val studentTutorRef = mFirestore.collection(COLLECTION_STUDENT).document(requestTutor.studentId).collection(COLLECTION_STUDENT_TUTORS).document()
+        requestTutor.requestId="FTMREQ"+SystemClock.currentThreadTimeMillis()
+        val tutorStudentsRef= mFirestore.collection(COLLECTION_TUTOR).document(requestTutor.tutorId).collection(COLLECTION_TUTOR_STUDENTS).document(requestTutor.requestId)
+        val studentTutorRef = mFirestore.collection(COLLECTION_STUDENT).document(requestTutor.studentId).collection(COLLECTION_STUDENT_TUTORS).document(requestTutor.requestId)
 
                mFirestore.runBatch{
 
@@ -370,6 +371,7 @@ class FirebaseRepo: FirebaseMessagingService() {
                     for (snapshot in value!!) {
 
                         val eachRequest= snapshot.toObject(RequestTutor::class.java)
+                        eachRequest.requestId=snapshot.id
 
 
                         arrayList.add(eachRequest)
@@ -380,6 +382,140 @@ class FirebaseRepo: FirebaseMessagingService() {
                 }
             }
         return tutorRequests
+    }
+    fun getStudentById(studentId:String): MutableLiveData<Student> {
+        val mStudentLiveData = MutableLiveData<Student>()
+        mFirestore.collection(COLLECTION_STUDENT).document(studentId).get()
+            .addOnSuccessListener {
+                mStudentLiveData.value=it.toObject(Student::class.java)
+            }
+
+        return mStudentLiveData
+    }
+
+    fun approveStudentRequest(requestTutor: RequestTutor):MutableLiveData<Boolean>
+    {
+        val approvalSuccess=MutableLiveData<Boolean>()
+
+        val tutorStudentsRef= mFirestore.collection(COLLECTION_TUTOR).document(requestTutor.tutorId).collection(COLLECTION_TUTOR_STUDENTS).document(requestTutor.requestId)
+        val studentTutorRef = mFirestore.collection(COLLECTION_STUDENT).document(requestTutor.studentId).collection(COLLECTION_STUDENT_TUTORS).document(requestTutor.requestId)
+
+        mFirestore.runBatch{
+
+            it.update(tutorStudentsRef,"completed",true)
+            it.update(studentTutorRef,"completed",true)
+
+        }
+
+            .addOnSuccessListener {
+                approvalSuccess.value=true
+            }
+            .addOnFailureListener {
+                approvalSuccess.value=false
+            }
+
+        return approvalSuccess
+    }
+
+    fun disapproveStudentRequest(requestTutor: RequestTutor):MutableLiveData<Boolean>
+    {
+        val disapproveSuccess=MutableLiveData<Boolean>()
+
+        val tutorStudentsRef= mFirestore.collection(COLLECTION_TUTOR).document(requestTutor.tutorId).collection(COLLECTION_TUTOR_STUDENTS).document(requestTutor.requestId)
+        val studentTutorRef = mFirestore.collection(COLLECTION_STUDENT).document(requestTutor.studentId).collection(COLLECTION_STUDENT_TUTORS).document(requestTutor.requestId)
+
+        mFirestore.runBatch{
+
+            it.update(tutorStudentsRef,"completed",true)
+            it.update(studentTutorRef,"completed",true)
+            it.update(tutorStudentsRef,"declined",true)
+            it.update(studentTutorRef,"declined",true)
+
+        }
+
+            .addOnSuccessListener {
+                disapproveSuccess.value=true
+            }
+            .addOnFailureListener {
+                disapproveSuccess.value=false
+            }
+
+        return disapproveSuccess
+    }
+
+    fun getAllAcceptedStudentRequests(): MutableLiveData<ArrayList<RequestTutor>> {
+
+        val tutorRequests=MutableLiveData<ArrayList<RequestTutor>>()
+        mFirestore.collection(COLLECTION_STUDENT).document(mAuth.currentUser!!.uid)
+            .collection(COLLECTION_STUDENT_TUTORS)
+            .whereEqualTo("completed",true)
+            .whereEqualTo("declined",false)
+            .addSnapshotListener { value, error ->
+                if (error == null)
+                {
+
+                    val arrayList= arrayListOf<RequestTutor>()
+                    for (snapshot in value!!) {
+
+                        val eachRequest= snapshot.toObject(RequestTutor::class.java)
+                        eachRequest.requestId=snapshot.id
+
+
+                        arrayList.add(eachRequest)
+                    }
+                    tutorRequests.value = arrayList
+                } else {
+                    Log.d("fireStore", "tutor error: $error")
+                }
+            }
+        return tutorRequests
+
+    }
+
+    fun getAllRejectedStudentRequests(): MutableLiveData<ArrayList<RequestTutor>> {
+
+        val tutorRequests=MutableLiveData<ArrayList<RequestTutor>>()
+        mFirestore.collection(COLLECTION_STUDENT).document(mAuth.currentUser!!.uid)
+            .collection(COLLECTION_STUDENT_TUTORS)
+            .addSnapshotListener { value, error ->
+                if (error == null)
+                {
+
+                    val arrayList= arrayListOf<RequestTutor>()
+                    for (snapshot in value!!) {
+
+                        val eachRequest= snapshot.toObject(RequestTutor::class.java)
+                        eachRequest.requestId=snapshot.id
+
+                        if(eachRequest.isCompleted && !eachRequest.isDeclined)
+                            continue
+                        arrayList.add(eachRequest)
+                    }
+                    tutorRequests.value = arrayList
+                } else {
+                    Log.d("fireStore", "tutor error: $error")
+                }
+            }
+        return tutorRequests
+    }
+
+    fun getTutorById(tutorId: String): MutableLiveData<Tutor> {
+
+        val tutorLiveData = MutableLiveData<Tutor>()
+
+        mFirestore.collection(COLLECTION_TUTOR).document(tutorId)
+            .get()
+            .addOnSuccessListener {
+                var tutor=Tutor()
+
+                    tutor= it.toObject(Tutor::class.java)!!
+
+                tutorLiveData.value=tutor
+            }
+            .addOnFailureListener {
+                tutorLiveData.value = Tutor()
+            }
+        return tutorLiveData
     }
 
 }

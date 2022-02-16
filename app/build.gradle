@@ -106,4 +106,8 @@ dependencies {
     // and Shimmer will adopt accordingly.
     implementation 'com.todkars:shimmer-recyclerview:0.4.0'
 
+
+    //volley
+    implementation("com.android.volley:volley:1.2.1")
+
 }
