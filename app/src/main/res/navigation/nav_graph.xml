@@ -111,7 +111,11 @@
         android:id="@+id/studentMyTutorsFragment"
         android:name="com.example.findmytutor.features.myTutors.StudentMyTutorsFragment"
         android:label="fragment_student_my_tutors"
-        tools:layout="@layout/fragment_student_my_tutors" />
+        tools:layout="@layout/fragment_student_my_tutors" >
+        <action
+            android:id="@+id/action_studentMyTutorsFragment_to_tutorDetailsFragment"
+            app:destination="@id/tutorDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/tutorRequestsFragment"
         android:name="com.example.findmytutor.features.requests.TutorRequestsFragment"
