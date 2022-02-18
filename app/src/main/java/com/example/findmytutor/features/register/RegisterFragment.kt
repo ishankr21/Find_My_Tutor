@@ -9,6 +9,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.navigation.findNavController
 import com.example.findmytutor.R
 import com.example.findmytutor.databinding.FragmentRegisterBinding
+import com.example.findmytutor.utilities.ViewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 
 
@@ -43,7 +44,7 @@ class RegisterFragment : Fragment() {
             view.findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
         }
 
-        val viewPager2Adapter = RegisterViewPagerAdapter(childFragmentManager, lifecycle)
+        val viewPager2Adapter = ViewPagerAdapter(childFragmentManager, lifecycle)
         viewPager2Adapter.addFragment(RegisterStudentFragment(), "Student")
         viewPager2Adapter.addFragment(RegisterTutorFragment(), "Tutor")
 

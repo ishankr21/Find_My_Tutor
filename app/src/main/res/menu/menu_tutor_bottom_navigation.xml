@@ -10,7 +10,7 @@
         app:showAsAction="always"
         />
     <item
-        android:id="@+id/doubtsFragment"
+        android:id="@+id/doubtsTutorFragment"
         android:icon="@drawable/ic_baseline_question_answer_24"
         android:title="Doubts"
         app:showAsAction="always"

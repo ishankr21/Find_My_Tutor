@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:text="Solved By : "
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/manrope_bold"
+            app:layout_constraintRight_toLeftOf="@id/studentSeeTutorSolutionSolvedByValue"
+            android:id="@+id/studentSeeTutorSolutionSolvedBy"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="4dp"
+            android:padding="4dp"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="132456798"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/manrope_bold"
+            app:layout_constraintLeft_toRightOf="@id/studentSeeTutorSolutionSolvedBy"
+            android:id="@+id/studentSeeTutorSolutionSolvedByValue"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:textAlignment="viewEnd"
+            android:layout_margin="4dp"
+            android:padding="4dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:text="Doubt id : "
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/manrope_bold"
+            app:layout_constraintRight_toLeftOf="@id/studentSeeTutorSolutionDoubtIdValue"
+            android:id="@+id/studentSeeTutorSolutionDoubtId"
+            app:layout_constraintTop_toBottomOf="@+id/studentSeeTutorSolutionSolvedBy"
+            app:layout_constraintBottom_toTopOf="@+id/studentSeeTutorSolutionDate"
+            android:layout_margin="4dp"
+            android:padding="4dp"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:text="FMTDBT12346579"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/manrope_bold"
+            android:id="@+id/studentSeeTutorSolutionDoubtIdValue"
+            app:layout_constraintLeft_toRightOf="@+id/studentSeeTutorSolutionDoubtId"
+
+            app:layout_constraintRight_toRightOf="parent"
+            android:textAlignment="viewEnd"
+            app:layout_constraintBottom_toTopOf="@+id/studentSeeTutorSolutionDate"
+            android:layout_margin="4dp"
+            android:padding="4dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:text="Solved On : "
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/manrope_bold"
+            app:layout_constraintRight_toLeftOf="@id/studentSeeTutorSolutionDateValue"
+            android:id="@+id/studentSeeTutorSolutionDate"
+            app:layout_constraintTop_toBottomOf="@+id/studentSeeTutorSolutionDoubtIdValue"
+            android:layout_margin="4dp"
+            android:padding="4dp"
+
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:text="17/08/2021"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/manrope_bold"
+            android:id="@+id/studentSeeTutorSolutionDateValue"
+            app:layout_constraintLeft_toRightOf="@+id/studentSeeTutorSolutionDate"
+            app:layout_constraintTop_toBottomOf="@+id/studentSeeTutorSolutionDoubtIdValue"
+            app:layout_constraintRight_toRightOf="parent"
+            android:textAlignment="viewEnd"
+            android:layout_margin="4dp"
+            android:padding="4dp"
+            />
+
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintLeft_toLeftOf="parent"-->
+<!--            android:text="No. of Solutions : "-->
+<!--            android:textSize="20sp"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:fontFamily="@font/manrope_bold"-->
+<!--            app:layout_constraintRight_toLeftOf="@id/studentSeeTutorSolutionNoOfSolutionsValue"-->
+<!--            android:id="@+id/studentSeeTutorSolutionNoOfSolutions"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/studentSeeTutorSolutionDateValue"-->
+<!--            android:layout_margin="4dp"-->
+<!--            android:padding="4dp"-->
+
+<!--            />-->
+<!--        <TextView-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+
+<!--            android:text="01"-->
+<!--            android:textSize="18sp"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:fontFamily="@font/manrope_bold"-->
+<!--            android:id="@+id/studentSeeTutorSolutionNoOfSolutionsValue"-->
+<!--            app:layout_constraintLeft_toRightOf="@+id/studentSeeTutorSolutionNoOfSolutions"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/studentSeeTutorSolutionDateValue"-->
+<!--            app:layout_constraintRight_toRightOf="parent"-->
+<!--            android:textAlignment="viewEnd"-->
+<!--            android:layout_margin="4dp"-->
+<!--            android:padding="4dp"-->
+<!--            />-->
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
