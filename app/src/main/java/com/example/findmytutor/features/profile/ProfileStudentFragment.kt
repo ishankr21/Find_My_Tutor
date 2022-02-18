@@ -11,7 +11,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
@@ -32,13 +31,13 @@ import com.theartofdev.edmodo.cropper.CropImageView
 
 
 
-var imageURI: Uri? = null
-lateinit var cameraPermission: Array<String>
-lateinit var storagePermission: Array<String>
+
 
 
 class ProfileStudentFragment : BaseFragment() {
-
+    var imageURI: Uri? = null
+    lateinit var cameraPermission: Array<String>
+    lateinit var storagePermission: Array<String>
     private lateinit var mProfileFragmentViewModel: ProfileViewModel
     private var spinnerArrayClass: ArrayList<String> = arrayListOf()
     private var spinnerArraySchoolBoard: ArrayList<String> = arrayListOf()
@@ -119,9 +118,9 @@ class ProfileStudentFragment : BaseFragment() {
             if(it?.studentClass!="") {
                 binding.spnSelectProfileStudentClass.setSelection(it?.studentClass?.drop(6)!!.toInt())
             }
-            if(it?.schoolBoard!="")
+            if(it.schoolBoard!="")
             {
-                when (it?.schoolBoard) {
+                when (it.schoolBoard) {
                     "CBSE" -> {
                         binding.spnSelectProfileStudentSchoolBoard.setSelection(1)
                     }
@@ -134,12 +133,12 @@ class ProfileStudentFragment : BaseFragment() {
                 }
             }
 
-            if(it?.schoolName!="")
+            if(it.schoolName!="")
             {
                 binding.registerStudentSchoolNameEdittext.setText(it.schoolName)
             }
-            if (it?.profilePicturePath != "") {
-                Glide.with(requireContext()).load(it?.profilePicturePath)
+            if (it.profilePicturePath != "") {
+                Glide.with(requireContext()).load(it.profilePicturePath)
                     .into(binding.imageViewProfile)
 
                 if (isAdded) {
@@ -169,21 +168,21 @@ class ProfileStudentFragment : BaseFragment() {
         binding.saveProfileButton.setOnClickListener {
             mProfileFragmentViewModel.getStudent()
             mProfileFragmentViewModel.mStudentLiveData.observe(viewLifecycleOwner)
-            {
+            { student ->
                 val studentFinalData = Student(
-                    mobile = it.mobile,
-                    name = it.name,
-                    gender = it.gender,
+                    mobile = student.mobile,
+                    name = student.name,
+                    gender = student.gender,
                     emailId = binding.registerStudentEmailIDEdittext.text.toString(),
-                    parentName = it.parentName,
-                    age = it.age,
-                    profilePicturePath = it.profilePicturePath,
+                    parentName = student.parentName,
+                    age = student.age,
+                    profilePicturePath = student.profilePicturePath,
                     studentClass = binding.spnSelectProfileStudentClass.selectedItem.toString(),
                     leastFavouriteSubject = binding.registerStudentLeastFavouriteSubjectEdittext.text.toString(),
                     schoolBoard = binding.spnSelectProfileStudentSchoolBoard.selectedItem.toString(),
                     schoolName = binding.registerStudentSchoolNameEdittext.text.toString(),
-                    tokenId = it.tokenId,
-                    fcmTokens = it.fcmTokens
+                    tokenId = student.tokenId,
+                    fcmTokens = student.fcmTokens
                 )
                 mProfileFragmentViewModel.storeStudent(studentFinalData)
                 mProfileFragmentViewModel.mStudentDataUpdated.observe(viewLifecycleOwner)

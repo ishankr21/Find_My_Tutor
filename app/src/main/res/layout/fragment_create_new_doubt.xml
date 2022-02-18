@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".features.doubtsStudent.CreateNewDoubtFragment">
+
+    <RelativeLayout
+        android:id="@+id/doubt_create_page_toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/doubt_create_back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="8sp"
+            android:src="@drawable/ic_baseline_arrow_back_ios_24" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/doubt_create_back_button"
+            android:fontFamily="@font/manrope_bold"
+            android:gravity="center"
+            android:paddingEnd="24sp"
+            android:text="Doubt Section"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            tools:ignore="RtlSymmetry" />
+
+    </RelativeLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Title"
+        app:layout_constraintTop_toBottomOf="@id/doubt_create_page_toolBar"
+        android:background="@color/background"
+        android:textSize="16sp"
+        android:layout_margin="16dp"
+        android:padding="16dp"
+        android:maxLines="1"
+        android:id="@+id/doubtTitle"
+        />
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/doubtTitle"
+        app:counterEnabled="true"
+        android:background="@color/background"
+        app:counterMaxLength="500"
+        android:id="@+id/doubtDescriptionLayout"
+        app:hintEnabled="false"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
+
+        android:layout_margin="16dp"
+        android:padding="8dp">
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Description"
+        android:background="@color/background"
+        android:textSize="16sp"
+        android:id="@+id/doubtDescription"
+        android:inputType="text|textMultiLine"
+        android:minLines="10"
+        android:maxLines="10"
+        android:gravity="center_horizontal|start"
+
+        />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/ic_baseline_image_24"
+        app:layout_constraintTop_toBottomOf="@+id/doubtDescriptionLayout"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_margin="20dp"
+        android:scaleType="centerCrop"
+        android:id="@+id/doubtImage"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Image"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/doubtImage"
+        android:layout_marginTop="-30dp"
+        android:layout_marginLeft="75dp"
+        android:layout_marginRight="75dp"
+
+        android:id="@+id/btnAddImage"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Change Image"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/doubtImage"
+        android:layout_marginTop="-30dp"
+        android:layout_marginLeft="75dp"
+        android:layout_marginRight="75dp"
+        android:visibility="gone"
+        android:id="@+id/btnChangeImage"/>
+
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Save Edit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/btnSaveEditDoubt"
+        app:layout_constraintRight_toLeftOf="@+id/btnEndDoubt"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:visibility="gone"
+        android:layout_marginEnd="5dp"
+        />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ask Doubt"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/btnCreateDoubt"
+
+
+        />
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Mark as solved"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/btnSaveEditDoubt"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/btnEndDoubt"
+        android:visibility="gone"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:text="Status : "
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/manrope_bold"
+            app:layout_constraintRight_toLeftOf="@id/studentMyDoubtStatusValue"
+            android:id="@+id/studentMyDoubtStatus"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="4dp"
+            android:padding="4dp"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Active"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/manrope_bold"
+            app:layout_constraintLeft_toRightOf="@id/studentMyDoubtStatus"
+            android:id="@+id/studentMyDoubtStatusValue"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:textAlignment="viewEnd"
+            android:layout_margin="4dp"
+            android:padding="4dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:text="Doubt id : "
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/manrope_bold"
+            app:layout_constraintRight_toLeftOf="@id/studentMyDoubtIdValue"
+            android:id="@+id/studentMyDoubtId"
+            app:layout_constraintTop_toBottomOf="@+id/studentMyDoubtStatus"
+            app:layout_constraintBottom_toTopOf="@+id/studentMyDoubtDate"
+            android:layout_margin="4dp"
+            android:padding="4dp"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:text="FMTDBT12346579"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/manrope_bold"
+            android:id="@+id/studentMyDoubtIdValue"
+            app:layout_constraintLeft_toRightOf="@+id/studentMyDoubtId"
+
+            app:layout_constraintRight_toRightOf="parent"
+            android:textAlignment="viewEnd"
+            app:layout_constraintBottom_toTopOf="@+id/studentMyDoubtDate"
+            android:layout_margin="4dp"
+            android:padding="4dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:text="Asked On : "
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/manrope_bold"
+            app:layout_constraintRight_toLeftOf="@id/studentMyDoubtDateValue"
+            android:id="@+id/studentMyDoubtDate"
+            app:layout_constraintTop_toBottomOf="@+id/studentMyDoubtId"
+            android:layout_margin="4dp"
+            android:padding="4dp"
+
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:text="17/08/2021"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/manrope_bold"
+            android:id="@+id/studentMyDoubtDateValue"
+            app:layout_constraintLeft_toRightOf="@+id/studentMyDoubtDate"
+            app:layout_constraintTop_toBottomOf="@+id/studentMyDoubtId"
+            app:layout_constraintRight_toRightOf="parent"
+            android:textAlignment="viewEnd"
+            android:layout_margin="4dp"
+            android:padding="4dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:text="No. of Solutions : "
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/manrope_bold"
+            app:layout_constraintRight_toLeftOf="@id/studentMyDoubtNoOfSolutionsValue"
+            android:id="@+id/studentMyDoubtNoOfSolutions"
+            app:layout_constraintTop_toBottomOf="@+id/studentMyDoubtDateValue"
+            android:layout_margin="4dp"
+            android:padding="4dp"
+
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:text="01"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/manrope_bold"
+            android:id="@+id/studentMyDoubtNoOfSolutionsValue"
+            app:layout_constraintLeft_toRightOf="@+id/studentMyDoubtNoOfSolutions"
+            app:layout_constraintTop_toBottomOf="@+id/studentMyDoubtDateValue"
+            app:layout_constraintRight_toRightOf="parent"
+            android:textAlignment="viewEnd"
+            android:layout_margin="4dp"
+            android:padding="4dp"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

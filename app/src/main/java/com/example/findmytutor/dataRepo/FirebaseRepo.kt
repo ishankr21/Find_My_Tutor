@@ -1,12 +1,9 @@
 package com.example.findmytutor.dataRepo
 
 import android.net.Uri
-import android.os.SystemClock
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.example.findmytutor.dataClasses.RequestTutor
-import com.example.findmytutor.dataClasses.Student
-import com.example.findmytutor.dataClasses.Tutor
+import com.example.findmytutor.dataClasses.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.firestore.FieldValue
@@ -21,6 +18,8 @@ class FirebaseRepo: FirebaseMessagingService() {
     private var COLLECTION_TUTOR:String = "Tutor"
     private var COLLECTION_TUTOR_STUDENTS = "studentRequests"
     private var COLLECTION_STUDENT_TUTORS = "requestsSent"
+    private var COLLECTION_DOUBT="doubts"
+    private var COLLECTION_SOLUTIONS="solutions"
     private var mFirestore = FirebaseFirestore.getInstance()
 
     override fun onNewToken(p0: String) {
@@ -337,7 +336,7 @@ class FirebaseRepo: FirebaseMessagingService() {
     fun sendTutorRequest(requestTutor: RequestTutor):MutableLiveData<Boolean>
     {
         val success=MutableLiveData<Boolean>()
-        requestTutor.requestId="FTMREQ"+SystemClock.currentThreadTimeMillis()
+        requestTutor.requestId="FTMREQ"+(System.currentTimeMillis()/1000).toString()
         val tutorStudentsRef= mFirestore.collection(COLLECTION_TUTOR).document(requestTutor.tutorId).collection(COLLECTION_TUTOR_STUDENTS).document(requestTutor.requestId)
         val studentTutorRef = mFirestore.collection(COLLECTION_STUDENT).document(requestTutor.studentId).collection(COLLECTION_STUDENT_TUTORS).document(requestTutor.requestId)
 
@@ -506,9 +505,7 @@ class FirebaseRepo: FirebaseMessagingService() {
         mFirestore.collection(COLLECTION_TUTOR).document(tutorId)
             .get()
             .addOnSuccessListener {
-                var tutor=Tutor()
-
-                    tutor= it.toObject(Tutor::class.java)!!
+                val tutor = it.toObject(Tutor::class.java)!!
 
                 tutorLiveData.value=tutor
             }
@@ -516,6 +513,237 @@ class FirebaseRepo: FirebaseMessagingService() {
                 tutorLiveData.value = Tutor()
             }
         return tutorLiveData
+    }
+
+    fun storeDoubt(imageUri:Uri?,doubtInfo: DoubtInfo):MutableLiveData<Boolean>
+    {
+        val success=MutableLiveData<Boolean>()
+        val userID = mAuth.currentUser!!.uid
+        val storageReference =
+            FirebaseStorage.getInstance().getReference("/DoubtImages/${userID.substring(0,5)+(System.currentTimeMillis()/1000).toString()}")
+
+        if (imageUri!=null)
+        {
+            storageReference.putFile(imageUri)
+                .addOnSuccessListener {
+                    storageReference.downloadUrl
+                        .addOnSuccessListener {
+                            doubtInfo.doubtImagePath=it.toString()
+                            mFirestore.collection(COLLECTION_DOUBT).document(doubtInfo.doubtId)
+                                .set(doubtInfo)
+                                .addOnSuccessListener {
+                                    success.value=true
+                                }
+                                .addOnFailureListener {
+                                    success.value=false
+                                    Log.d("ishan","${it.message}")
+                                }
+                        }
+                }
+                .addOnFailureListener{
+                    success.value=false
+
+                }
+        }
+        else
+        {
+            mFirestore.collection(COLLECTION_DOUBT).document(doubtInfo.doubtId)
+                .set(doubtInfo)
+                .addOnSuccessListener {
+                    success.value=true
+                }
+                .addOnFailureListener {
+                    success.value=false
+                    Log.d("ishan","${it.message}")
+                }
+
+        }
+
+
+
+
+
+        return success
+    }
+
+    fun getAllDoubtOfCurrentStudent(): MutableLiveData<ArrayList<DoubtInfo>> {
+
+        val allStudentDoubts=MutableLiveData<ArrayList<DoubtInfo>>()
+        mFirestore.collection(COLLECTION_DOUBT)
+            .whereEqualTo("studentId",FirebaseAuth.getInstance().currentUser!!.uid)
+            .addSnapshotListener { value, error ->
+                if (error == null)
+                {
+
+                    val arrayList= arrayListOf<DoubtInfo>()
+                    for (snapshot in value!!) {
+
+                        val eachRequest= snapshot.toObject(DoubtInfo::class.java)
+
+                        arrayList.add(eachRequest)
+                    }
+                    allStudentDoubts.value = arrayList
+                } else {
+                    Log.d("fireStore", "tutor error: $error")
+                }
+            }
+        return allStudentDoubts
+    }
+
+    fun getAllDoubts(): MutableLiveData<ArrayList<DoubtInfo>> {
+
+        val allDoubts=MutableLiveData<ArrayList<DoubtInfo>>()
+        mFirestore.collection(COLLECTION_DOUBT)
+            .whereEqualTo("closed",false)
+            .addSnapshotListener { value, error ->
+                if (error == null)
+                {
+
+                    val arrayList= arrayListOf<DoubtInfo>()
+                    for (snapshot in value!!) {
+
+                        val eachRequest= snapshot.toObject(DoubtInfo::class.java)
+
+                        arrayList.add(eachRequest)
+                    }
+                    allDoubts.value = arrayList
+                } else {
+                    Log.d("fireStore", "tutor error: $error")
+                }
+            }
+        return allDoubts
+
+    }
+
+    fun markDoubtAsDone(doubtId:String):MutableLiveData<Boolean>
+    {
+        val success=MutableLiveData<Boolean>()
+            mFirestore.collection(COLLECTION_DOUBT).document(doubtId)
+                .update("closed",true)
+                .addOnSuccessListener {
+                    success.value=true
+                }
+                .addOnFailureListener {
+                    success.value=false
+                }
+
+        return success
+
+    }
+
+    fun storeSolution(imageUri: Uri?, solutionInfo: SolutionInfo): MutableLiveData<Boolean> {
+
+        val success=MutableLiveData<Boolean>()
+        val userID = mAuth.currentUser!!.uid
+        val storageReference =
+            FirebaseStorage.getInstance().getReference("/SolutionImages/${userID.substring(0,5)+(System.currentTimeMillis()/1000).toString()}")
+        val solutionReference= mFirestore.collection(COLLECTION_SOLUTIONS)
+            .document(solutionInfo.solutionId)
+        val doubtReference = mFirestore.collection(COLLECTION_DOUBT).document(solutionInfo.doubtId)
+        if (imageUri!=null)
+        {
+            storageReference.putFile(imageUri)
+                .addOnSuccessListener {
+                    storageReference.downloadUrl
+                        .addOnSuccessListener {
+                            solutionInfo.solutionImagePath=it.toString()
+                           mFirestore.runBatch { writeBatch ->
+
+                               writeBatch.set(solutionReference, solutionInfo)
+                               writeBatch.update(
+                                   doubtReference,
+                                   "noOfSolutions",
+                                   FieldValue.increment(1)
+                               )
+
+                           }.addOnSuccessListener {
+                                    success.value=true
+                                }
+                                .addOnFailureListener {
+                                    success.value=false
+                                    Log.d("ishan","${it.message}")
+                                }
+                        }
+                }
+                .addOnFailureListener{
+                    success.value=false
+
+                }
+        }
+        else
+        {
+            mFirestore.runBatch { writeBatch ->
+
+                writeBatch.set(solutionReference, solutionInfo)
+                writeBatch.update(
+                    doubtReference,
+                    "noOfSolutions",
+                    FieldValue.increment(1)
+                )
+
+            }
+                .addOnSuccessListener {
+                    success.value=true
+                }
+                .addOnFailureListener {
+                    success.value=false
+                    Log.d("ishan","${it.message}")
+                }
+
+        }
+
+
+
+
+
+        return success
+    }
+
+    fun getAllTutorSolutions(): MutableLiveData<ArrayList<SolutionInfo>> {
+        val allSolutions=MutableLiveData<ArrayList<SolutionInfo>>()
+        mFirestore.collection(COLLECTION_SOLUTIONS)
+            .whereEqualTo("studentId",mAuth.currentUser!!.uid)
+            .addSnapshotListener { value, error ->
+                if (error == null)
+                {
+
+                    val arrayList= arrayListOf<SolutionInfo>()
+                    for (snapshot in value!!) {
+
+                        val eachRequest= snapshot.toObject(SolutionInfo::class.java)
+
+                        arrayList.add(eachRequest)
+                    }
+                    allSolutions.value = arrayList
+                } else {
+                    Log.d("fireStore", "tutor error: $error")
+                }
+            }
+        return allSolutions
+    }
+
+    //for tutors
+    fun getMySolutions(): MutableLiveData<ArrayList<SolutionInfo>> {
+        val allSolutions=MutableLiveData<ArrayList<SolutionInfo>>()
+        mFirestore.collection(COLLECTION_SOLUTIONS)
+            .whereEqualTo("tutorId",mAuth.currentUser!!.uid)
+            .addSnapshotListener { value, error ->
+                if (error == null)
+                {
+
+                    val arrayList= arrayListOf<SolutionInfo>()
+                    for (snapshot in value!!) {
+
+                        val eachRequest= snapshot.toObject(SolutionInfo::class.java)
+
+                        arrayList.add(eachRequest)
+                    }
+                    allSolutions.value = arrayList
+                } else {
+                    Log.d("fireStore", "tutor error: $error")
+                }
+            }
+        return allSolutions
     }
 
 }

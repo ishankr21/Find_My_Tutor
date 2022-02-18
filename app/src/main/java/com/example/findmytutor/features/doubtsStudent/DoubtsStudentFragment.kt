@@ -1,30 +1,29 @@
-package com.example.findmytutor.features.myTutors
+package com.example.findmytutor.features.doubtsStudent
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.findmytutor.databinding.FragmentStudentMyTutorsBinding
-import com.example.findmytutor.features.MainActivity
+import com.example.findmytutor.R
+import com.example.findmytutor.databinding.FragmentDoubtsStudentBinding
+import com.example.findmytutor.databinding.FragmentRegisterBinding
 import com.example.findmytutor.features.register.RegisterStudentFragment
 import com.example.findmytutor.features.register.RegisterTutorFragment
 import com.example.findmytutor.utilities.ViewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 
 
-class StudentMyTutorsFragment : Fragment() {
+class DoubtsStudentFragment : Fragment() {
 
-
-    private var _binding: FragmentStudentMyTutorsBinding? = null
+    private var _binding: FragmentDoubtsStudentBinding? = null
     private val binding get() = _binding!!
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         // Inflate the layout for this fragment
-        (activity as MainActivity).setVisibleBottomNavigationView()
-        _binding = FragmentStudentMyTutorsBinding.inflate(inflater, container, false)
+        _binding = FragmentDoubtsStudentBinding.inflate(inflater, container, false)
         return binding.root
     }
     override fun onDestroy() {
@@ -35,22 +34,22 @@ class StudentMyTutorsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val viewPager2Adapter = ViewPagerAdapter(childFragmentManager, lifecycle)
-        viewPager2Adapter.addFragment(StudentMyTutorAcceptedFragment(), "Accepted")
-        viewPager2Adapter.addFragment(StudentMyTutorRejectedFragment(), "Rejected/Pending")
+        viewPager2Adapter.addFragment(StudentAskDoubtFragment(), "Your Doubts")
+        viewPager2Adapter.addFragment(StudentSeeAllSolutionsProvidedFragment(), "Solutions")
 
-        binding.myTutorPageViewPager2.adapter = viewPager2Adapter
+        binding.doubtStudentPageViewPager2.adapter = viewPager2Adapter
 
-        binding.myTutorPageTabLayout.let {
-            binding.myTutorPageViewPager2.let { it1 ->
+        binding.doubtStudentPageTabLayout.let {
+            binding.doubtStudentPageViewPager2?.let { it1 ->
                 TabLayoutMediator(
                     it, it1
                 ) { tab, position ->
                     when (position) {
                         0 -> {
-                            tab.text = "Accepted"
+                            tab.text = "Your Doubts"
                         }
                         1 -> {
-                            tab.text = "Rejected/Pending"
+                            tab.text = "Solutions"
                         }
 
                     }
@@ -58,5 +57,4 @@ class StudentMyTutorsFragment : Fragment() {
             }
         }
     }
-
 }
