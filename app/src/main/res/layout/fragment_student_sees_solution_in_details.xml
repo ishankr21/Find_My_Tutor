@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".features.doubtsStudent.StudentSeesSolutionInDetailsFragment">
+
+    <RelativeLayout
+        android:id="@+id/solution_seen_by_student_page_toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/solution_seen_by_student_back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="8sp"
+            android:src="@drawable/ic_baseline_arrow_back_ios_24" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/solution_seen_by_student_back_button"
+            android:fontFamily="@font/manrope_bold"
+            android:gravity="center"
+            android:paddingEnd="24sp"
+            android:text="Student Doubt"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            tools:ignore="RtlSymmetry" />
+
+    </RelativeLayout>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/solution_seen_by_student_page_toolBar"
+        app:layout_constraintBottom_toTopOf="@+id/doubtSolveBtn"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="Tutor Name : "
+                android:fontFamily="@font/manrope_bold"
+                android:textColor="@color/black"
+                android:layout_margin="8dp"
+                android:textSize="16sp"
+                android:id="@+id/txtTutorName"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/txtTutorName"
+                android:background="@color/background"
+                android:layout_margin="8dp"
+                android:textSize="18dp"
+                android:textColor="@color/black"
+                android:text="132465"
+                android:padding="8dp"
+                android:id="@+id/txtTutorNameValue"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/txtTutorNameValue"
+                android:text="Explanation : "
+                android:fontFamily="@font/manrope_bold"
+                android:textColor="@color/black"
+                android:layout_margin="8dp"
+                android:textSize="16sp"
+                android:id="@+id/txtDescription"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/txtDescription"
+                android:background="@color/background"
+                android:layout_margin="8dp"
+                android:textSize="18dp"
+                android:textColor="@color/black"
+                android:text="Hello world"
+                android:minLines="10"
+                android:maxLines="10"
+                android:padding="8dp"
+                android:id="@+id/txtDescriptionValue"
+                />
+
+            <com.jsibbold.zoomage.ZoomageView
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:id="@+id/solution_seen_by_student_image"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtDescriptionValue"
+                android:layout_margin="16dp"
+
+                />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="See the tutor who solved"
+        android:id="@+id/btnGoToTutor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
