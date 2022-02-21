@@ -140,6 +140,9 @@
         <action
             android:id="@+id/action_doubtsStudentFragment_to_createNewDoubtFragment"
             app:destination="@id/createNewDoubtFragment" />
+        <action
+            android:id="@+id/action_doubtsStudentFragment_to_studentSeesSolutionInDetailsFragment"
+            app:destination="@id/studentSeesSolutionInDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/createNewDoubtFragment"
@@ -173,5 +176,19 @@
         <action
             android:id="@+id/action_tutorCreateSolutionFragment_to_tutorSeesDoubtInDetailFragment"
             app:destination="@id/tutorSeesDoubtInDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/studentSeeAllSolutionsProvidedFragment"
+        android:name="com.example.findmytutor.features.doubtsStudent.StudentSeeAllSolutionsProvidedFragment"
+        android:label="fragment_student_see_all_solutions_provided"
+        tools:layout="@layout/fragment_student_see_all_solutions_provided" />
+    <fragment
+        android:id="@+id/studentSeesSolutionInDetailsFragment"
+        android:name="com.example.findmytutor.features.doubtsStudent.StudentSeesSolutionInDetailsFragment"
+        android:label="fragment_student_sees_solution_in_details"
+        tools:layout="@layout/fragment_student_sees_solution_in_details" >
+        <action
+            android:id="@+id/action_studentSeesSolutionInDetailsFragment_to_tutorDetailsFragment"
+            app:destination="@id/tutorDetailsFragment" />
     </fragment>
 </navigation>

@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.findmytutor.R
 import com.example.findmytutor.dataClasses.SolutionInfo
 import com.example.findmytutor.databinding.FragmentStudentAskDoubtBinding
 import com.example.findmytutor.databinding.FragmentStudentSeeAllSolutionsProvidedBinding
@@ -46,7 +48,9 @@ class StudentSeeAllSolutionsProvidedFragment : Fragment(),
     }
 
     override fun onItemClicked(solutionInfo: SolutionInfo) {
-        TODO("Not yet implemented")
+         val bundle=Bundle()
+        bundle.putSerializable("solutionInfo",solutionInfo)
+        findNavController().navigate(R.id.action_doubtsStudentFragment_to_studentSeesSolutionInDetailsFragment,bundle)
     }
 
 }

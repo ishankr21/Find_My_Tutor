@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.findmytutor.dataClasses.DoubtInfo
 import com.example.findmytutor.dataClasses.SolutionInfo
 import com.example.findmytutor.dataClasses.Student
+import com.example.findmytutor.dataClasses.Tutor
 import com.example.findmytutor.dataRepo.FirebaseRepo
 
 class DoubtStudentViewModel:ViewModel() {
@@ -15,6 +16,14 @@ class DoubtStudentViewModel:ViewModel() {
     var mAllStudentDoubts=MutableLiveData<ArrayList<DoubtInfo>>()
     var mMarkAsDoneSuccess=MutableLiveData<Boolean>()
     var mAllStudentSolutions=MutableLiveData<ArrayList<SolutionInfo>>()
+    var mTutorData = MutableLiveData<Tutor>()
+
+
+
+    fun getAllTutorId(tutorId:String)
+    {
+        mTutorData=FirebaseRepo().getTutorById(tutorId)
+    }
 
 
     fun getStudentData()

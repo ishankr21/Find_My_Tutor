@@ -1,17 +1,14 @@
 package com.example.findmytutor.features.tutorDetails
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import com.android.volley.RequestQueue
-import com.android.volley.Response
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
@@ -21,6 +18,7 @@ import com.example.findmytutor.dataClasses.RequestTutor
 import com.example.findmytutor.dataClasses.Tutor
 import com.example.findmytutor.databinding.FragmentTutorDetailsBinding
 import com.example.findmytutor.features.MainActivity
+import com.example.findmytutor.utilities.SendNotification
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import org.json.JSONException
@@ -32,13 +30,7 @@ class TutorDetailsFragment : BaseFragment() {
     private val binding get() = _binding!!
     private var tutor= Tutor()
     private lateinit var mTutorDetailsViewModel: TutorDetailsViewModel
-    private val FCM_API = "https://fcm.googleapis.com/fcm/send"
-    private val serverKey =
-        "key=" + "AAAAYBYkWKg:APA91bH3oEjFVGuvqkbQVwuC32AdhL0oAz8ii4JjBSZtSesjElQ-nCRebMQYcn_F37IfDGEhm2Gg97c970hlBL5-ebFhA5nHB88jKlGRH9VEFSOzHgs9IGqYkh8SRwG4idwyH5bkuW--"
-    private val contentType = "application/json"
-    private val requestQueue: RequestQueue by lazy {
-        Volley.newRequestQueue(requireContext())
-    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -123,10 +115,8 @@ class TutorDetailsFragment : BaseFragment() {
                 { requestSent ->
                     if (requestSent) {
                         showToast(requireContext(), "Request Sent")
-                        //topic is set as the id of the receiver
+
                         val topic = "/topics/${tutor.tutorId}"
-                        val notificationData = hashMapOf<String, String>()
-                        notificationData["intentType"] = "approvalIntent"
                         val notification = JSONObject()
                         val notificationBody = JSONObject()
                         notificationBody.put("intentType", "approvalIntent")
@@ -145,7 +135,7 @@ class TutorDetailsFragment : BaseFragment() {
                             Log.e("TAG", "onCreate: " + e.message)
                         }
 
-                        sendNotification(notification)
+                        SendNotification(requireContext()).sendNotification(notification)
 
 
                     } else
@@ -155,30 +145,15 @@ class TutorDetailsFragment : BaseFragment() {
             }
 
         }
-    }
 
-
-
-private fun sendNotification(notification: JSONObject) {
-    Log.e("TAG", "sendNotification")
-    val jsonObjectRequest = object : JsonObjectRequest(FCM_API, notification,
-        Response.Listener<JSONObject> { response ->
-            Log.i("TAG", "onResponse: $response")
-
-        },
-        Response.ErrorListener {
-            Toast.makeText(requireContext(), "Request error", Toast.LENGTH_LONG).show()
-            Log.i("TAG", "onErrorResponse: Didn't work")
-        }) {
-
-        override fun getHeaders(): Map<String, String> {
-            val params = HashMap<String, String>()
-            params["Authorization"] = serverKey
-            params["Content-Type"] = contentType
-            return params
+        binding.tutorCallButton.setOnClickListener {
+            val phone = tutor.mobile
+            val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null))
+            startActivity(intent)
         }
     }
-    requestQueue.add(jsonObjectRequest)
-}
+
+
+
 
 }

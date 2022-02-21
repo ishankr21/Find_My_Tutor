@@ -12,6 +12,7 @@ import com.example.findmytutor.R
 import com.example.findmytutor.features.MainActivity
 import com.example.findmytutor.features.MainActivityViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -41,6 +42,7 @@ class SplashScreenFragment : Fragment() {
                     mSplashScreenViewModel.mExistingUserLiveData.observe(viewLifecycleOwner)
                     {
                         if (it==2) {
+                            FirebaseMessaging.getInstance().subscribeToTopic("/topics/tutors")
                             (activity as MainActivity).setBottomNavigationMenu(it)
                             view.findNavController()
                                 .navigate(R.id.action_splashScreenFragment_to_homeTutorsFragment)

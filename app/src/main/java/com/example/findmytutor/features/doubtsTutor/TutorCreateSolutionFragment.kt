@@ -27,11 +27,14 @@ import com.example.findmytutor.databinding.FragmentTutorCreateSolutionBinding
 import com.example.findmytutor.databinding.ImageDialogBinding
 import com.example.findmytutor.features.MainActivity
 import com.example.findmytutor.utilities.Constants
+import com.example.findmytutor.utilities.SendNotification
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
+import org.json.JSONException
+import org.json.JSONObject
 import java.text.SimpleDateFormat
 
 
@@ -140,6 +143,9 @@ class TutorCreateSolutionFragment : BaseFragment() {
                         if (storageSuccess) {
                             dismissProgressDialog()
                             showToast(requireContext(), "Data stored successfully")
+
+
+
                             findNavController().navigate(R.id.action_tutorCreateSolutionFragment_to_doubtsTutorFragment)
                         } else {
                             dismissProgressDialog()

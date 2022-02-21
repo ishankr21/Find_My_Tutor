@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
         if(FirebaseAuth.getInstance().currentUser != null)
-        FirebaseMessaging.getInstance().subscribeToTopic("/topics/${FirebaseAuth.getInstance().currentUser!!.uid}")
+            FirebaseMessaging.getInstance().subscribeToTopic("/topics/${FirebaseAuth.getInstance().currentUser!!.uid}")
 
         
         navHostFragment =
