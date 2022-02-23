@@ -29,6 +29,8 @@ import com.example.findmytutor.features.MainActivity
 import com.example.findmytutor.utilities.Constants
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.messaging.FirebaseMessaging
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 
@@ -213,6 +215,9 @@ class ProfileTutorFragment : BaseFragment() {
         }
 
         binding.profileTutorLogoutButton.setOnClickListener {
+
+            FirebaseMessaging.getInstance().unsubscribeFromTopic("/topics/tutors")
+            FirebaseMessaging.getInstance().unsubscribeFromTopic("/topics/${FirebaseAuth.getInstance().currentUser!!.uid}")
             mProfileFragmentViewModel.signOut()
             mView.findNavController().navigate(R.id.action_profileTutorFragment_to_loginFragment)
         }

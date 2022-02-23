@@ -127,22 +127,44 @@ class TutorCreateSolutionFragment : BaseFragment() {
                         solutionDescription = binding.tutorCreateSolutionDoubtDescription.text.toString(),
                         studentId = solutionInfoCame.studentId
                     )
+                    var update=false
                     if(solutionInfoCame.solutionId!="")
                     {
                         solutionInfo.solutionImagePath=solutionInfoCame.solutionImagePath
                         solutionInfo.solvedOn=solutionInfoCame.solvedOn
                         solutionInfo.solutionId=solutionInfoCame.solutionId
+                        update=true
 
                     }
 
 
-                    mDoubtTutorViewModel.storeTutorSolution(resultUri,solutionInfo)
+                    mDoubtTutorViewModel.storeTutorSolution(resultUri,solutionInfo,update)
                     mDoubtTutorViewModel.mSolutionStorageSuccess.observe(viewLifecycleOwner)
                     {
                             storageSuccess ->
                         if (storageSuccess) {
                             dismissProgressDialog()
                             showToast(requireContext(), "Data stored successfully")
+                            val topic = "/topics/${solutionInfo.studentId}"
+                            val notification = JSONObject()
+                            val notificationBody = JSONObject()
+                            notificationBody.put("intentType", "doubtSolvedIntent")
+
+
+                            try {
+                                notificationBody.put("title", "Your Doubt was solved by ${solutionInfo.tutorName}")
+                                notificationBody.put(
+                                    "message",
+                                    "Please click here to have a look"
+                                )   //Enter your notification message
+                                notification.put("to", topic)
+                                notification.put("data", notificationBody)
+                                Log.e("TAG", "try")
+                            } catch (e: JSONException) {
+                                Log.e("TAG", "onCreate: " + e.message)
+                            }
+
+                            SendNotification(requireContext()).sendNotification(notification)
 
 
 

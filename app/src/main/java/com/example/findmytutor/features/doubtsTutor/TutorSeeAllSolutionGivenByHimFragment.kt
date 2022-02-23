@@ -13,6 +13,7 @@ import com.example.findmytutor.dataClasses.DoubtInfo
 import com.example.findmytutor.dataClasses.SolutionInfo
 import com.example.findmytutor.databinding.FragmentTutorSeeAllSolutionGivenByHimBinding
 import com.example.findmytutor.databinding.FragmentTutorsSeeAllDoubtsBinding
+import com.example.findmytutor.features.MainActivity
 
 
 class TutorSeeAllSolutionGivenByHimFragment : Fragment(),
@@ -28,6 +29,7 @@ class TutorSeeAllSolutionGivenByHimFragment : Fragment(),
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        (activity as MainActivity).setVisibleBottomNavigationView()
         _binding = FragmentTutorSeeAllSolutionGivenByHimBinding.inflate(inflater, container, false)
         return binding.root
     }

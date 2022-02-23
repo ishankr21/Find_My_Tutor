@@ -23,9 +23,9 @@ class DoubtTutorViewModel: ViewModel() {
         mAllDoubts = FirebaseRepo().getAllDoubts()
     }
 
-    fun storeTutorSolution(imageUri: Uri?, solutionInfo: SolutionInfo)
+    fun storeTutorSolution(imageUri: Uri?, solutionInfo: SolutionInfo,update:Boolean)
     {
-        mSolutionStorageSuccess=FirebaseRepo().storeSolution(imageUri,solutionInfo)
+        mSolutionStorageSuccess=FirebaseRepo().storeSolution(imageUri,solutionInfo,update)
     }
 
     fun getTutorDetails()

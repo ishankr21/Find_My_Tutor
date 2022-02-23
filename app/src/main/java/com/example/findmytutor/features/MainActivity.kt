@@ -32,8 +32,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-        if(FirebaseAuth.getInstance().currentUser != null)
-            FirebaseMessaging.getInstance().subscribeToTopic("/topics/${FirebaseAuth.getInstance().currentUser!!.uid}")
+
 
         
         navHostFragment =
@@ -64,6 +63,44 @@ class MainActivity : AppCompatActivity() {
 
 
             }
+            else  if (intent.extras!!["intentType"].toString() == "doubtCreatedIntent") {
+
+                val inflater = navController.navInflater
+                val graph = inflater.inflate(R.navigation.nav_graph)
+                graph.setStartDestination(R.id.doubtsTutorFragment)
+                navController.graph=graph
+
+
+            }
+            else  if (intent.extras!!["intentType"].toString() == "doubtSolvedIntent") {
+
+                val inflater = navController.navInflater
+                val graph = inflater.inflate(R.navigation.nav_graph)
+                graph.setStartDestination(R.id.doubtsStudentFragment)
+                navController.graph=graph
+
+
+            }
+            else  if (intent.extras!!["intentType"].toString() == "messageSentByStudent") {
+
+                val inflater = navController.navInflater
+                val graph = inflater.inflate(R.navigation.nav_graph)
+                graph.setStartDestination(R.id.tutorChatHomeFragment)
+                navController.graph=graph
+
+
+            }
+            else  if (intent.extras!!["intentType"].toString() == "messageSentByTutor") {
+
+                val inflater = navController.navInflater
+                val graph = inflater.inflate(R.navigation.nav_graph)
+                graph.setStartDestination(R.id.studentChatHomeFragment)
+                navController.graph=graph
+
+
+            }
+
+
         }
 
 

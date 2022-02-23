@@ -36,6 +36,7 @@ class TutorRequestsFragment : BaseFragment(), TutorRequestsAdapter.OnRequestClic
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        (activity as MainActivity).setVisibleBottomNavigationView()
         _binding = FragmentTutorRequestsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -46,7 +47,7 @@ class TutorRequestsFragment : BaseFragment(), TutorRequestsAdapter.OnRequestClic
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as MainActivity).setVisibleBottomNavigationView()
+
         mTutorRequestsViewModel =
             ViewModelProvider(this)[TutorRequestsViewModel::class.java]
         mTutorRequestsViewModel.getAllRequests()

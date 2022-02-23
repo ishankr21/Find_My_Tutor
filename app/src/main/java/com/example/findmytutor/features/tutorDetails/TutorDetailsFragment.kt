@@ -9,12 +9,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.findmytutor.R
 import com.example.findmytutor.base.BaseFragment
+import com.example.findmytutor.dataClasses.ChattingHelper
 import com.example.findmytutor.dataClasses.RequestTutor
+import com.example.findmytutor.dataClasses.Student
 import com.example.findmytutor.dataClasses.Tutor
 import com.example.findmytutor.databinding.FragmentTutorDetailsBinding
 import com.example.findmytutor.features.MainActivity
@@ -32,11 +35,14 @@ class TutorDetailsFragment : BaseFragment() {
     private lateinit var mTutorDetailsViewModel: TutorDetailsViewModel
 
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        (activity as MainActivity).hideBottomNavigationView()
         _binding = FragmentTutorDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -48,7 +54,7 @@ class TutorDetailsFragment : BaseFragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as MainActivity).hideBottomNavigationView()
+
         mTutorDetailsViewModel =
             ViewModelProvider(this)[TutorDetailsViewModel::class.java]
         val bundle = arguments
@@ -99,6 +105,7 @@ class TutorDetailsFragment : BaseFragment() {
             mTutorDetailsViewModel.getStudent()
             mTutorDetailsViewModel.mStudentLiveData.observe(viewLifecycleOwner)
             {
+
                 val request = RequestTutor(
                     tutorId = tutor.tutorId,
                     studentId = FirebaseAuth.getInstance().uid!!,
@@ -150,6 +157,25 @@ class TutorDetailsFragment : BaseFragment() {
             val phone = tutor.mobile
             val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null))
             startActivity(intent)
+        }
+        binding.tutorMessageButton.setOnClickListener {
+            mTutorDetailsViewModel.getStudent()
+            mTutorDetailsViewModel.mStudentLiveData.observe(viewLifecycleOwner)
+            {
+                val chattingHelper = ChattingHelper(
+                    senderId = FirebaseAuth.getInstance().currentUser!!.uid,
+                    receiverId = tutor.tutorId,
+                    senderName = it.name,
+                    receiverName = tutor.name,
+                    sendByStudent = true
+                )
+                val bundle = Bundle()
+                bundle.putSerializable("chattingHelper", chattingHelper)
+                findNavController().navigate(
+                    R.id.action_tutorDetailsFragment_to_chatsFragment,
+                    bundle
+                )
+            }
         }
     }
 

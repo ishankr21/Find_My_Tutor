@@ -116,7 +116,11 @@
         android:id="@+id/tutorDetailsFragment"
         android:name="com.example.findmytutor.features.tutorDetails.TutorDetailsFragment"
         android:label="fragment_tutor_details"
-        tools:layout="@layout/fragment_tutor_details" />
+        tools:layout="@layout/fragment_tutor_details" >
+        <action
+            android:id="@+id/action_tutorDetailsFragment_to_chatsFragment"
+            app:destination="@id/chatsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/doubtsTutorFragment"
         android:name="com.example.findmytutor.features.doubtsTutor.DoubtsTutorFragment"
@@ -190,5 +194,28 @@
         <action
             android:id="@+id/action_studentSeesSolutionInDetailsFragment_to_tutorDetailsFragment"
             app:destination="@id/tutorDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatsFragment"
+        android:name="com.example.findmytutor.features.chats.ChatsFragment"
+        android:label="fragment_chats"
+        tools:layout="@layout/fragment_chats" />
+    <fragment
+        android:id="@+id/tutorChatHomeFragment"
+        android:name="com.example.findmytutor.features.tutorChatHome.TutorChatHomeFragment"
+        android:label="fragment_tutor_chat_home"
+        tools:layout="@layout/fragment_tutor_chat_home" >
+        <action
+            android:id="@+id/action_tutorChatHomeFragment_to_chatsFragment"
+            app:destination="@id/chatsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/studentChatHomeFragment"
+        android:name="com.example.findmytutor.features.studentChatHome.StudentChatHomeFragment"
+        android:label="fragment_student_chat_home"
+        tools:layout="@layout/fragment_student_chat_home" >
+        <action
+            android:id="@+id/action_studentChatHomeFragment_to_chatsFragment"
+            app:destination="@id/chatsFragment" />
     </fragment>
 </navigation>

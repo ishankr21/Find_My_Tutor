@@ -43,12 +43,14 @@ class SplashScreenFragment : Fragment() {
                     {
                         if (it==2) {
                             FirebaseMessaging.getInstance().subscribeToTopic("/topics/tutors")
+                            FirebaseMessaging.getInstance().subscribeToTopic("/topics/${FirebaseAuth.getInstance().currentUser!!.uid}")
                             (activity as MainActivity).setBottomNavigationMenu(it)
                             view.findNavController()
                                 .navigate(R.id.action_splashScreenFragment_to_homeTutorsFragment)
                         }
                             else {
                             (activity as MainActivity).setBottomNavigationMenu(it)
+                            FirebaseMessaging.getInstance().subscribeToTopic("/topics/${FirebaseAuth.getInstance().currentUser!!.uid}")
                             view.findNavController()
                                 .navigate(R.id.action_splashScreenFragment_to_homeStudentsFragment)
 

@@ -8,6 +8,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.storage.FirebaseStorage
@@ -20,6 +22,8 @@ class FirebaseRepo: FirebaseMessagingService() {
     private var COLLECTION_STUDENT_TUTORS = "requestsSent"
     private var COLLECTION_DOUBT="doubts"
     private var COLLECTION_SOLUTIONS="solutions"
+    private var COLLECTION_CHATS="chats"
+    private var COLLECTION_CHATS_MESSAGES="messages"
     private var mFirestore = FirebaseFirestore.getInstance()
 
     override fun onNewToken(p0: String) {
@@ -631,7 +635,7 @@ class FirebaseRepo: FirebaseMessagingService() {
 
     }
 
-    fun storeSolution(imageUri: Uri?, solutionInfo: SolutionInfo): MutableLiveData<Boolean> {
+    fun storeSolution(imageUri: Uri?, solutionInfo: SolutionInfo,update:Boolean): MutableLiveData<Boolean> {
 
         val success=MutableLiveData<Boolean>()
         val userID = mAuth.currentUser!!.uid
@@ -650,11 +654,15 @@ class FirebaseRepo: FirebaseMessagingService() {
                            mFirestore.runBatch { writeBatch ->
 
                                writeBatch.set(solutionReference, solutionInfo)
-                               writeBatch.update(
-                                   doubtReference,
-                                   "noOfSolutions",
-                                   FieldValue.increment(1)
-                               )
+                               if(!update)
+                               {
+                                   writeBatch.update(
+                                       doubtReference,
+                                       "noOfSolutions",
+                                       FieldValue.increment(1)
+                                   )
+                               }
+
 
                            }.addOnSuccessListener {
                                     success.value=true
@@ -675,11 +683,14 @@ class FirebaseRepo: FirebaseMessagingService() {
             mFirestore.runBatch { writeBatch ->
 
                 writeBatch.set(solutionReference, solutionInfo)
-                writeBatch.update(
-                    doubtReference,
-                    "noOfSolutions",
-                    FieldValue.increment(1)
-                )
+                if(!update)
+                {
+                    writeBatch.update(
+                        doubtReference,
+                        "noOfSolutions",
+                        FieldValue.increment(1)
+                    )
+                }
 
             }
                 .addOnSuccessListener {
@@ -744,6 +755,72 @@ class FirebaseRepo: FirebaseMessagingService() {
                 }
             }
         return allSolutions
+    }
+
+    fun sendMessage(messages: Messages,chattingHelper: ChattingHelper)
+    {
+       val chatRef= mFirestore.collection(COLLECTION_CHATS).document(messages.messageId)
+
+        val messageRef=mFirestore.collection(COLLECTION_CHATS).document(messages.messageId).collection(COLLECTION_CHATS_MESSAGES).document()
+                mFirestore.runBatch {
+                    it.set(chatRef, chattingHelper, SetOptions.merge())
+                    it.set(messageRef,messages)
+                }
+            .addOnSuccessListener {
+                Log.d("chatting","success")
+            }
+            .addOnFailureListener {
+                Log.d("chatting","error ${it.message}")
+            }
+    }
+    fun getMessages(chatId:String):MutableLiveData<ArrayList<Messages>>
+    {
+        val prevMessages=MutableLiveData<ArrayList<Messages>>()
+        mFirestore.collection(COLLECTION_CHATS).document(chatId).collection(COLLECTION_CHATS_MESSAGES)
+            .orderBy("time")
+            .addSnapshotListener{ value, error ->
+                if (error == null)
+                {
+
+                    val arrayList= arrayListOf<Messages>()
+                    for (snapshot in value!!) {
+
+                        val message= snapshot.toObject(Messages::class.java)
+
+                        arrayList.add(message)
+                    }
+                    prevMessages.value = arrayList
+                } else {
+                    Log.d("fireStore", "chat error: $error")
+                }
+        }
+        return prevMessages
+    }
+
+    fun getPeopleIHaveChatWith():MutableLiveData<ArrayList<ChattingHelper>>
+    {
+        val peopleChattedWith=MutableLiveData<ArrayList<ChattingHelper>>()
+        mFirestore.collection(COLLECTION_CHATS)
+            .addSnapshotListener{ value, error ->
+                if (error == null)
+                {
+
+                    val arrayList= arrayListOf<ChattingHelper>()
+                    for (snapshot in value!!) {
+
+                        val chattingHelper= snapshot.toObject(ChattingHelper::class.java)
+                        if(chattingHelper.receiverId==FirebaseAuth.getInstance().currentUser!!.uid
+                            || chattingHelper.senderId==FirebaseAuth.getInstance().currentUser!!.uid)
+                        arrayList.add(chattingHelper)
+
+                    }
+
+                    peopleChattedWith.value = arrayList
+                } else {
+                    Log.d("fireStore", "chat error: $error")
+                }
+            }
+        return peopleChattedWith
     }
 
 }

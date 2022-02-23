@@ -25,6 +25,8 @@ import com.example.findmytutor.databinding.FragmentProfileBinding
 import com.example.findmytutor.features.MainActivity
 import com.example.findmytutor.utilities.Constants
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.messaging.FirebaseMessaging
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 
@@ -198,6 +200,8 @@ class ProfileStudentFragment : BaseFragment() {
 
         binding.profileLogoutButton.setOnClickListener {
             mProfileFragmentViewModel.signOut()
+
+            FirebaseMessaging.getInstance().unsubscribeFromTopic("/topics/${FirebaseAuth.getInstance().currentUser!!.uid}")
             mView.findNavController().navigate(R.id.action_profileStudentFragment_to_loginFragment)
         }
 

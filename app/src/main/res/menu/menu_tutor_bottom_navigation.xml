@@ -23,6 +23,13 @@
         app:showAsAction="always"
         />
     <item
+        android:id="@+id/tutorChatHomeFragment"
+        android:icon="@drawable/ic_baseline_send_24"
+        android:title="Messages"
+        app:showAsAction="always"
+        />
+
+    <item
         android:id="@+id/profileTutorFragment"
         android:icon="@drawable/ic_user_outline"
         android:title="Profile"
