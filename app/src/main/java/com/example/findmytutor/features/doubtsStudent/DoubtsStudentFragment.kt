@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.example.findmytutor.R
 import com.example.findmytutor.databinding.FragmentDoubtsStudentBinding
 import com.example.findmytutor.databinding.FragmentRegisterBinding
+import com.example.findmytutor.features.MainActivity
 import com.example.findmytutor.features.register.RegisterStudentFragment
 import com.example.findmytutor.features.register.RegisterTutorFragment
 import com.example.findmytutor.utilities.ViewPagerAdapter
@@ -23,6 +24,7 @@ class DoubtsStudentFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        (activity as MainActivity).setVisibleBottomNavigationView()
         _binding = FragmentDoubtsStudentBinding.inflate(inflater, container, false)
         return binding.root
     }

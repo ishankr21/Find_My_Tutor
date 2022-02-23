@@ -19,5 +19,8 @@ data class Tutor(
     var tutorFavouriteSubject:String="",
     var rating:Int=0,
     var tokenId:String="",
-    var fcmTokens:ArrayList<String> = arrayListOf()
+    var fcmTokens:ArrayList<String> = arrayListOf(),
+    var profileIsComplete:Boolean=false,
+    var latitude:Double=0.0,
+    var longitude:Double=0.0
 ):Serializable

@@ -21,9 +21,11 @@ import com.example.findmytutor.databinding.FragmentVerifyOtpBinding
 import com.example.findmytutor.features.MainActivity
 import com.example.findmytutor.utilities.Utils
 import com.google.firebase.FirebaseException
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.messaging.FirebaseMessaging
 import java.util.concurrent.TimeUnit
 
 
@@ -205,6 +207,8 @@ class VerifyOtpFragment : BaseFragment() {
 
                         if(student.mobile=="")
                         {
+                            FirebaseMessaging.getInstance().subscribeToTopic("/topics/tutors")
+                            FirebaseMessaging.getInstance().subscribeToTopic("/topics/${FirebaseAuth.getInstance().currentUser!!.uid}")
                             (activity as MainActivity).setBottomNavigationMenu(2)
 
                             mOtpViewModel.getTutorWithMobileNumber(tutor.mobile)
@@ -226,6 +230,8 @@ class VerifyOtpFragment : BaseFragment() {
                         }
                         else
                         {
+
+                            FirebaseMessaging.getInstance().subscribeToTopic("/topics/${FirebaseAuth.getInstance().currentUser!!.uid}")
                             (activity as MainActivity).setBottomNavigationMenu(1)
                             mOtpViewModel.getStudentWithMobileNumber(student.mobile)
                             mOtpViewModel.studentData.observe(viewLifecycleOwner)
@@ -246,6 +252,8 @@ class VerifyOtpFragment : BaseFragment() {
                     } else {
                         if(tutor.pincode!="")
                         {
+                            FirebaseMessaging.getInstance().subscribeToTopic("/topics/tutors")
+                            FirebaseMessaging.getInstance().subscribeToTopic("/topics/${FirebaseAuth.getInstance().currentUser!!.uid}")
                             (activity as MainActivity).setBottomNavigationMenu(2)
                             tutor.tutorId=authenticatedUser
                             mOtpViewModel.createNewTutor(tutor,authenticatedUser)
@@ -261,6 +269,8 @@ class VerifyOtpFragment : BaseFragment() {
                         }
                         else
                         {
+
+                            FirebaseMessaging.getInstance().subscribeToTopic("/topics/${FirebaseAuth.getInstance().currentUser!!.uid}")
                             (activity as MainActivity).setBottomNavigationMenu(1)
                             student.studentId=authenticatedUser
                             mOtpViewModel.createNewStudent(student,authenticatedUser)

@@ -22,6 +22,14 @@
         app:showAsAction="always"
         />
 
+    <item
+        android:id="@+id/studentChatHomeFragment"
+        android:icon="@drawable/ic_baseline_send_24"
+        android:title="Messages"
+        app:showAsAction="always"
+        />
+
+
 
     <item
         android:id="@+id/profileStudentFragment"

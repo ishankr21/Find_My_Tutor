@@ -10,6 +10,7 @@ import androidx.navigation.findNavController
 import com.example.findmytutor.R
 import com.example.findmytutor.databinding.FragmentDoubtsTutorBinding
 import com.example.findmytutor.databinding.FragmentRegisterBinding
+import com.example.findmytutor.features.MainActivity
 import com.example.findmytutor.features.doubtsStudent.StudentAskDoubtFragment
 import com.example.findmytutor.features.doubtsStudent.StudentSeeAllSolutionsProvidedFragment
 import com.example.findmytutor.utilities.ViewPagerAdapter
@@ -25,6 +26,7 @@ class DoubtsTutorFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        (activity as MainActivity).setVisibleBottomNavigationView()
         _binding = FragmentDoubtsTutorBinding.inflate(inflater, container, false)
         return binding.root
     }

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.findmytutor.R
 import com.example.findmytutor.dataClasses.DoubtInfo
 import com.example.findmytutor.databinding.FragmentStudentAskDoubtBinding
+import com.example.findmytutor.features.MainActivity
 
 
 class StudentAskDoubtFragment : Fragment(), StudentMyDoubtAdapter.OnRequestClickListner {
@@ -25,6 +26,7 @@ class StudentAskDoubtFragment : Fragment(), StudentMyDoubtAdapter.OnRequestClick
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        (activity as MainActivity).setVisibleBottomNavigationView()
         _binding = FragmentStudentAskDoubtBinding.inflate(inflater, container, false)
         return binding.root
     }

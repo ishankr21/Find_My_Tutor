@@ -12,6 +12,7 @@ import com.example.findmytutor.R
 import com.example.findmytutor.dataClasses.SolutionInfo
 import com.example.findmytutor.databinding.FragmentStudentAskDoubtBinding
 import com.example.findmytutor.databinding.FragmentStudentSeeAllSolutionsProvidedBinding
+import com.example.findmytutor.features.MainActivity
 
 
 class StudentSeeAllSolutionsProvidedFragment : Fragment(),
@@ -26,6 +27,7 @@ class StudentSeeAllSolutionsProvidedFragment : Fragment(),
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        (activity as MainActivity).setVisibleBottomNavigationView()
         _binding = FragmentStudentSeeAllSolutionsProvidedBinding.inflate(inflater, container, false)
         return binding.root
     }

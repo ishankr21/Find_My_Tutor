@@ -18,5 +18,8 @@ data class Student(
     var schoolBoard:String="",
     var schoolName:String="",
     var tokenId:String="",
-    var fcmTokens:ArrayList<String> = arrayListOf()
+    var fcmTokens:ArrayList<String> = arrayListOf(),
+    var profileIsComplete:Boolean=false,
+    var latitude:Double=0.0,
+    var longitude:Double=0.0
 ): Serializable
