@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="8dp"
+    android:layout_margin="8dp">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="14dp"
+        >
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/ic_user"
+            android:padding="4dp"
+            android:id="@+id/imgStudent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Name: Ishan Kumar"
+            app:layout_constraintTop_toBottomOf="@id/imgStudent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:textColor="@color/black"
+            android:fontFamily="@font/manrope_bold"
+            android:padding="4dp"
+            android:textSize="16sp"
+            android:layout_margin="4dp"
+            android:id="@+id/txtStudentName"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Age : 22"
+            app:layout_constraintTop_toBottomOf="@id/txtStudentName"
+            android:textColor="@color/black"
+            android:fontFamily="@font/manrope_bold"
+            android:padding="4dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:textSize="16sp"
+            android:layout_margin="4dp"
+            android:id="@+id/txtStudentAge"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Class : 12"
+            app:layout_constraintTop_toBottomOf="@id/txtStudentAge"
+            android:textColor="@color/black"
+            android:fontFamily="@font/manrope_bold"
+            android:padding="4dp"
+            android:textSize="16sp"
+            android:layout_margin="4dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:id="@+id/txtStudentClass"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Distance : 10km"
+            app:layout_constraintTop_toBottomOf="@id/txtStudentClass"
+            android:textColor="@color/black"
+            android:fontFamily="@font/manrope_bold"
+            android:padding="4dp"
+            android:textSize="16sp"
+            android:id="@+id/txtStudentDistanceFromTutor"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

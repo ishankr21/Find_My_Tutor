@@ -6,7 +6,7 @@ import com.example.findmytutor.dataRepo.FirebaseRepo
 
 class MainActivityViewModel:ViewModel() {
 
-    var mExistingUserLiveData: MutableLiveData<Int> = MutableLiveData<Int>()
+    var mExistingUserLiveData: MutableLiveData<Pair<Int,Boolean>> = MutableLiveData<Pair<Int,Boolean>>()
 
     fun  checkUserType() {
         mExistingUserLiveData = FirebaseRepo().checkUserType()

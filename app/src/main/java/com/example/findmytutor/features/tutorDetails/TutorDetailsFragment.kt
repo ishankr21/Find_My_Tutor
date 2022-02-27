@@ -1,6 +1,8 @@
 package com.example.findmytutor.features.tutorDetails
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -8,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -20,6 +23,8 @@ import com.example.findmytutor.dataClasses.RequestTutor
 import com.example.findmytutor.dataClasses.Student
 import com.example.findmytutor.dataClasses.Tutor
 import com.example.findmytutor.databinding.FragmentTutorDetailsBinding
+import com.example.findmytutor.databinding.ImageDialogBinding
+import com.example.findmytutor.databinding.RatingDialogBinding
 import com.example.findmytutor.features.MainActivity
 import com.example.findmytutor.utilities.SendNotification
 import com.google.firebase.Timestamp
@@ -69,9 +74,14 @@ class TutorDetailsFragment : BaseFragment() {
             binding.tutorDetailsTutorEmailId.visibility = View.VISIBLE
             binding.tutorDetailsTutorEmailId.text = "Email id : " + tutor.emailId
         }
-        if (tutor.rating != 0) {
+        if (tutor.rating.size != 0) {
+            var sum=0.0
+            for (i in tutor.rating)
+                sum+=i
+            val rating:Double=(sum/ (tutor.rating.size))
+
             binding.tutorDetailsTutorRating.visibility = View.VISIBLE
-            binding.tutorDetailsTutorRating.text = tutor.rating.toString()
+            binding.tutorDetailsTutorRating.text = rating.toString().subSequence(0,3)
         }
         if (tutor.desiredFees != 0.0f) {
             binding.tutorDetailsTutorFees.visibility = View.VISIBLE
@@ -86,6 +96,7 @@ class TutorDetailsFragment : BaseFragment() {
             binding.tutorDetailsTutorFavouriteSubject.text =
                 "Speciality in : " + tutor.tutorFavouriteSubject
         }
+
 
 
         if (tutor.profilePicturePath != "") {
@@ -133,7 +144,7 @@ class TutorDetailsFragment : BaseFragment() {
                             notificationBody.put("title", "You have received request from a student")
                             notificationBody.put(
                                 "message",
-                                "Please click here to approve the student's \n request"
+                                "Please click here to approve the student's request"
                             )   //Enter your notification message
                             notification.put("to", topic)
                             notification.put("data", notificationBody)
@@ -167,7 +178,10 @@ class TutorDetailsFragment : BaseFragment() {
                     receiverId = tutor.tutorId,
                     senderName = it.name,
                     receiverName = tutor.name,
-                    sendByStudent = true
+                    sendByStudent = true,
+                    senderImage = it.profilePicturePath,
+                    receiverImage = tutor.profilePicturePath,
+
                 )
                 val bundle = Bundle()
                 bundle.putSerializable("chattingHelper", chattingHelper)
@@ -176,6 +190,80 @@ class TutorDetailsFragment : BaseFragment() {
                     bundle
                 )
             }
+        }
+        binding.tutorNavigateButton.setOnClickListener {
+            val gmmIntentUri =
+                Uri.parse("google.navigation:q=${tutor.latitude},${tutor.longitude}")
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            startActivity(mapIntent)
+        }
+        binding.btnRateTutor.setOnClickListener {
+            val ratingDialogBinding = RatingDialogBinding.inflate(
+                LayoutInflater.from(requireContext())
+            )
+            val mBuilder = AlertDialog.Builder(requireContext())
+                .setView(ratingDialogBinding.root)
+            val mAlertDialog = mBuilder.show()
+            mAlertDialog.setCanceledOnTouchOutside(true)
+            var currentRating=0.0
+            ratingDialogBinding.star1.setOnClickListener {
+                ratingDialogBinding.star1.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_24))
+                ratingDialogBinding.star2.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_outline_24))
+                ratingDialogBinding.star3.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_outline_24))
+                ratingDialogBinding.star4.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_outline_24))
+                ratingDialogBinding.star5.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_outline_24))
+                currentRating=1.0
+            }
+            ratingDialogBinding.star2.setOnClickListener {
+                ratingDialogBinding.star1.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_24))
+                ratingDialogBinding.star2.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_24))
+                ratingDialogBinding.star3.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_outline_24))
+                ratingDialogBinding.star4.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_outline_24))
+                ratingDialogBinding.star5.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_outline_24))
+                currentRating=2.0
+            }
+            ratingDialogBinding.star3.setOnClickListener {
+                ratingDialogBinding.star1.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_24))
+                ratingDialogBinding.star2.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_24))
+                ratingDialogBinding.star3.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_24))
+                ratingDialogBinding.star4.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_outline_24))
+                ratingDialogBinding.star5.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_outline_24))
+                currentRating=3.0
+            }
+            ratingDialogBinding.star4.setOnClickListener {
+                ratingDialogBinding.star1.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_24))
+                ratingDialogBinding.star2.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_24))
+                ratingDialogBinding.star3.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_24))
+                ratingDialogBinding.star4.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_24))
+                ratingDialogBinding.star5.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_outline_24))
+                currentRating=4.0
+            }
+            ratingDialogBinding.star5.setOnClickListener {
+                ratingDialogBinding.star1.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_24))
+                ratingDialogBinding.star2.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_24))
+                ratingDialogBinding.star3.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_24))
+                ratingDialogBinding.star4.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_24))
+                ratingDialogBinding.star5.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_24))
+                currentRating=5.0
+            }
+            ratingDialogBinding.btnSubmitRating.setOnClickListener {
+                val ratingArray=tutor.rating
+                ratingArray.add(currentRating.toInt())
+                mTutorDetailsViewModel.updateTutorRatings(ratingArray,tutor.tutorId)
+                showToast(requireContext(),"Tutor Rated")
+                var sum=0.0
+                for (i in tutor.rating)
+                    sum+=i
+                val rating:Double=(sum/ (tutor.rating.size))
+
+                binding.tutorDetailsTutorRating.visibility = View.VISIBLE
+                binding.tutorDetailsTutorRating.text = rating.toString().subSequence(0,3)
+                mAlertDialog.dismiss()
+            }
+
+
+
         }
     }
 

@@ -75,9 +75,13 @@ class TutorAdapter(
                     }
                     if(tutor.tutorFavouriteSubject!="")
                         binding.tutorSubject.text= "Speciality in : "+tutor.tutorFavouriteSubject
-                    if(tutor.rating!=0)
-                        binding.tutorRating.text= "${tutor.rating}/5"
-
+                    if(tutor.rating.size!=0) {
+                        var sum=0.0
+                        for (i in tutor.rating)
+                            sum+=i
+                        val rating:Double=(sum/ (tutor.rating.size))
+                        binding.tutorRating.text = "${rating.toString().subSequence(0,3)}/5"
+                    }
                     binding.root.setOnClickListener{
                         clickListener.onItemClicked(tutor)
                     }
@@ -123,7 +127,8 @@ class TutorAdapter(
 
 
     fun updateTutorList(tutorList:ArrayList<Tutor>) {
-        this.items = tutorList
+        completeTutorList.clear()
+        completeTutorList.addAll(tutorList)
         notifyDataSetChanged()
     }
 

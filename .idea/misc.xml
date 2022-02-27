@@ -17,18 +17,22 @@
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/drawable/ic_baseline_star_24.xml" value="0.2175" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/drawable/ic_camera_alt_black_24dp.xml" value="0.2665" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/drawable/ic_home.xml" value="0.2665" />
+        <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/drawable/ic_my_location.xml" value="0.2215" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/drawable/ic_user.xml" value="0.2665" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/drawable/ic_user_outline.xml" value="0.2665" />
+        <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/drawable/round_corners_blue_button.xml" value="0.2425" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/drawable/round_corners_received_message.xml" value="0.2215" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/drawable/round_corners_search_view.xml" value="0.136" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/drawable/round_corners_sent_message.xml" value="0.2215" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/activity_main.xml" value="0.2526041666666667" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/chat_item.xml" value="0.3625" />
+        <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/filter_bottom_sheet_dialog.xml" value="0.3625" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_chats.xml" value="0.3625" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_create_new_doubt.xml" value="0.3619791666666667" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_doubts_student.xml" value="0.3625" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_doubts_tutor.xml" value="0.3625" />
-        <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_home_students.xml" value="0.33" />
+        <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_home_students.xml" value="0.2949438202247191" />
+        <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_home_tutors.xml" value="0.26854219948849106" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_homw_tutors.xml" value="0.3625" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_login.xml" value="0.3625" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_profile.xml" value="0.3625" />
@@ -57,9 +61,11 @@
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/item_doubt_seen_by_tutor.xml" value="0.3625" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/item_request_tutor.xml" value="0.3625" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/item_solutions_given_by_tutor.xml" value="0.3625" />
+        <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/item_student.xml" value="0.3625" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/item_student_my_doubt.xml" value="0.3625" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/item_student_view_of_solutions_given_by_tutor.xml" value="0.3625" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/item_tutor_see_student_doubts.xml" value="0.3625" />
+        <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/rating_dialog.xml" value="0.25" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/receiver.xml" value="0.3625" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/round_corners_search_view.xml" value="0.3625" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/sent.xml" value="0.3625" />

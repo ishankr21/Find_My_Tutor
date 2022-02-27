@@ -1,23 +1,31 @@
 package com.example.findmytutor.features.splashScreen
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.example.findmytutor.R
+import com.example.findmytutor.databinding.FragmentProfileTutorBinding
+import com.example.findmytutor.databinding.FragmentSplashScreenBinding
+import com.example.findmytutor.databinding.FragmentTutorDetailsBinding
 import com.example.findmytutor.features.MainActivity
-import com.example.findmytutor.features.MainActivityViewModel
+import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
+@SuppressLint("CustomSplashScreen")
 class SplashScreenFragment : Fragment() {
+    private var _binding: FragmentSplashScreenBinding? = null
+    private val binding get() = _binding!!
     private lateinit var mSplashScreenViewModel: SplashScreenViewModel
 
     override fun onCreateView(
@@ -25,11 +33,18 @@ class SplashScreenFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_splash_screen, container, false)
-    }
+        _binding = FragmentSplashScreenBinding.inflate(inflater, container, false)
 
+
+        return binding.root
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         mSplashScreenViewModel =
             ViewModelProvider(this)[SplashScreenViewModel::class.java]
         (activity as MainActivity).hideBottomNavigationView()
@@ -41,18 +56,35 @@ class SplashScreenFragment : Fragment() {
                     mSplashScreenViewModel.checkUserType()
                     mSplashScreenViewModel.mExistingUserLiveData.observe(viewLifecycleOwner)
                     {
-                        if (it==2) {
+                        binding.splashScreenProgressBar.visibility=View.GONE
+                        if (it.first==2) {
+
+
                             FirebaseMessaging.getInstance().subscribeToTopic("/topics/tutors")
                             FirebaseMessaging.getInstance().subscribeToTopic("/topics/${FirebaseAuth.getInstance().currentUser!!.uid}")
-                            (activity as MainActivity).setBottomNavigationMenu(it)
-                            view.findNavController()
-                                .navigate(R.id.action_splashScreenFragment_to_homeTutorsFragment)
+                            (activity as MainActivity).setBottomNavigationMenu(it.first)
+                            if(it.second)
+                            view.findNavController().navigate(R.id.action_splashScreenFragment_to_homeTutorsFragment)
+                            else
+                            {
+                                val bundle=Bundle()
+                                bundle.putSerializable("isProfileCompleted",it.second)
+                                view.findNavController().navigate(R.id.action_splashScreenFragment_to_profileTutorFragment,bundle)
+                            }
                         }
                             else {
-                            (activity as MainActivity).setBottomNavigationMenu(it)
+                            (activity as MainActivity).setBottomNavigationMenu(it.first)
                             FirebaseMessaging.getInstance().subscribeToTopic("/topics/${FirebaseAuth.getInstance().currentUser!!.uid}")
-                            view.findNavController()
-                                .navigate(R.id.action_splashScreenFragment_to_homeStudentsFragment)
+
+                            if(it.second)
+                                view.findNavController().navigate(R.id.action_splashScreenFragment_to_homeStudentsFragment)
+                            else
+                            {
+                                val bundle=Bundle()
+                                bundle.putSerializable("isProfileCompleted",it.second)
+                                view.findNavController().navigate(R.id.action_splashScreenFragment_to_profileStudentFragment,bundle)
+                            }
+
 
                             }
                         }

@@ -1,5 +1,62 @@
 <resources>
     <string name="app_name">Find My Tutor</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="subjects">
+        <item>Select the subject you want tutor for</item>
+        <item>Mathematics</item>
+        <item>English</item>
+        <item>Hindi</item>
+        <item>Physics</item>
+        <item>Chemistry</item>
+        <item>Biology</item>
+        <item>German</item>
+        <item>Malayalam</item>
+        <item>Fine Arts</item>
+    </string-array>
+
+    <string-array name="classes">
+        <item>Select Your Current Class</item>
+        <item>Class 1</item>
+        <item>Class 2</item>
+        <item>Class 3</item>
+        <item>Class 4</item>
+        <item>Class 5</item>
+        <item>Class 6</item>
+        <item>Class 7</item>
+        <item>Class 8</item>
+        <item>Class 9</item>
+        <item>Class 10</item>
+        <item>Class 11</item>
+        <item>Class 12</item>
+
+    </string-array>
+
+    <string-array name="school_board">
+        <item>Select Your School Board</item>
+        <item>CBSE</item>
+        <item>ICSE</item>
+        <item>STATE BOARD</item>
+
+    </string-array>
+
+    <string-array name="employment_status">
+        <item>Select Your Employment Status</item>
+        <item>Private Job</item>
+        <item>Government Job</item>
+        <item>Student</item>
+        <item>Unemployed</item>
+
+    </string-array>
+
+    <string-array name="rating">
+        <item>Select Your Preferred Rating of tutor</item>
+        <item>1.0+</item>
+        <item>2.0+</item>
+        <item>3.0+</item>
+        <item>4.0+</item>
+
+    </string-array>
+
 </resources>

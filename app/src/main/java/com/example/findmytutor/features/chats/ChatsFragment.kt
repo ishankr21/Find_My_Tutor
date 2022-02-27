@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.findmytutor.dataClasses.ChattingHelper
@@ -53,7 +54,14 @@ class ChatsFragment : Fragment() {
             chatId=chattingHelper.senderId.takeLast(5)+chattingHelper.receiverId.takeLast(5)
 
 
-
+        if (chattingHelper.sendByStudent)
+        {
+           binding.chattingPageTitleText.text=chattingHelper.receiverName
+        }
+        else
+        {
+            binding.chattingPageTitleText.text=chattingHelper.senderName
+        }
         binding.chatsRecyclerView.layoutManager=LinearLayoutManager(requireContext())
         mChatsViewModel.getAllMessages(chatId)
         mChatsViewModel.allMessages.observe(viewLifecycleOwner)
@@ -61,9 +69,13 @@ class ChatsFragment : Fragment() {
             binding.chatsRecyclerView.adapter=ChatsAdapter(it,requireContext(),FirebaseAuth.getInstance().currentUser!!.uid)
             binding.chatsRecyclerView.scrollToPosition(it.size-1)
         }
+
+
         binding.chattingPageSendButton.setOnClickListener {
             if(binding.chattingPageTextBox.text.isNotEmpty())
             {
+
+                //TODO i want student to always be the sender we need to fix this
                 var senderId=""
                 var receiverId=""
                 var senderName=""
@@ -82,6 +94,8 @@ class ChatsFragment : Fragment() {
                     receiverName=chattingHelper.senderName
                     senderName=chattingHelper.receiverName
                 }
+                chattingHelper.lastMessage=binding.chattingPageTextBox.text.toString()
+                chattingHelper.lastContact= Timestamp.now()
                 val message=Messages(
                     sentByStudent = chattingHelper.sendByStudent,
                     senderId =  senderId,

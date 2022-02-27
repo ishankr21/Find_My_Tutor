@@ -66,7 +66,7 @@ class RegisterTutorFragment : BaseFragment() {
 
         binding.registerTutorButton.setOnClickListener {
             if (binding.registerTutorPhoneEdittext.text.isNullOrEmpty()||binding.registerTutorAgeEdittext.text.isNullOrEmpty()||binding.registerTutorNameEdittext.text.isNullOrEmpty()
-                || binding.registerTutorPincodeEdittext.text.isNullOrEmpty()||binding.spnSelectTutorGender.selectedItemPosition==0)
+                ||binding.spnSelectTutorGender.selectedItemPosition==0)
             {
                 Toast.makeText(requireContext(),"Please fill all the details!", Toast.LENGTH_SHORT).show()
             }
@@ -82,8 +82,8 @@ class RegisterTutorFragment : BaseFragment() {
                     name = binding.registerTutorNameEdittext.text.toString(),
                     mobile = "+91"+binding.registerTutorPhoneEdittext.text.toString(),
                     age = binding.registerTutorAgeEdittext.text.toString().toInt(),
-                    gender = spinnerArrayGender[binding.spnSelectTutorGender.selectedItemPosition],
-                    pincode = binding.registerTutorPincodeEdittext.text.toString()
+                    gender = spinnerArrayGender[binding.spnSelectTutorGender.selectedItemPosition]
+
                 )
                 val student=Student()
                 val bundle=Bundle()

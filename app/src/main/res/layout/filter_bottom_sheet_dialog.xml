@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/filter_bottom_sheet_dialog_txt"
+            android:text="Filter Search"
+            android:fontFamily="@font/manrope_bold"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:padding="4dp"
+            />
+
+        <Spinner
+            android:id="@+id/spnSelectSubject"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_margin="16dp"
+            android:padding="8dp"
+            android:background="@drawable/bg_spinner"
+            android:popupBackground="@color/white"
+            android:spinnerMode="dropdown"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/filter_bottom_sheet_dialog_txt" />
+        <Spinner
+            android:id="@+id/spnSelectClass"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_margin="16dp"
+            android:padding="8dp"
+            android:background="@drawable/bg_spinner"
+            android:popupBackground="@color/white"
+            android:spinnerMode="dropdown"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spnSelectSubject" />
+
+        <Spinner
+            android:id="@+id/spnSelectRating"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_margin="16dp"
+            android:padding="8dp"
+            android:background="@drawable/bg_spinner"
+            android:popupBackground="@color/white"
+            android:spinnerMode="dropdown"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spnSelectClass" />
+
+        <Spinner
+            android:id="@+id/spnSelectSchoolBoard"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_margin="16dp"
+            android:padding="8dp"
+            android:background="@drawable/bg_spinner"
+            android:popupBackground="@color/white"
+            android:spinnerMode="dropdown"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spnSelectRating" />
+
+        <com.google.android.material.slider.RangeSlider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:valueFrom="0.0"
+            android:valueTo="10000.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spnSelectSchoolBoard"
+
+
+            android:id="@+id/tutorFeeFilterSlider"
+            android:layout_margin="16dp"
+            android:padding="8dp"
+            android:stepSize="500.0" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/tutorFeeFilterSlider"
+            app:layout_constraintBottom_toTopOf="@+id/btnApplySeletedFilters"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:id="@+id/txtSelectRangeOfFees"
+            android:text="Select range of fees"
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            android:fontFamily="@font/manrope_bold"
+
+            />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Apply"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtSelectRangeOfFees"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_margin="16dp"
+            android:textSize="24sp"
+            android:textColor="@color/Floral_White"
+            android:fontFamily="@font/manrope_medium"
+            android:textAllCaps="false"
+            android:id="@+id/btnApplySeletedFilters"/>
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

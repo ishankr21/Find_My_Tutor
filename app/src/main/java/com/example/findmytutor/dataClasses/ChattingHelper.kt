@@ -1,5 +1,6 @@
 package com.example.findmytutor.dataClasses
 
+import com.google.firebase.Timestamp
 import java.io.Serializable
 
 data class ChattingHelper(
@@ -10,5 +11,6 @@ data class ChattingHelper(
     var sendByStudent:Boolean=true,
     var senderImage:String="",
     var receiverImage:String="",
-    var lastMessage:String=""
+    var lastMessage:String="",
+    var lastContact:Timestamp?=null
 ):Serializable
