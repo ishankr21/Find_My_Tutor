@@ -22,8 +22,11 @@ import com.example.findmytutor.R
 import com.example.findmytutor.base.BaseFragment
 import com.example.findmytutor.dataClasses.Student
 import com.example.findmytutor.databinding.FragmentProfileBinding
+import com.example.findmytutor.databinding.FragmentProfileTutorBinding
 import com.example.findmytutor.features.MainActivity
 import com.example.findmytutor.utilities.Constants
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessaging
@@ -37,16 +40,20 @@ import com.theartofdev.edmodo.cropper.CropImageView
 
 
 class ProfileStudentFragment : BaseFragment() {
+
     var imageURI: Uri? = null
     lateinit var cameraPermission: Array<String>
     lateinit var storagePermission: Array<String>
     private lateinit var mProfileFragmentViewModel: ProfileViewModel
-    private var spinnerArrayClass: ArrayList<String> = arrayListOf()
-    private var spinnerArraySchoolBoard: ArrayList<String> = arrayListOf()
-
+    private var spinnerArrayClass: Array<String> = arrayOf()
+    private var spinnerArraySchoolBoard: Array<String> = arrayOf()
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
     private lateinit var mView: View
+    private lateinit var mFusedLocation: FusedLocationProviderClient
+    private var latitude:String=""
+    private var longitude:String=""
+    var isProfileCompleted=true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,10 +61,12 @@ class ProfileStudentFragment : BaseFragment() {
     ): View{
         // Inflate the layout for this fragment
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
+        spinnerArrayClass= resources.getStringArray(R.array.classes)
+        spinnerArraySchoolBoard= resources.getStringArray(R.array.school_board)
 
-        spinnerArrayClass= arrayListOf("Select Your Class", "Class 1", "Class 2", "Class 3", "Class 4", "Class 5",
-            "Class 6", "Class 7", "Class 8", "Class 9", "Class 10", "Class 11", "Class 12")
-        spinnerArraySchoolBoard= arrayListOf("Select Your School Board","CBSE","ICSE","State Board")
+        val bundle=arguments
+        isProfileCompleted=bundle!!.getBoolean("isProfileCompleted")
+        mFusedLocation = LocationServices.getFusedLocationProviderClient(requireActivity())
 
 
         return binding.root
@@ -69,19 +78,29 @@ class ProfileStudentFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (!isProfileCompleted) {
 
+            (activity as MainActivity).hideBottomNavigationView()
+
+        }
+        else {
+
+            (activity as MainActivity).setVisibleBottomNavigationView()
+        }
         initSpinners()
 
 
         mProfileFragmentViewModel =
             ViewModelProvider(this)[ProfileViewModel::class.java]
         mView = view
-        (activity as MainActivity).setVisibleBottomNavigationView()
+
         val callback: OnBackPressedCallback =
             object : OnBackPressedCallback(true /* enabled by default */) {
                 override fun handleOnBackPressed() {
-                    //close app
+                   if(isProfileCompleted)
                     mView.findNavController().navigate(R.id.action_profileStudentFragment_to_homeStudentsFragment)
+                    else
+                       requireActivity().finishAffinity()
 
                 }
             }
@@ -139,6 +158,15 @@ class ProfileStudentFragment : BaseFragment() {
             {
                 binding.registerStudentSchoolNameEdittext.setText(it.schoolName)
             }
+            if(it.latitude!=0.0)
+            {
+
+                latitude=it.latitude.toString()
+            }
+            if(it.longitude!=0.0)
+            {
+                longitude=it.longitude.toString()
+            }
             if (it.profilePicturePath != "") {
                 Glide.with(requireContext()).load(it.profilePicturePath)
                     .into(binding.imageViewProfile)
@@ -171,38 +199,102 @@ class ProfileStudentFragment : BaseFragment() {
             mProfileFragmentViewModel.getStudent()
             mProfileFragmentViewModel.mStudentLiveData.observe(viewLifecycleOwner)
             { student ->
-                val studentFinalData = Student(
-                    mobile = student.mobile,
-                    name = student.name,
-                    gender = student.gender,
-                    emailId = binding.registerStudentEmailIDEdittext.text.toString(),
-                    parentName = student.parentName,
-                    age = student.age,
-                    profilePicturePath = student.profilePicturePath,
-                    studentClass = binding.spnSelectProfileStudentClass.selectedItem.toString(),
-                    leastFavouriteSubject = binding.registerStudentLeastFavouriteSubjectEdittext.text.toString(),
-                    schoolBoard = binding.spnSelectProfileStudentSchoolBoard.selectedItem.toString(),
-                    schoolName = binding.registerStudentSchoolNameEdittext.text.toString(),
-                    tokenId = student.tokenId,
-                    fcmTokens = student.fcmTokens
-                )
-                mProfileFragmentViewModel.storeStudent(studentFinalData)
-                mProfileFragmentViewModel.mStudentDataUpdated.observe(viewLifecycleOwner)
+
+
+                if(binding.registerStudentEmailIDEdittext.text.isNullOrEmpty())
                 {
-                    if(it)
+                    showToast(requireContext(),"Email Id cannot be empty")
+                }
+                else if(binding.spnSelectProfileStudentClass.selectedItemPosition==0)
+                {
+                    showToast(requireContext(),"Please provide us your current class.")
+                }
+
+                else   if(binding.spnSelectProfileStudentSchoolBoard.selectedItemPosition==0)
+                {
+                    showToast(requireContext(),"School board cannot be empty")
+                }
+                else if(binding.registerStudentSchoolNameEdittext.text.isNullOrEmpty())
+                {
+                    showToast(requireContext(),"Please enter your school's name")
+                }
+                else if(binding.registerStudentLeastFavouriteSubjectEdittext.text.isNullOrEmpty())
+                {
+                    showToast(requireContext(),"Please enter your weakest subject")
+                }
+                else   if(latitude=="")
+                {
+                    mProfileFragmentViewModel.getLocusCurrentLocation(requireContext())
+                    mProfileFragmentViewModel.addressLiveData.observe(viewLifecycleOwner)
+                    { latlong ->
+                        if (latlong.first.isNotEmpty()) {
+                            latitude = latlong.first
+                            longitude = latlong.second
+                        }
+                    }
+                }
+                else {
+                    val studentFinalData = Student(
+                        studentId=student.studentId,
+                        mobile = student.mobile,
+                        name = student.name,
+                        gender = student.gender,
+                        emailId = binding.registerStudentEmailIDEdittext.text.toString(),
+                        parentName = student.parentName,
+                        age = student.age,
+                        profilePicturePath = student.profilePicturePath,
+                        studentClass = binding.spnSelectProfileStudentClass.selectedItem.toString(),
+                        leastFavouriteSubject = binding.registerStudentLeastFavouriteSubjectEdittext.text.toString(),
+                        schoolBoard = binding.spnSelectProfileStudentSchoolBoard.selectedItem.toString(),
+                        schoolName = binding.registerStudentSchoolNameEdittext.text.toString(),
+                        tokenId = student.tokenId,
+                        fcmTokens = student.fcmTokens,
+                        latitude = latitude.toDouble(),
+                        longitude = longitude.toDouble(),
+                        profileIsComplete = true
+                    )
+                    mProfileFragmentViewModel.storeStudent(studentFinalData)
+                    mProfileFragmentViewModel.mStudentDataUpdated.observe(viewLifecycleOwner)
                     {
-                        showToast(requireContext(),"Data saved successfully!")
-                        view.findNavController().navigate(R.id.action_profileStudentFragment_to_homeStudentsFragment)
+                        if (it) {
+                            showToast(requireContext(), "Data saved successfully!")
+                            view.findNavController()
+                                .navigate(R.id.action_profileStudentFragment_to_homeStudentsFragment)
+                        }
                     }
                 }
             }
         }
 
         binding.profileLogoutButton.setOnClickListener {
-            mProfileFragmentViewModel.signOut()
+
 
             FirebaseMessaging.getInstance().unsubscribeFromTopic("/topics/${FirebaseAuth.getInstance().currentUser!!.uid}")
+            mProfileFragmentViewModel.signOut()
             mView.findNavController().navigate(R.id.action_profileStudentFragment_to_loginFragment)
+        }
+        if(latitude=="")
+        {
+
+            mProfileFragmentViewModel.getLocusCurrentLocation(requireContext())
+            mProfileFragmentViewModel.addressLiveData.observe(viewLifecycleOwner)
+            {
+                if(it.first.isNotEmpty())
+                {
+                    latitude=it.first
+                    longitude=it.second
+
+
+
+                }
+
+            }
+        }
+        binding.profileBackButton.setOnClickListener {
+            if(isProfileCompleted)
+                mView.findNavController().navigate(R.id.action_profileStudentFragment_to_homeStudentsFragment)
+            else
+                requireActivity().finishAffinity()
         }
 
     }

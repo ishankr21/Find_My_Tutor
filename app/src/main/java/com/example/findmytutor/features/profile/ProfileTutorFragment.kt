@@ -16,18 +16,17 @@ import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.ui.setupWithNavController
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.findmytutor.R
 import com.example.findmytutor.base.BaseFragment
 import com.example.findmytutor.dataClasses.Tutor
-import com.example.findmytutor.databinding.ActivityMainBinding
 import com.example.findmytutor.databinding.FragmentProfileTutorBinding
 import com.example.findmytutor.features.MainActivity
 import com.example.findmytutor.utilities.Constants
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessaging
@@ -41,20 +40,29 @@ class ProfileTutorFragment : BaseFragment() {
     var imageURI: Uri? = null
     lateinit var cameraPermission: Array<String>
     lateinit var storagePermission: Array<String>
-    var spinnerArrayClass: ArrayList<String> = arrayListOf()
-    var spinnerArrayEmployment: ArrayList<String> = arrayListOf()
-
+    var spinnerArrayClass: Array<String> = arrayOf()
+    var spinnerArrayEmployment: Array<String> = arrayOf()
+    var spinnerSchoolBoards:Array<String> = arrayOf()
     private lateinit var mProfileFragmentViewModel: ProfileViewModel
     private var _binding: FragmentProfileTutorBinding? = null
     private val binding get() = _binding!!
     private lateinit var mView: View
+    private lateinit var mFusedLocation: FusedLocationProviderClient
+    private var latitude:String=""
+    private var longitude:String=""
+
+    var isProfileCompleted=true
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
+        val bundle=arguments
+        isProfileCompleted=bundle!!.getBoolean("isProfileCompleted")
         _binding = FragmentProfileTutorBinding.inflate(inflater, container, false)
+        mFusedLocation = LocationServices.getFusedLocationProviderClient(requireActivity())
 
         return binding.root
     }
@@ -65,27 +73,33 @@ class ProfileTutorFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (!isProfileCompleted) {
 
-        spinnerArrayClass.add("Select your preferred class to teach")
-        for(i in 1..12)
-        {
-            spinnerArrayClass.add("Class $i")
+            (activity as MainActivity).hideBottomNavigationView()
+
         }
-        spinnerArrayEmployment.add("Select Your Employment Status")
-        spinnerArrayEmployment.add("Student")
-        spinnerArrayEmployment.add("GOVT. Job")
-        spinnerArrayEmployment.add("PRIVATE Job")
+        else {
+
+            (activity as MainActivity).setVisibleBottomNavigationView()
+        }
+        spinnerArrayClass=resources.getStringArray(R.array.classes)
+        spinnerArrayClass[0]="Please select your preferred class"
+        spinnerArrayEmployment=resources.getStringArray(R.array.employment_status)
+        spinnerSchoolBoards=resources.getStringArray(R.array.school_board)
+        spinnerSchoolBoards[0]="Please select your preferred school board"
         initSpinners()
         mProfileFragmentViewModel =
             ViewModelProvider(this)[ProfileViewModel::class.java]
         mView = view
 
-        (activity as MainActivity).setVisibleBottomNavigationView()
+
         val callback: OnBackPressedCallback =
             object : OnBackPressedCallback(true /* enabled by default */) {
                 override fun handleOnBackPressed() {
-                    //close app
+                    if (isProfileCompleted)
                     mView.findNavController().navigate(R.id.action_profileTutorFragment_to_homeTutorsFragment)
+                    else
+                        requireActivity().finishAffinity()
 
 
                 }
@@ -121,38 +135,51 @@ class ProfileTutorFragment : BaseFragment() {
                 binding.spnSelectProfileTutorClass.setSelection(it?.preferredClass?.drop(6)!!.toInt())
             }
 
-            if(it?.pincode!="") {
-                binding.registerTutorPincodeEdittext.setText(it?.pincode)
-            }
+
             if(it?.employmentStatus!="")
             {
                 when (it?.employmentStatus) {
                     "Student" -> {
+                        binding.spnSelectTutorEmploymentStatus.setSelection(3)
+                    }
+                    "Private Job" -> {
                         binding.spnSelectTutorEmploymentStatus.setSelection(1)
                     }
-                    "GOVT. Job" -> {
+                    "Government Job"->{
                         binding.spnSelectTutorEmploymentStatus.setSelection(2)
                     }
                     else -> {
-                        binding.spnSelectTutorEmploymentStatus.setSelection(3)
+                        binding.spnSelectTutorEmploymentStatus.setSelection(4)
                     }
                 }
             }
-
+            if(it.preferredSchoolBoard!="")
+            {
+                when (it.preferredSchoolBoard) {
+                    "CBSE" -> {
+                        binding.spnSelectProfileTutorSchoolBoard.setSelection(1)
+                    }
+                    "ICSE" -> {
+                        binding.spnSelectProfileTutorSchoolBoard.setSelection(2)
+                    }
+                    else -> {
+                        binding.spnSelectProfileTutorSchoolBoard.setSelection(3)
+                    }
+                }
+            }
             if(it?.desiredFees!=0.0f)
             {
                 binding.registerTutorDesiredFeesEdittext.setText(it?.desiredFees.toString())
             }
+            if(it.latitude!=0.0)
+            {
 
-
-
-
-
-
-
-
-
-
+                latitude=it.latitude.toString()
+            }
+            if(it.longitude!=0.0)
+            {
+                longitude=it.longitude.toString()
+            }
             if (it?.profilePicturePath != "") {
                 Glide.with(requireContext()).load(it?.profilePicturePath)
                     .into(binding.imageViewProfileTutor)
@@ -187,30 +214,80 @@ class ProfileTutorFragment : BaseFragment() {
             mProfileFragmentViewModel.getTutor()
             mProfileFragmentViewModel.mTutorLiveData.observe(viewLifecycleOwner)
             {
-                val tutorFinalData = Tutor(
-                    mobile = it.mobile,
-                    name = it.name,
-                    gender = it.gender,
-                    emailId = binding.registerTutorEmailIDEdittext.text.toString(),
-                    age = it.age,
-                    profilePicturePath = it.profilePicturePath,
-                    preferredClass = binding.spnSelectProfileTutorClass.selectedItem.toString(),
-                    tutorFavouriteSubject = binding.registerTutorFavouriteSubjectEdittext.text.toString(),
-                    desiredFees = binding.registerTutorDesiredFeesEdittext.text.toString().toFloat(),
-                    employmentStatus = binding.spnSelectTutorEmploymentStatus.selectedItem.toString(),
-                    pincode = binding.registerTutorPincodeEdittext.text.toString(),
-                    tokenId = it.tokenId,
-                    fcmTokens = it.fcmTokens
-                )
-                mProfileFragmentViewModel.storeTutor(tutorFinalData)
-                mProfileFragmentViewModel.mTutorDataUploaded.observe(viewLifecycleOwner)
+                if(binding.registerTutorEmailIDEdittext.text.isNullOrEmpty())
                 {
-                    if(it)
+                    showToast(requireContext(),"Email Id cannot be empty")
+                }
+                else if(binding.spnSelectProfileTutorClass.selectedItemPosition==0)
+                {
+                    showToast(requireContext(),"Please provide us your preferred class.")
+                }
+
+                else   if(binding.spnSelectTutorEmploymentStatus.selectedItemPosition==0)
+                {
+                    showToast(requireContext(),"Employment status cannot be empty")
+                }
+                else   if(binding.registerTutorDesiredFeesEdittext.text.isNullOrEmpty())
+                {
+                    showToast(requireContext(),"Please enter your desired fees")
+                }
+                else   if(binding.registerTutorFavouriteSubjectEdittext.text.isNullOrEmpty())
+                {
+                    showToast(requireContext(),"Please enter your preferred subject")
+                }
+                else if(binding.spnSelectProfileTutorSchoolBoard.selectedItemPosition==0)
+                {
+                    showToast(requireContext(),"Please select your preferred school board")
+                }
+                else   if(latitude=="")
+                {
+                    mProfileFragmentViewModel.getLocusCurrentLocation(requireContext())
+                    mProfileFragmentViewModel.addressLiveData.observe(viewLifecycleOwner)
+                    { latlong ->
+                        if (latlong.first.isNotEmpty()) {
+                            latitude = latlong.first
+                            longitude = latlong.second
+
+
+                        }
+
+
+                    }
+                    }
+                else
+                {
+                    val tutorFinalData = Tutor(
+                        tutorId=it.tutorId,
+                        mobile = it.mobile,
+                        name = it.name,
+                        gender = it.gender,
+                        emailId = binding.registerTutorEmailIDEdittext.text.toString(),
+                        age = it.age,
+                        profilePicturePath = it.profilePicturePath,
+                        preferredClass = binding.spnSelectProfileTutorClass.selectedItem.toString(),
+                        tutorFavouriteSubject = binding.registerTutorFavouriteSubjectEdittext.text.toString(),
+                        desiredFees = binding.registerTutorDesiredFeesEdittext.text.toString().toFloat(),
+                        employmentStatus = binding.spnSelectTutorEmploymentStatus.selectedItem.toString(),
+                        tokenId = it.tokenId,
+                        fcmTokens = it.fcmTokens,
+                        latitude = latitude.toDouble(),
+                        longitude = longitude.toDouble(),
+                        profileIsComplete = true,
+                        rating = it.rating,
+                        preferredSchoolBoard = binding.spnSelectProfileTutorSchoolBoard.selectedItem.toString()
+                    )
+                    mProfileFragmentViewModel.storeTutor(tutorFinalData)
+                    mProfileFragmentViewModel.mTutorDataUploaded.observe(viewLifecycleOwner)
                     {
-                        showToast(requireContext(),"Data saved successfully!")
-                        view.findNavController().navigate(R.id.action_profileTutorFragment_to_homeTutorsFragment)
+                        if(it)
+                        {
+                            showToast(requireContext(),"Data saved successfully!")
+                            view.findNavController().navigate(R.id.action_profileTutorFragment_to_homeTutorsFragment)
+                        }
                     }
                 }
+
+
             }
         }
 
@@ -221,6 +298,41 @@ class ProfileTutorFragment : BaseFragment() {
             mProfileFragmentViewModel.signOut()
             mView.findNavController().navigate(R.id.action_profileTutorFragment_to_loginFragment)
         }
+
+        binding.profileTutorBackButton.setOnClickListener {
+            if(isProfileCompleted)
+                mView.findNavController().navigate(R.id.action_profileTutorFragment_to_homeTutorsFragment)
+            else
+                requireActivity().finishAffinity()
+        }
+
+
+
+        //location management
+    if(latitude=="")
+    {
+
+        mProfileFragmentViewModel.getLocusCurrentLocation(requireContext())
+        mProfileFragmentViewModel.addressLiveData.observe(viewLifecycleOwner)
+        {
+            if(it.first.isNotEmpty())
+            {
+                latitude=it.first
+                longitude=it.second
+
+
+
+            }
+
+        }
+    }
+
+
+
+
+
+
+
 
 
     }
@@ -272,6 +384,30 @@ class ProfileTutorFragment : BaseFragment() {
         }
 
         binding.spnSelectTutorEmploymentStatus.adapter = arrayAdapterEmployment
+
+
+        val arrayAdapterSchoolBoard = object : ArrayAdapter<String>(
+            requireContext(),
+            android.R.layout.simple_list_item_1,
+            spinnerSchoolBoards
+        ) {
+
+            override fun getDropDownView(
+                position: Int,
+                convertView: View?,
+                parent: ViewGroup
+            ): View {
+                val view = super.getDropDownView(position, convertView, parent)
+                val item = view as TextView
+                item.run {
+                    this.isSingleLine = false
+                }
+
+                return item
+            }
+        }
+
+        binding.spnSelectProfileTutorSchoolBoard.adapter = arrayAdapterSchoolBoard
 
     }
     private fun showImportImageDialog() {

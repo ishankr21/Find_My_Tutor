@@ -6,6 +6,7 @@ plugins {
     id 'com.google.gms.google-services'
     id 'kotlin-parcelize'
     id 'androidx.navigation.safeargs.kotlin'
+
 }
 
 android {
@@ -48,6 +49,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage-ktx:20.0.0'
     implementation "com.google.firebase:firebase-messaging:23.0.0"
     implementation 'com.google.firebase:firebase-functions:20.0.1'
+    implementation 'com.google.android.gms:play-services-maps:18.0.2'
     def nav_version = '2.4.0'
 
     // Java language implementation
@@ -116,5 +118,6 @@ dependencies {
     //locus location
     implementation 'com.github.BirjuVachhani:locus-android:3.0.1'
     implementation 'com.google.android.gms:play-services-location:19.0.1'
+    implementation 'com.google.maps.android:android-maps-utils:2.2.5'
 
 }

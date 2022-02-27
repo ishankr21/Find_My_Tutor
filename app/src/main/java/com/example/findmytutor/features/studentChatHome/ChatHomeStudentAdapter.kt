@@ -4,8 +4,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.findmytutor.dataClasses.ChattingHelper
 import com.example.findmytutor.databinding.ChatItemBinding
+import java.text.SimpleDateFormat
 
 class ChatHomeStudentAdapter(
     var chatsArray:ArrayList<ChattingHelper>,
@@ -17,10 +19,24 @@ class ChatHomeStudentAdapter(
 
             fun bindItem(chattingHelper: ChattingHelper)
             {
-                    binding.receiverName.text=chattingHelper.receiverName
-                    binding.root.setOnClickListener {
-                        itemClickListner.onItemClicked(chattingHelper)
-                    }
+
+                                val date = chattingHelper.lastContact!!.toDate()
+
+                val simpleDateFormat = SimpleDateFormat("EEE, dd MMM yyyy")
+                binding.txtLastMessageTime.text=simpleDateFormat.format(date)
+                if(chattingHelper.receiverImage!="")
+                {
+                    Glide.with(context)
+                        .load(chattingHelper.receiverImage)
+                        .into(binding.imageViewChatPhoto)
+
+                }
+                binding.txtLastMessage.text=chattingHelper.lastMessage
+                binding.receiverName.text=chattingHelper.senderName
+                binding.root.setOnClickListener {
+                    itemClickListner.onItemClicked(chattingHelper)
+                }
+
              }
 
         }

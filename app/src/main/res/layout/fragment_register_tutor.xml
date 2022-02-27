@@ -54,17 +54,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register_tutor_age_edittext" />
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:padding="16dp"
-        android:hint="AREA PINCODE"
-        android:background="@color/background"
-        android:inputType="text"
-        android:id="@+id/register_tutor_pincode_edittext"
-        app:layout_constraintTop_toBottomOf="@+id/spnSelectTutorGender"
-        />
+
 
 
 
@@ -78,7 +68,8 @@
         android:text="REGISTER"
         android:fontFamily="@font/manrope_bold"
         android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@+id/register_tutor_pincode_edittext"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 

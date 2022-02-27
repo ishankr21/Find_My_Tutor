@@ -43,7 +43,7 @@ class VerifyOtpFragment : BaseFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentVerifyOtpBinding.inflate(inflater, container, false)
         return binding.root
@@ -56,11 +56,11 @@ class VerifyOtpFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as MainActivity).hideBottomNavigationView()
-        mOtpViewModel = ViewModelProvider(this).get(OtpViewModel::class.java)
+        mOtpViewModel = ViewModelProvider(this)[OtpViewModel::class.java]
 
         val bundle=arguments
         student=bundle!!.getSerializable("student") as Student
-        tutor=bundle!!.getSerializable("tutor") as Tutor
+        tutor=bundle.getSerializable("tutor") as Tutor
         isComingFromRegistration = bundle.getBoolean("isRegistration")
 
         val content = SpannableString("Resend OTP")
@@ -88,7 +88,7 @@ class VerifyOtpFragment : BaseFragment() {
         timer.start()
         if(isComingFromRegistration)
         {
-           if(tutor.pincode=="")
+           if(student.parentName!="")
                sendVerificationCode(student.mobile, requireActivity(), view, isComingFromRegistration)
            else
                sendVerificationCode(tutor.mobile, requireActivity(), view, isComingFromRegistration)
@@ -129,7 +129,7 @@ class VerifyOtpFragment : BaseFragment() {
 
             if(isComingFromRegistration)
             {
-                if(tutor.pincode=="")
+                if(student.parentName!="")
                     sendVerificationCode(student.mobile, requireActivity(), view, isComingFromRegistration)
                 else
                     sendVerificationCode(tutor.mobile, requireActivity(), view, isComingFromRegistration)
@@ -167,11 +167,7 @@ class VerifyOtpFragment : BaseFragment() {
         override fun onVerificationCompleted(phoneAuthCredential: PhoneAuthCredential) {
             val code = phoneAuthCredential.smsCode
 
-            if (code != null) {
 
-
-
-            }
         }
 
         override fun onVerificationFailed(e: FirebaseException) {
@@ -217,8 +213,14 @@ class VerifyOtpFragment : BaseFragment() {
                                 if(it.mobile!="")
                                 {
                                     mOtpViewModel.updateFcmListTutor(it)
-                                    mView.findNavController()
-                                        .navigate(R.id.action_verifyOtpFragment_to_homeTutorsFragment)
+                                    if(it.profileIsComplete)
+                                    mView.findNavController().navigate(R.id.action_verifyOtpFragment_to_homeTutorsFragment)
+                                    else
+                                    {
+                                        val bundle=Bundle()
+                                        bundle.putBoolean("isProfileCompleted",false)
+                                        mView.findNavController().navigate(R.id.action_verifyOtpFragment_to_profileTutorFragment,bundle)
+                                    }
                                 }
                                 else
                                 {
@@ -239,8 +241,14 @@ class VerifyOtpFragment : BaseFragment() {
                                 if(it.mobile!="")
                                 {
                                     mOtpViewModel.updateFcmListStudent(it)
-                                    mView.findNavController()
-                                        .navigate(R.id.action_verifyOtpFragment_to_homeStudentsFragment)
+                                    if(it.profileIsComplete)
+                                        mView.findNavController().navigate(R.id.action_verifyOtpFragment_to_homeStudentsFragment)
+                                    else
+                                    {
+                                        val bundle=Bundle()
+                                        bundle.putBoolean("isProfileCompleted",false)
+                                        mView.findNavController().navigate(R.id.action_verifyOtpFragment_to_profileStudentFragment,bundle)
+                                    }
                                 }
                                 else
                                 {
@@ -250,20 +258,22 @@ class VerifyOtpFragment : BaseFragment() {
                         }
 
                     } else {
-                        if(tutor.pincode!="")
+                        if(student.parentName=="")
                         {
                             FirebaseMessaging.getInstance().subscribeToTopic("/topics/tutors")
                             FirebaseMessaging.getInstance().subscribeToTopic("/topics/${FirebaseAuth.getInstance().currentUser!!.uid}")
                             (activity as MainActivity).setBottomNavigationMenu(2)
-                            tutor.tutorId=authenticatedUser
-                            mOtpViewModel.createNewTutor(tutor,authenticatedUser)
+                            tutor.tutorId=FirebaseAuth.getInstance().currentUser!!.uid
+                            mOtpViewModel.createNewTutor(tutor,FirebaseAuth.getInstance().currentUser!!.uid)
                             mOtpViewModel.mCreatedTutorLiveData.observe(viewLifecycleOwner)
                             {
                                 if(it)
                                 {
                                     Toast.makeText(requireContext(),"Registration Successful!",Toast.LENGTH_LONG).show()
-                                    mView.findNavController()
-                                        .navigate(R.id.action_verifyOtpFragment_to_homeTutorsFragment)
+
+                                    val bundle=Bundle()
+                                    bundle.putBoolean("isProfileCompleted",false)
+                                    mView.findNavController().navigate(R.id.action_verifyOtpFragment_to_profileTutorFragment,bundle)
                                 }
                             }
                         }
@@ -272,15 +282,16 @@ class VerifyOtpFragment : BaseFragment() {
 
                             FirebaseMessaging.getInstance().subscribeToTopic("/topics/${FirebaseAuth.getInstance().currentUser!!.uid}")
                             (activity as MainActivity).setBottomNavigationMenu(1)
-                            student.studentId=authenticatedUser
-                            mOtpViewModel.createNewStudent(student,authenticatedUser)
+                            student.studentId=FirebaseAuth.getInstance().currentUser!!.uid
+                            mOtpViewModel.createNewStudent(student,FirebaseAuth.getInstance().currentUser!!.uid)
                             mOtpViewModel.mCreatedUserLiveData.observe(viewLifecycleOwner)
                             {
                                 if(it)
                                 {
                                     Toast.makeText(requireContext(),"Registration Successful!",Toast.LENGTH_LONG).show()
-                                    mView.findNavController()
-                                        .navigate(R.id.action_verifyOtpFragment_to_homeStudentsFragment)
+                                    val bundle=Bundle()
+                                    bundle.putBoolean("isProfileCompleted",false)
+                                    mView.findNavController().navigate(R.id.action_verifyOtpFragment_to_profileStudentFragment,bundle)
                                 }
                             }
                         }

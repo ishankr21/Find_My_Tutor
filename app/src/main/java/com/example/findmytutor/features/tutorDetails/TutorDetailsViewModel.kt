@@ -20,4 +20,9 @@ class TutorDetailsViewModel:ViewModel() {
         requestsSent=FirebaseRepo().sendTutorRequest(requestTutor)
     }
 
+    fun updateTutorRatings(ratings:ArrayList<Int>,tutorId:String)
+    {
+        FirebaseRepo().updateRatingOfTutor(tutorId,ratings)
+    }
+
 }

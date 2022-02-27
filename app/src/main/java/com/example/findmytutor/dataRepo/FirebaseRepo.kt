@@ -8,7 +8,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -157,27 +156,39 @@ class FirebaseRepo: FirebaseMessagingService() {
 
     }
 
-    fun checkUserType(): MutableLiveData<Int> {
+    fun checkUserType(): MutableLiveData<Pair<Int,Boolean>> {
 
-        val mCheckUserExists = MutableLiveData<Int>()
+        val mCheckUserExists = MutableLiveData<Pair<Int,Boolean>>()
 
-        mFirestore.collection(COLLECTION_STUDENT).document(mAuth.currentUser!!.uid)
-           .get().addOnCompleteListener { it1 ->
+        mFirestore.collection(COLLECTION_STUDENT).document(mAuth.currentUser!!.uid).get()
+            .addOnSuccessListener { student->
+                if(student.exists())
+                {
+                    val stu=student.toObject(Student::class.java)
 
-                if (it1.isSuccessful) {
-
-                    if(!it1.result.exists())
-                    {
-
-                        mCheckUserExists.value=2
-
+                    mCheckUserExists.value=Pair(1,stu!!.profileIsComplete)
+                }
+                else
+                {
+                    mFirestore.collection(COLLECTION_TUTOR).document(mAuth.currentUser!!.uid).get()
+                        .addOnSuccessListener{tutor->
+                            if(tutor.exists())
+                            {
+                                val tut=tutor.toObject(Tutor::class.java)
+                                mCheckUserExists.value=Pair(2,tut!!.profileIsComplete)
+                            }
                     }
-                    else
-                        mCheckUserExists.value=1
-                } else {
-                    mCheckUserExists.value=0
+                        .addOnFailureListener {
+                            mCheckUserExists.value=Pair(0,false)
+                        }
                 }
             }
+            .addOnFailureListener {
+                mCheckUserExists.value=Pair(0,false)
+            }
+
+
+        Log.d("ishan","${mCheckUserExists.value}")
 
         return mCheckUserExists
 
@@ -247,6 +258,7 @@ class FirebaseRepo: FirebaseMessagingService() {
     fun getAllTutor():MutableLiveData<ArrayList<Tutor>> {
         val tutorList = MutableLiveData<ArrayList<Tutor>>()
         mFirestore.collection(COLLECTION_TUTOR)
+            .whereEqualTo("profileIsComplete",true)
             .addSnapshotListener { value, error ->
                 if (error == null)
                 {
@@ -812,15 +824,88 @@ class FirebaseRepo: FirebaseMessagingService() {
                         if(chattingHelper.receiverId==FirebaseAuth.getInstance().currentUser!!.uid
                             || chattingHelper.senderId==FirebaseAuth.getInstance().currentUser!!.uid)
                         arrayList.add(chattingHelper)
+                        else
+                            Log.d("ishan","${chattingHelper.receiverId}  ${chattingHelper.senderId}")
 
                     }
 
                     peopleChattedWith.value = arrayList
+                    Log.d("chatting","${arrayList} ${FirebaseAuth.getInstance().currentUser!!.uid}")
                 } else {
                     Log.d("fireStore", "chat error: $error")
                 }
             }
         return peopleChattedWith
+    }
+
+    fun updateRatingOfTutor(tutorId:String,ratings:ArrayList<Int>)
+    {
+        mFirestore.collection(COLLECTION_TUTOR).document(tutorId).update("rating",ratings)
+            .addOnSuccessListener {
+                Log.d("ratings update","successful")
+            }
+            .addOnFailureListener {
+                Log.d("ratings update error","${it.message}")
+            }
+    }
+    fun getListOfAllAcceptedStudents():MutableLiveData<ArrayList<String>>
+    {
+        val studentIdList=MutableLiveData<ArrayList<String>>()
+        mFirestore.collection(COLLECTION_TUTOR).document(mAuth.currentUser!!.uid).collection(COLLECTION_TUTOR_STUDENTS)
+            .whereEqualTo("completed",true)
+            .whereEqualTo("declined",false)
+            .addSnapshotListener { value, error ->
+                if (error == null)
+                {
+
+                    val arrayList= arrayListOf<String>()
+                    for (snapshot in value!!) {
+
+                        val request = snapshot.toObject(RequestTutor::class.java)
+
+
+                        arrayList.add(request.studentId)
+                    }
+                    Log.d("ishan","${arrayList}")
+                    studentIdList.value = arrayList
+                } else {
+                    Log.d("fireStore", "student error: $error")
+                }
+            }
+
+
+
+
+
+
+        return studentIdList
+    }
+    fun getAllStudents(listOfAcceptedStudents:MutableList<String>): MutableLiveData<ArrayList<Student>> {
+
+        val studentList = MutableLiveData<ArrayList<Student>>()
+        mFirestore.collection(COLLECTION_STUDENT)
+            .whereIn("studentId",listOfAcceptedStudents)
+            .addSnapshotListener { value, error ->
+                if (error == null)
+                {
+
+                    val arrayList= arrayListOf<Student>()
+                    for (snapshot in value!!) {
+
+                        val order = snapshot.toObject(Student::class.java)
+
+
+                        arrayList.add(order)
+                    }
+                    studentList.value = arrayList
+                } else {
+                    Log.d("fireStore", "student error: $error")
+                }
+            }
+
+
+        return studentList
+
     }
 
 }

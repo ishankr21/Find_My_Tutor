@@ -19,6 +19,12 @@
         <action
             android:id="@+id/action_splashScreenFragment_to_homeTutorsFragment"
             app:destination="@id/homeTutorsFragment" />
+        <action
+            android:id="@+id/action_splashScreenFragment_to_profileTutorFragment"
+            app:destination="@id/profileTutorFragment" />
+        <action
+            android:id="@+id/action_splashScreenFragment_to_profileStudentFragment"
+            app:destination="@id/profileStudentFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -45,7 +51,7 @@
         android:id="@+id/homeTutorsFragment"
         android:name="com.example.findmytutor.features.homeTutors.HomeTutorsFragment"
         android:label="fragment_homw_tutors"
-        tools:layout="@layout/fragment_homw_tutors" />
+        tools:layout="@layout/fragment_home_tutors" />
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.example.findmytutor.features.register.RegisterFragment"
@@ -69,6 +75,12 @@
         <action
             android:id="@+id/action_verifyOtpFragment_to_homeTutorsFragment"
             app:destination="@id/homeTutorsFragment" />
+        <action
+            android:id="@+id/action_verifyOtpFragment_to_profileTutorFragment"
+            app:destination="@id/profileTutorFragment" />
+        <action
+            android:id="@+id/action_verifyOtpFragment_to_profileStudentFragment"
+            app:destination="@id/profileStudentFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileStudentFragment"

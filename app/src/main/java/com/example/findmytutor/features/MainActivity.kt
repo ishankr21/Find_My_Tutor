@@ -44,7 +44,13 @@ class MainActivity : AppCompatActivity() {
        setBottomNavigationMenu(2)
 
         bottomNavigationView.setOnItemSelectedListener{ menuItem ->
-
+                    if(menuItem.itemId==R.id.profileTutorFragment||menuItem.itemId==R.id.profileStudentFragment)
+                    {
+                        val bundle=Bundle()
+                        bundle.putSerializable("isProfileCompleted",true)
+                        navController.navigate(menuItem.itemId,bundle)
+                    }
+                        else
                     navController.navigate(menuItem.itemId)
                     return@setOnItemSelectedListener true
                 }
@@ -85,7 +91,7 @@ class MainActivity : AppCompatActivity() {
 
                 val inflater = navController.navInflater
                 val graph = inflater.inflate(R.navigation.nav_graph)
-                graph.setStartDestination(R.id.tutorChatHomeFragment)
+                graph.setStartDestination(R.id.studentChatHomeFragment)
                 navController.graph=graph
 
 

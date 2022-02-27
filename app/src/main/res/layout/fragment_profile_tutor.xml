@@ -162,18 +162,7 @@
                 android:inputType="number"
                 android:id="@+id/profile_tutor_gender_edittext"
                 app:layout_constraintTop_toBottomOf="@+id/profile_tutor_age_edittext"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:padding="16dp"
-                android:hint="PINCODE"
-                android:textColor="@drawable/edittext_textcolor"
-                android:background="@color/background"
-                android:inputType="text"
-                android:id="@+id/register_tutor_pincode_edittext"
-                app:layout_constraintTop_toBottomOf="@+id/profile_tutor_gender_edittext"
-                />
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -184,7 +173,7 @@
                 android:background="@color/background"
                 android:inputType="textEmailAddress"
                 android:id="@+id/register_tutor_emailID_edittext"
-                app:layout_constraintTop_toBottomOf="@+id/register_tutor_pincode_edittext"
+                app:layout_constraintTop_toBottomOf="@+id/profile_tutor_gender_edittext"
                 />
             <Spinner
                 android:id="@+id/spnSelectProfileTutorClass"
@@ -198,6 +187,19 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/register_tutor_emailID_edittext" />
+
+            <Spinner
+                android:id="@+id/spnSelectProfileTutorSchoolBoard"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_margin="16dp"
+                android:padding="8dp"
+                android:background="@drawable/bg_spinner"
+                android:popupBackground="@color/white"
+                android:spinnerMode="dropdown"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/spnSelectProfileTutorClass" />
             <Spinner
                 android:id="@+id/spnSelectTutorEmploymentStatus"
                 android:layout_width="match_parent"
@@ -209,7 +211,7 @@
                 android:spinnerMode="dropdown"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spnSelectProfileTutorClass" />
+                app:layout_constraintTop_toBottomOf="@+id/spnSelectProfileTutorSchoolBoard" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -218,7 +220,7 @@
                 android:padding="16dp"
                 android:hint="DESIRED FEES"
                 android:background="@color/background"
-                android:inputType="text"
+                android:inputType="numberDecimal"
                 android:textColor="@drawable/edittext_textcolor"
                 android:id="@+id/register_tutor_desired_fees_edittext"
                 app:layout_constraintTop_toBottomOf="@+id/spnSelectTutorEmploymentStatus"

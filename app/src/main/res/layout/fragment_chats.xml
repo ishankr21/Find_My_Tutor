@@ -32,6 +32,7 @@
             android:paddingEnd="24sp"
             android:text="Chat"
             android:textColor="@color/black"
+            android:id="@+id/chatting_page_title_text"
             android:textSize="30sp"
             android:textStyle="bold"
             tools:ignore="RtlSymmetry" />
