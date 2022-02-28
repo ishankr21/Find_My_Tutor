@@ -174,16 +174,15 @@ class TutorDetailsFragment : BaseFragment() {
             mTutorDetailsViewModel.mStudentLiveData.observe(viewLifecycleOwner)
             {
                 val chattingHelper = ChattingHelper(
-                    senderId = FirebaseAuth.getInstance().currentUser!!.uid,
-                    receiverId = tutor.tutorId,
-                    senderName = it.name,
-                    receiverName = tutor.name,
-                    sendByStudent = true,
-                    senderImage = it.profilePicturePath,
-                    receiverImage = tutor.profilePicturePath,
-
-                )
+                    studentId = FirebaseAuth.getInstance().currentUser!!.uid,
+                    tutorId = tutor.tutorId,
+                    studentName = it.name,
+                    tutorName = tutor.name,
+                    studentImage = it.profilePicturePath,
+                    tutorImage = tutor.profilePicturePath,
+                    )
                 val bundle = Bundle()
+                bundle.putBoolean("isStudent",true)
                 bundle.putSerializable("chattingHelper", chattingHelper)
                 findNavController().navigate(
                     R.id.action_tutorDetailsFragment_to_chatsFragment,

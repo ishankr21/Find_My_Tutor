@@ -1,8 +1,6 @@
 package com.example.findmytutor.features.chats
 
 import android.os.Bundle
-import android.os.Message
-import android.os.SystemClock
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,7 +13,6 @@ import com.example.findmytutor.dataClasses.ChattingHelper
 import com.example.findmytutor.dataClasses.Messages
 import com.example.findmytutor.databinding.FragmentChatsBinding
 import com.example.findmytutor.features.MainActivity
-import com.example.findmytutor.features.doubtsStudent.DoubtStudentViewModel
 import com.example.findmytutor.utilities.SendNotification
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
@@ -29,11 +26,12 @@ class ChatsFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var mChatsViewModel: ChatViewModel
     var chattingHelper=ChattingHelper()
-    var chatId:String=""
+    private var chatId:String=""
+    private var isStudent:Boolean=false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         (activity as MainActivity).hideBottomNavigationView()
         _binding = FragmentChatsBinding.inflate(inflater, container, false)
@@ -48,19 +46,20 @@ class ChatsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val bundle=arguments
         chattingHelper=bundle!!.getSerializable("chattingHelper") as ChattingHelper
+        isStudent=bundle.getBoolean("isStudent")
         mChatsViewModel =
             ViewModelProvider(this)[ChatViewModel::class.java]
 
-            chatId=chattingHelper.senderId.takeLast(5)+chattingHelper.receiverId.takeLast(5)
+            chatId=chattingHelper.studentId.takeLast(5)+chattingHelper.tutorId.takeLast(5)
 
 
-        if (chattingHelper.sendByStudent)
+        if (isStudent)
         {
-           binding.chattingPageTitleText.text=chattingHelper.receiverName
+           binding.chattingPageTitleText.text=chattingHelper.tutorName
         }
         else
         {
-            binding.chattingPageTitleText.text=chattingHelper.senderName
+            binding.chattingPageTitleText.text=chattingHelper.studentName
         }
         binding.chatsRecyclerView.layoutManager=LinearLayoutManager(requireContext())
         mChatsViewModel.getAllMessages(chatId)
@@ -75,47 +74,50 @@ class ChatsFragment : Fragment() {
             if(binding.chattingPageTextBox.text.isNotEmpty())
             {
 
-                //TODO i want student to always be the sender we need to fix this
-                var senderId=""
-                var receiverId=""
-                var senderName=""
-                var receiverName=""
-                if (chattingHelper.sendByStudent)
+
+                val senderId: String
+                val receiverId:String
+                val senderName:String
+                val receiverName:String
+                if (isStudent)
                 {
-                    senderId=chattingHelper.senderId
-                    receiverId=chattingHelper.receiverId
-                    senderName=chattingHelper.senderName
-                    receiverName=chattingHelper.receiverName
+                    senderId=chattingHelper.studentId
+                    receiverId=chattingHelper.tutorId
+                    senderName=chattingHelper.studentName
+                    receiverName=chattingHelper.tutorName
                 }
                 else
                 {
-                    senderId=chattingHelper.receiverId
-                    receiverId=chattingHelper.senderId
-                    receiverName=chattingHelper.senderName
-                    senderName=chattingHelper.receiverName
+                    senderId=chattingHelper.tutorId
+                    receiverId=chattingHelper.studentId
+                    receiverName=chattingHelper.studentName
+                    senderName=chattingHelper.tutorName
                 }
                 chattingHelper.lastMessage=binding.chattingPageTextBox.text.toString()
                 chattingHelper.lastContact= Timestamp.now()
                 val message=Messages(
-                    sentByStudent = chattingHelper.sendByStudent,
+                    sentByStudent = isStudent,
                     senderId =  senderId,
                     receiverId =  receiverId,
                     senderName =senderName,
                     receiverName = receiverName,
                     message = binding.chattingPageTextBox.text.toString(),
-                    messageId = chattingHelper.senderId.takeLast(5)+chattingHelper.receiverId.takeLast(5),
-                    time = Timestamp.now())
+                    messageId = chatId,
+                    time = Timestamp.now()
+                )
 
                 mChatsViewModel.sendMessage(message,chattingHelper)
 
                 val topic = "/topics/${receiverId}"
                 val notification = JSONObject()
                 val notificationBody = JSONObject()
-                if(chattingHelper.sendByStudent)
-                notificationBody.put("intentType", "messageSentByStudent")
-                else
-                    notificationBody.put("intentType", "messageSentByTutor")
 
+                if(isStudent)
+                notificationBody.put("intentType", "messageSentByStudent")
+                else {
+
+                    notificationBody.put("intentType", "messageSentByTutor")
+                }
 
                 try {
                     notificationBody.put("title", "You received a message from $senderName")
