@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -61,7 +62,7 @@ class MainActivity : AppCompatActivity() {
 
 
             if (intent.extras!!["intentType"].toString() == "approvalIntent") {
-
+                setBottomNavigationMenu(2)
                 val inflater = navController.navInflater
                 val graph = inflater.inflate(R.navigation.nav_graph)
                 graph.setStartDestination(R.id.tutorRequestsFragment)
@@ -70,7 +71,7 @@ class MainActivity : AppCompatActivity() {
 
             }
             else  if (intent.extras!!["intentType"].toString() == "doubtCreatedIntent") {
-
+                setBottomNavigationMenu(2)
                 val inflater = navController.navInflater
                 val graph = inflater.inflate(R.navigation.nav_graph)
                 graph.setStartDestination(R.id.doubtsTutorFragment)
@@ -79,7 +80,7 @@ class MainActivity : AppCompatActivity() {
 
             }
             else  if (intent.extras!!["intentType"].toString() == "doubtSolvedIntent") {
-
+                setBottomNavigationMenu(1)
                 val inflater = navController.navInflater
                 val graph = inflater.inflate(R.navigation.nav_graph)
                 graph.setStartDestination(R.id.doubtsStudentFragment)
@@ -88,15 +89,17 @@ class MainActivity : AppCompatActivity() {
 
             }
             else  if (intent.extras!!["intentType"].toString() == "messageSentByStudent") {
+                setBottomNavigationMenu(2)
 
                 val inflater = navController.navInflater
                 val graph = inflater.inflate(R.navigation.nav_graph)
-                graph.setStartDestination(R.id.studentChatHomeFragment)
+                graph.setStartDestination(R.id.tutorChatHomeFragment)
                 navController.graph=graph
 
 
             }
             else  if (intent.extras!!["intentType"].toString() == "messageSentByTutor") {
+                setBottomNavigationMenu(1)
 
                 val inflater = navController.navInflater
                 val graph = inflater.inflate(R.navigation.nav_graph)

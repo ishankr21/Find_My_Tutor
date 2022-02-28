@@ -53,7 +53,7 @@ class StudentChatHomeFragment : Fragment(), ChatHomeStudentAdapter.OnChatClickLi
 
     override fun onItemClicked(chattingHelper: ChattingHelper) {
         val bundle=Bundle()
-        chattingHelper.sendByStudent=true
+        bundle.putBoolean("isStudent",true)
         bundle.putSerializable("chattingHelper",chattingHelper)
         findNavController().navigate(R.id.action_studentChatHomeFragment_to_chatsFragment,bundle)
     }

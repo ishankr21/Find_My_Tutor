@@ -24,15 +24,15 @@ class ChatHomeTutorAdapter(
 
                 val simpleDateFormat = SimpleDateFormat("dd-M-yyyy hh:mm:ss")
                 binding.txtLastMessageTime.text=simpleDateFormat.format(date)
-                if(chattingHelper.senderImage!="")
+                if(chattingHelper.studentImage!="")
                 {
                     Glide.with(context)
-                        .load(chattingHelper.senderImage)
+                        .load(chattingHelper.studentImage)
                         .into(binding.imageViewChatPhoto)
 
                 }
                 binding.txtLastMessage.text=chattingHelper.lastMessage
-                    binding.receiverName.text=chattingHelper.senderName
+                    binding.receiverName.text=chattingHelper.studentName
                     binding.root.setOnClickListener {
                         itemClickListner.onItemClicked(chattingHelper)
                     }

@@ -821,11 +821,10 @@ class FirebaseRepo: FirebaseMessagingService() {
                     for (snapshot in value!!) {
 
                         val chattingHelper= snapshot.toObject(ChattingHelper::class.java)
-                        if(chattingHelper.receiverId==FirebaseAuth.getInstance().currentUser!!.uid
-                            || chattingHelper.senderId==FirebaseAuth.getInstance().currentUser!!.uid)
+                        if(chattingHelper.tutorId==FirebaseAuth.getInstance().currentUser!!.uid
+                            || chattingHelper.studentId==FirebaseAuth.getInstance().currentUser!!.uid)
                         arrayList.add(chattingHelper)
-                        else
-                            Log.d("ishan","${chattingHelper.receiverId}  ${chattingHelper.senderId}")
+
 
                     }
 
