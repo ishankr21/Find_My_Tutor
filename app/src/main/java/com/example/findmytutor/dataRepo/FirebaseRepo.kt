@@ -4,14 +4,18 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.findmytutor.dataClasses.*
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.storage.FirebaseStorage
+import java.sql.Time
+import java.text.SimpleDateFormat
 
 class FirebaseRepo: FirebaseMessagingService() {
     private var mAuth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -378,6 +382,7 @@ class FirebaseRepo: FirebaseMessagingService() {
         val tutorRequests=MutableLiveData<ArrayList<RequestTutor>>()
         mFirestore.collection(COLLECTION_TUTOR).document(mAuth.currentUser!!.uid)
             .collection(COLLECTION_TUTOR_STUDENTS)
+            .orderBy("timeOfRequest")
             .addSnapshotListener { value, error ->
                 if (error == null)
                 {
@@ -465,6 +470,7 @@ class FirebaseRepo: FirebaseMessagingService() {
             .collection(COLLECTION_STUDENT_TUTORS)
             .whereEqualTo("completed",true)
             .whereEqualTo("declined",false)
+            .orderBy("timeOfRequest")
             .addSnapshotListener { value, error ->
                 if (error == null)
                 {
@@ -492,6 +498,7 @@ class FirebaseRepo: FirebaseMessagingService() {
         val tutorRequests=MutableLiveData<ArrayList<RequestTutor>>()
         mFirestore.collection(COLLECTION_STUDENT).document(mAuth.currentUser!!.uid)
             .collection(COLLECTION_STUDENT_TUTORS)
+            .orderBy("timeOfRequest")
             .addSnapshotListener { value, error ->
                 if (error == null)
                 {
@@ -517,7 +524,6 @@ class FirebaseRepo: FirebaseMessagingService() {
     fun getTutorById(tutorId: String): MutableLiveData<Tutor> {
 
         val tutorLiveData = MutableLiveData<Tutor>()
-
         mFirestore.collection(COLLECTION_TUTOR).document(tutorId)
             .get()
             .addOnSuccessListener {
@@ -574,11 +580,6 @@ class FirebaseRepo: FirebaseMessagingService() {
                 }
 
         }
-
-
-
-
-
         return success
     }
 
@@ -587,6 +588,7 @@ class FirebaseRepo: FirebaseMessagingService() {
         val allStudentDoubts=MutableLiveData<ArrayList<DoubtInfo>>()
         mFirestore.collection(COLLECTION_DOUBT)
             .whereEqualTo("studentId",FirebaseAuth.getInstance().currentUser!!.uid)
+            .orderBy("createdOn",Query.Direction.DESCENDING)
             .addSnapshotListener { value, error ->
                 if (error == null)
                 {
@@ -611,6 +613,7 @@ class FirebaseRepo: FirebaseMessagingService() {
         val allDoubts=MutableLiveData<ArrayList<DoubtInfo>>()
         mFirestore.collection(COLLECTION_DOUBT)
             .whereEqualTo("closed",false)
+            .orderBy("createdOn",Query.Direction.DESCENDING)
             .addSnapshotListener { value, error ->
                 if (error == null)
                 {
@@ -622,11 +625,13 @@ class FirebaseRepo: FirebaseMessagingService() {
 
                         arrayList.add(eachRequest)
                     }
+                    Log.d("ishan123","${arrayList}")
                     allDoubts.value = arrayList
                 } else {
                     Log.d("fireStore", "tutor error: $error")
                 }
             }
+
         return allDoubts
 
     }
@@ -646,6 +651,23 @@ class FirebaseRepo: FirebaseMessagingService() {
         return success
 
     }
+
+    fun markDoubtAsUnDone(doubtId:String):MutableLiveData<Boolean>
+    {
+        val success=MutableLiveData<Boolean>()
+        mFirestore.collection(COLLECTION_DOUBT).document(doubtId)
+            .update("closed",false)
+            .addOnSuccessListener {
+                success.value=true
+            }
+            .addOnFailureListener {
+                success.value=false
+            }
+
+        return success
+
+    }
+
 
     fun storeSolution(imageUri: Uri?, solutionInfo: SolutionInfo,update:Boolean): MutableLiveData<Boolean> {
 
@@ -715,10 +737,6 @@ class FirebaseRepo: FirebaseMessagingService() {
 
         }
 
-
-
-
-
         return success
     }
 
@@ -726,6 +744,7 @@ class FirebaseRepo: FirebaseMessagingService() {
         val allSolutions=MutableLiveData<ArrayList<SolutionInfo>>()
         mFirestore.collection(COLLECTION_SOLUTIONS)
             .whereEqualTo("studentId",mAuth.currentUser!!.uid)
+            .orderBy("solvedOn",Query.Direction.DESCENDING)
             .addSnapshotListener { value, error ->
                 if (error == null)
                 {
@@ -735,8 +754,9 @@ class FirebaseRepo: FirebaseMessagingService() {
 
                         val eachRequest= snapshot.toObject(SolutionInfo::class.java)
 
-                        arrayList.add(eachRequest)
+                            arrayList.add(eachRequest)
                     }
+
                     allSolutions.value = arrayList
                 } else {
                     Log.d("fireStore", "tutor error: $error")
@@ -750,6 +770,7 @@ class FirebaseRepo: FirebaseMessagingService() {
         val allSolutions=MutableLiveData<ArrayList<SolutionInfo>>()
         mFirestore.collection(COLLECTION_SOLUTIONS)
             .whereEqualTo("tutorId",mAuth.currentUser!!.uid)
+            .orderBy("solvedOn",Query.Direction.DESCENDING)
             .addSnapshotListener { value, error ->
                 if (error == null)
                 {
@@ -813,6 +834,7 @@ class FirebaseRepo: FirebaseMessagingService() {
     {
         val peopleChattedWith=MutableLiveData<ArrayList<ChattingHelper>>()
         mFirestore.collection(COLLECTION_CHATS)
+            .orderBy("lastContact")
             .addSnapshotListener{ value, error ->
                 if (error == null)
                 {
@@ -847,29 +869,52 @@ class FirebaseRepo: FirebaseMessagingService() {
                 Log.d("ratings update error","${it.message}")
             }
     }
-    fun getListOfAllAcceptedStudents():MutableLiveData<ArrayList<String>>
+    fun getListOfAllAcceptedStudents(tutorId: String):MutableLiveData<ArrayList<String>>
     {
         val studentIdList=MutableLiveData<ArrayList<String>>()
-        mFirestore.collection(COLLECTION_TUTOR).document(mAuth.currentUser!!.uid).collection(COLLECTION_TUTOR_STUDENTS)
+        mFirestore.collection(COLLECTION_TUTOR).document(tutorId).collection(COLLECTION_TUTOR_STUDENTS)
             .whereEqualTo("completed",true)
             .whereEqualTo("declined",false)
-            .addSnapshotListener { value, error ->
-                if (error == null)
-                {
+            .get()
+            .addOnSuccessListener {
+                val arrayList= arrayListOf<String>()
+                for (snapshot in it!!) {
 
-                    val arrayList= arrayListOf<String>()
-                    for (snapshot in value!!) {
+                    val request = snapshot.toObject(RequestTutor::class.java)
 
-                        val request = snapshot.toObject(RequestTutor::class.java)
-
-
-                        arrayList.add(request.studentId)
-                    }
-                    Log.d("ishan","${arrayList}")
-                    studentIdList.value = arrayList
-                } else {
-                    Log.d("fireStore", "student error: $error")
+                    arrayList.add(request.studentId)
                 }
+
+                studentIdList.value = arrayList
+            }
+            .addOnFailureListener {
+
+                Log.d("fireStore", "student error: ${it.message}")
+
+            }
+        return studentIdList
+    }
+    fun getListOfAllAcceptedOrRequestPendingStudents(tutorId: String):MutableLiveData<ArrayList<String>>
+    {
+        val studentIdList=MutableLiveData<ArrayList<String>>()
+        mFirestore.collection(COLLECTION_TUTOR).document(tutorId).collection(COLLECTION_TUTOR_STUDENTS)
+            .whereEqualTo("declined",false)
+            .get()
+            .addOnSuccessListener {
+                val arrayList= arrayListOf<String>()
+                for (snapshot in it!!) {
+
+                    val request = snapshot.toObject(RequestTutor::class.java)
+
+                    arrayList.add(request.studentId)
+                }
+
+                studentIdList.value = arrayList
+            }
+            .addOnFailureListener {
+
+                    Log.d("fireStore", "student error: ${it.message}")
+
             }
 
 

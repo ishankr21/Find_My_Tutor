@@ -5,6 +5,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.findmytutor.R
 import com.example.findmytutor.dataClasses.RequestTutor
 import com.example.findmytutor.databinding.ItemRequestTutorBinding
 import java.text.SimpleDateFormat
@@ -23,13 +24,21 @@ class TutorRequestsAdapter(
             val simpleDateFormat = SimpleDateFormat("dd MMM yyyy")
             binding.itemRequestTutorStudentRequestDate.text="Requested on : "+simpleDateFormat.format(date)
 
-            if (request.isCompleted && request.isDeclined)
-                binding.itemRequestTutorStudentRequestStatus.text="Status : Request was declined by you"
-            else if(request.isCompleted && !request.isDeclined)
-                binding.itemRequestTutorStudentRequestStatus.text="Status : Request was accepted by you"
-            else
-                binding.itemRequestTutorStudentRequestStatus.text="Status : Request approval pending"
-
+            if (request.isCompleted && request.isDeclined) {
+                binding.animStatus.setAnimation(R.raw.red_status)
+                binding.itemRequestTutorStudentRequestStatus.text =
+                    "Status : Request was declined by you"
+            }
+                else if(request.isCompleted && !request.isDeclined) {
+                binding.animStatus.setAnimation(R.raw.status)
+                binding.itemRequestTutorStudentRequestStatus.text =
+                    "Status : Request was accepted by you"
+            }
+                else {
+                binding.animStatus.setAnimation(R.raw.yellow_status)
+                binding.itemRequestTutorStudentRequestStatus.text =
+                    "Status : Request approval pending"
+            }
             binding.root.setOnClickListener {
                 itemClickLister.onItemClicked(request)
             }

@@ -10,14 +10,17 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.findmytutor.dataClasses.Student
+import com.example.findmytutor.dataClasses.Tutor
 import com.example.findmytutor.databinding.ItemStudentBinding
 import com.facebook.shimmer.Shimmer
 import com.facebook.shimmer.ShimmerDrawable
+import kotlin.math.roundToInt
 
 class StudentAdapter(
 var items:ArrayList<Student>,
 var context: Context,
-private val itemClickListener: StudentAdapter.OnItemClickListener
+private val itemClickListener: StudentAdapter.OnItemClickListener,
+val tutor:Tutor
 ): RecyclerView.Adapter<StudentAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: ItemStudentBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -34,7 +37,7 @@ private val itemClickListener: StudentAdapter.OnItemClickListener
                 .build()
             val shimmerDrawable = ShimmerDrawable()
             shimmerDrawable.setShimmer(shimmer)
-
+            binding.txtStudentDistanceFromTutor.text = "Distance "+ (com.example.findmytutor.utilities.Utils.calculateDistanceBetweenStudentTutor(tutor.latitude,tutor.longitude,student.latitude,student.longitude)/1000.0).roundToInt().toString()+" km."
             if(student.profilePicturePath!="")
             {
 

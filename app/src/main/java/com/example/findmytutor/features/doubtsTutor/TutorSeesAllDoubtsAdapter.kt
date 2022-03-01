@@ -7,6 +7,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.findmytutor.dataClasses.DoubtInfo
 import com.example.findmytutor.databinding.ItemTutorSeeStudentDoubtsBinding
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class TutorSeesAllDoubtsAdapter(
@@ -22,7 +25,13 @@ class TutorSeesAllDoubtsAdapter(
 
 
 
-            binding.tutorSeesStudentAllDoubtDateValue.text=doubtInfo.createdOn
+            val millis=doubtInfo.createdOn.toLong()*1000
+            val dateInMilli = Date(millis)
+            val sdf = SimpleDateFormat("dd/MM/yy   h:mm a")
+            sdf.timeZone = TimeZone.getTimeZone("Asia/Calcutta")
+            val formattedDate = sdf.format(dateInMilli)
+
+            binding.tutorSeesStudentAllDoubtDateValue.text=formattedDate
 
             binding.root.setOnClickListener {
                 itemClickLister.onItemClicked(doubtInfo)

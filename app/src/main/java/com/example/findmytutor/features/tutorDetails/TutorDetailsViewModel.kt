@@ -9,6 +9,8 @@ import com.example.findmytutor.dataRepo.FirebaseRepo
 class TutorDetailsViewModel:ViewModel() {
     var mStudentLiveData: MutableLiveData<Student> = MutableLiveData()
     var requestsSent:MutableLiveData<Boolean> = MutableLiveData()
+    var getAllAcceptedStudents= MutableLiveData<ArrayList<String>>()
+    var getAllAcceptedOrPendingStudents= MutableLiveData<ArrayList<String>>()
 
     fun getStudent()
     {
@@ -23,6 +25,15 @@ class TutorDetailsViewModel:ViewModel() {
     fun updateTutorRatings(ratings:ArrayList<Int>,tutorId:String)
     {
         FirebaseRepo().updateRatingOfTutor(tutorId,ratings)
+    }
+    fun getAllAcceptedStudents(tutorId: String)
+    {
+        getAllAcceptedStudents=FirebaseRepo().getListOfAllAcceptedStudents(tutorId)
+    }
+
+    fun getAllAcceptedOrPendingStudent(tutorId: String)
+    {
+        getAllAcceptedOrPendingStudents=FirebaseRepo().getListOfAllAcceptedOrRequestPendingStudents(tutorId)
     }
 
 }

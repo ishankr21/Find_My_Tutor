@@ -11,17 +11,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.example.findmytutor.dataClasses.Student
 import com.example.findmytutor.dataClasses.Tutor
 import com.example.findmytutor.databinding.TutorItemLayoutBinding
+import com.example.findmytutor.utilities.Utils
 import com.facebook.shimmer.Shimmer
 import com.facebook.shimmer.ShimmerDrawable
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.roundToInt
 
 class TutorAdapter(
     var items:ArrayList<Tutor>,
     var context: Context,
-    private val itemClickListener: OnItemClickListener
+    private val itemClickListener: OnItemClickListener,
+    val student:Student
 ):RecyclerView.Adapter<TutorAdapter.ViewHolder>(), Filterable {
     var completeTutorList:ArrayList<Tutor> = arrayListOf()
     init{
@@ -67,6 +71,7 @@ class TutorAdapter(
                             .apply(RequestOptions.bitmapTransform( RoundedCorners(14)))
                             .into(binding.imgTutor)
                     }
+                    binding.tutorDistance.text = "Distance from you : "+ (Utils.calculateDistanceBetweenStudentTutor(tutor.latitude,tutor.longitude,student.latitude,student.longitude)/1000.0).roundToInt().toString()+" km."
                     binding.tutorName.text = tutor.name
                     binding.tutorAge.text= "Age : ${tutor.age}"
                     if (tutor.preferredClass!="")

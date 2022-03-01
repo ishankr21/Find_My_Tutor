@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.findmytutor.R
+import com.example.findmytutor.base.BaseFragment
 import com.example.findmytutor.dataClasses.DoubtInfo
 import com.example.findmytutor.dataClasses.SolutionInfo
 import com.example.findmytutor.databinding.FragmentTutorSeeAllSolutionGivenByHimBinding
@@ -16,7 +17,7 @@ import com.example.findmytutor.databinding.FragmentTutorsSeeAllDoubtsBinding
 import com.example.findmytutor.features.MainActivity
 
 
-class TutorSeeAllSolutionGivenByHimFragment : Fragment(),
+class TutorSeeAllSolutionGivenByHimFragment : BaseFragment(),
     TutorMySolutionsAdapter.OnSolutionClickListner {
 
 
@@ -43,11 +44,27 @@ class TutorSeeAllSolutionGivenByHimFragment : Fragment(),
         mDoubtTutorViewModel =
             ViewModelProvider(this)[DoubtTutorViewModel::class.java]
         binding.tutorSeesHisSolutionsRecyclerView.layoutManager= LinearLayoutManager(requireContext())
+
+        showProgressDialog("Loading")
         mDoubtTutorViewModel.getTutorSolutions()
         mDoubtTutorViewModel.mAllTutorSolutions.observe(viewLifecycleOwner)
         {
-            binding.tutorSeesHisSolutionsRecyclerView.adapter=
-                TutorMySolutionsAdapter(it,requireContext(),this)
+            dismissProgressDialog()
+            if(it.size==0)
+            {
+                binding.tutorSeesHisSolutionsRecyclerView.visibility=View.GONE
+                binding.animEmptyStudentDoubts.visibility=View.VISIBLE
+                binding.txtNoStudent.visibility=View.VISIBLE
+            }
+            else
+            {
+                binding.tutorSeesHisSolutionsRecyclerView.visibility=View.VISIBLE
+                binding.animEmptyStudentDoubts.visibility=View.GONE
+                binding.txtNoStudent.visibility=View.GONE
+                binding.tutorSeesHisSolutionsRecyclerView.adapter=
+                    TutorMySolutionsAdapter(it,requireContext(),this)
+            }
+
         }
     }
 

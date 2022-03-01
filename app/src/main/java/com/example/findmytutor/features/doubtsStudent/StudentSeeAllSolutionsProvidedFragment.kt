@@ -45,7 +45,21 @@ class StudentSeeAllSolutionsProvidedFragment : Fragment(),
         mDoubtStudentViewModel.getAllTutorSolution()
         mDoubtStudentViewModel.mAllStudentSolutions.observe(viewLifecycleOwner)
         {
-            binding.studentSeesSolutionRecyclerView.adapter=StudentTutorSolutionsAdapter(it,requireContext(),this)
+            if (it.size==0)
+            {
+                binding.studentSeesSolutionRecyclerView.visibility=View.GONE
+                binding.animEmptyStudentSolutions.visibility=View.VISIBLE
+                binding.txtNoStudent.visibility=View.VISIBLE
+            }
+            else
+            {
+                binding.studentSeesSolutionRecyclerView.visibility=View.VISIBLE
+                binding.animEmptyStudentSolutions.visibility=View.GONE
+                binding.txtNoStudent.visibility=View.GONE
+                binding.studentSeesSolutionRecyclerView.adapter=StudentTutorSolutionsAdapter(it,requireContext(),this)
+
+            }
+
         }
     }
 

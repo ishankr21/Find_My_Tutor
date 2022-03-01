@@ -11,6 +11,9 @@ import com.example.findmytutor.databinding.ItemSolutionsGivenByTutorBinding
 
 import com.example.findmytutor.databinding.ItemStudentMyDoubtBinding
 import com.example.findmytutor.databinding.ItemStudentViewOfSolutionsGivenByTutorBinding
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class TutorMySolutionsAdapter(
@@ -22,7 +25,13 @@ class TutorMySolutionsAdapter(
         @SuppressLint("SetTextI18n", "SimpleDateFormat")
         fun bindItems(solutionInfo: SolutionInfo) {
 
-            binding.tutorMySolutionDateValue.text=solutionInfo.solvedOn
+            val millis=solutionInfo.solvedOn.toLong()*1000
+            val dateInMilli = Date(millis)
+            val sdf = SimpleDateFormat("dd/MM/yy   h:mm a")
+            sdf.timeZone = TimeZone.getTimeZone("Asia/Calcutta")
+            val formattedDate = sdf.format(dateInMilli)
+
+            binding.tutorMySolutionDateValue.text=formattedDate
             binding.tutorMySolutionDoubtIdValue.text=solutionInfo.doubtId
             binding.tutorMySolutionSolutionIdValue.text=solutionInfo.solutionId
 

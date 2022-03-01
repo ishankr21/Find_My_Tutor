@@ -3,6 +3,7 @@ package com.example.findmytutor.features.myTutors
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.findmytutor.dataClasses.RequestTutor
+import com.example.findmytutor.dataClasses.Student
 import com.example.findmytutor.dataClasses.Tutor
 import com.example.findmytutor.dataRepo.FirebaseRepo
 
@@ -11,6 +12,7 @@ class StudentMyTutorViewModel: ViewModel() {
     var mAcceptedRequestsLiveData = MutableLiveData<ArrayList<RequestTutor>>()
     var mRejectedRequestsLiveData = MutableLiveData<ArrayList<RequestTutor>>()
     var mTutorData = MutableLiveData<Tutor>()
+    var mStudentLiveData = MutableLiveData<Student>()
 
     fun getAllAcceptedRequests()
     {
@@ -25,5 +27,10 @@ class StudentMyTutorViewModel: ViewModel() {
     fun getAllTutorId(tutorId:String)
     {
         mTutorData=FirebaseRepo().getTutorById(tutorId)
+    }
+
+    fun getStudent()
+    {
+        mStudentLiveData= FirebaseRepo().getStudent()
     }
 }

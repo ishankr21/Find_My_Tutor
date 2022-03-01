@@ -9,12 +9,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.findmytutor.R
+import com.example.findmytutor.base.BaseFragment
 import com.example.findmytutor.dataClasses.DoubtInfo
 import com.example.findmytutor.databinding.FragmentTutorsSeeAllDoubtsBinding
 import com.example.findmytutor.features.MainActivity
 
 
-class TutorsSeeAllDoubtsFragment : Fragment(), TutorSeesAllDoubtsAdapter.OnRequestClickListner {
+class TutorsSeeAllDoubtsFragment : BaseFragment(), TutorSeesAllDoubtsAdapter.OnRequestClickListner {
 
     private var _binding: FragmentTutorsSeeAllDoubtsBinding? = null
     private val binding get() = _binding!!
@@ -39,11 +40,26 @@ class TutorsSeeAllDoubtsFragment : Fragment(), TutorSeesAllDoubtsAdapter.OnReque
         mDoubtTutorViewModel =
             ViewModelProvider(this)[DoubtTutorViewModel::class.java]
         binding.tutorSeesAllDoubtsRecyclerView.layoutManager= LinearLayoutManager(requireContext())
+        showProgressDialog("Loading")
         mDoubtTutorViewModel.getAllDoubts()
         mDoubtTutorViewModel.mAllDoubts.observe(viewLifecycleOwner)
         {
-            binding.tutorSeesAllDoubtsRecyclerView.adapter=
-                TutorSeesAllDoubtsAdapter(it,requireContext(),this)
+            dismissProgressDialog()
+            if(it.size==0)
+            {
+                binding.tutorSeesAllDoubtsRecyclerView.visibility=View.GONE
+                binding.animEmptyStudentDoubts.visibility=View.VISIBLE
+                binding.txtNoStudent.visibility=View.VISIBLE
+            }
+            else
+            {
+                binding.tutorSeesAllDoubtsRecyclerView.visibility=View.VISIBLE
+                binding.animEmptyStudentDoubts.visibility=View.GONE
+                binding.txtNoStudent.visibility=View.GONE
+                binding.tutorSeesAllDoubtsRecyclerView.adapter=
+                    TutorSeesAllDoubtsAdapter(it,requireContext(),this)
+            }
+
         }
     }
 

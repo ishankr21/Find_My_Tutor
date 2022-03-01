@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.findmytutor.R
+import com.example.findmytutor.base.BaseFragment
 import com.example.findmytutor.dataClasses.Student
 import com.example.findmytutor.databinding.FragmentHomeStudentsBinding
 import com.example.findmytutor.databinding.FragmentHomeTutorsBinding
@@ -18,7 +19,7 @@ import com.example.findmytutor.features.homeStudents.HomeStudentViewModel
 import com.example.findmytutor.features.homeStudents.TutorAdapter
 
 
-class HomeTutorsFragment : Fragment(), StudentAdapter.OnItemClickListener {
+class HomeTutorsFragment : BaseFragment(), StudentAdapter.OnItemClickListener {
 
     private var _binding: FragmentHomeTutorsBinding? = null
     private val binding get() = _binding!!
@@ -53,18 +54,39 @@ class HomeTutorsFragment : Fragment(), StudentAdapter.OnItemClickListener {
 
         binding.studentsRecyclerView.layoutManager = GridLayoutManager(requireContext(),2)
         binding.studentsRecyclerView.showShimmer()
-        mHomeTutorViewModel.getAllAcceptedStudents()
-        mHomeTutorViewModel.getAllAcceptedStudents.observe(viewLifecycleOwner)
-        {list->
-            mHomeTutorViewModel.getAllStudents(list)
-            mHomeTutorViewModel.mListOfStudent.observe(viewLifecycleOwner)
-            {
+        showProgressDialog("Loading")
+        mHomeTutorViewModel.getTutor()
+        mHomeTutorViewModel.mTutorLiveData.observe(viewLifecycleOwner)
+        {tutor->
+           mHomeTutorViewModel.getAllAcceptedStudents()
+            mHomeTutorViewModel.getAllAcceptedStudents.observe(viewLifecycleOwner)
+            {list->
+                dismissProgressDialog()
+                if(list.size>0)
+                {
+                    binding.studentsRecyclerView.visibility=View.VISIBLE
+                    binding.animEmptyTutorHome.visibility=View.GONE
+                    binding.txtNoStudent.visibility=View.GONE
+                    mHomeTutorViewModel.getAllStudents(list)
+                    mHomeTutorViewModel.mListOfStudent.observe(viewLifecycleOwner)
+                    {
 
-                binding.studentsRecyclerView.adapter=StudentAdapter(it,requireContext(),this)
-                binding.studentsRecyclerView.hideShimmer()
+                        binding.studentsRecyclerView.adapter=StudentAdapter(it,requireContext(),this,tutor)
+                        binding.studentsRecyclerView.hideShimmer()
+                    }
+                }
+                else
+                {
+                    binding.studentsRecyclerView.visibility=View.GONE
+                    binding.animEmptyTutorHome.visibility=View.VISIBLE
+                    binding.txtNoStudent.visibility=View.VISIBLE
+                }
+
+
             }
 
         }
+
 
     }
 

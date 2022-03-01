@@ -44,8 +44,20 @@ class TutorChatHomeFragment : Fragment(), ChatHomeTutorAdapter.OnChatClickListne
         mTutorChatHomeViewModel.getAllChats()
         mTutorChatHomeViewModel.mChattingHelperLiveData.observe(viewLifecycleOwner)
         {
-
-            binding.chatHomeTutorRecyclerView.adapter=ChatHomeTutorAdapter(it,requireContext(),this)
+            if(it.size==0)
+            {
+                binding.chatHomeTutorRecyclerView.visibility=View.GONE
+                binding.animEmptyTutorChat.visibility=View.VISIBLE
+                binding.txtNoStudent.visibility=View.VISIBLE
+            }
+            else
+            {
+                binding.chatHomeTutorRecyclerView.visibility = View.VISIBLE
+                binding.animEmptyTutorChat.visibility = View.GONE
+                binding.txtNoStudent.visibility = View.GONE
+                binding.chatHomeTutorRecyclerView.adapter =
+                    ChatHomeTutorAdapter(it, requireContext(), this)
+            }
         }
     }
 

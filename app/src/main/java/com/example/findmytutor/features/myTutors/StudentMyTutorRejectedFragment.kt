@@ -45,13 +45,22 @@ class StudentMyTutorRejectedFragment :  BaseFragment(), StudentMyTutorAdapter.On
 
     override fun onItemClicked(requestTutor: RequestTutor) {
         showProgressDialog("Please Wait")
-        mStudentMyTutorViewModel.getAllTutorId(requestTutor.tutorId)
-        mStudentMyTutorViewModel.mTutorData.observe(viewLifecycleOwner)
-        {
-            dismissProgressDialog()
-            val bundle=Bundle()
-            bundle.putSerializable("tutor",it)
-            findNavController().navigate(R.id.action_studentMyTutorsFragment_to_tutorDetailsFragment,bundle)
+
+        mStudentMyTutorViewModel.getStudent()
+        mStudentMyTutorViewModel.mStudentLiveData.observe(viewLifecycleOwner)
+        { student ->
+            mStudentMyTutorViewModel.getAllTutorId(requestTutor.tutorId)
+            mStudentMyTutorViewModel.mTutorData.observe(viewLifecycleOwner)
+            {
+                dismissProgressDialog()
+                val bundle = Bundle()
+                bundle.putSerializable("tutor", it)
+                bundle.putSerializable("student",student)
+                findNavController().navigate(
+                    R.id.action_studentMyTutorsFragment_to_tutorDetailsFragment,
+                    bundle
+                )
+            }
         }
     }
 }

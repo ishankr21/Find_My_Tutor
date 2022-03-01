@@ -72,7 +72,7 @@ class TutorCreateSolutionFragment : BaseFragment() {
 
         if (solutionInfoCame.solutionId!="")
         {
-
+            if(solutionInfoCame.solutionImagePath!="")
             binding.tutorCreateSolutionBtnAddImage.text = "Change Image"
             binding.tutorCreateSolutionDoubtDescription.setText(solutionInfoCame.solutionDescription)
             if(solutionInfoCame.solutionImagePath!="") {
@@ -115,12 +115,10 @@ class TutorCreateSolutionFragment : BaseFragment() {
                 mDoubtTutorViewModel.getTutorDetails()
                 mDoubtTutorViewModel.mTutorLiveDetails.observe(viewLifecycleOwner)
                 {
-                    val date = Timestamp.now().toDate()
 
-                    val simpleDateFormat = SimpleDateFormat("dd MMM yyyy")
-                    var solutionInfo= SolutionInfo(
+                    val solutionInfo= SolutionInfo(
                         doubtId =solutionInfoCame.doubtId ,
-                        solvedOn = simpleDateFormat.format(date).toString(),
+                        solvedOn =  Timestamp.now().seconds.toString(),
                         solutionId = "FMTSOL"+ (System.currentTimeMillis()/1000).toString(),
                         tutorId = FirebaseAuth.getInstance().currentUser!!.uid,
                         tutorName = it.name,

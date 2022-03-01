@@ -2,16 +2,19 @@ package com.example.findmytutor.features.doubtsStudent
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.findmytutor.dataClasses.DoubtInfo
-
 import com.example.findmytutor.databinding.ItemStudentMyDoubtBinding
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class StudentMyDoubtAdapter(
-    var doubtsArray:ArrayList<DoubtInfo>,
+    private var doubtsArray:ArrayList<DoubtInfo>,
     val context: Context,
     private val itemClickLister: OnRequestClickListner
 ): RecyclerView.Adapter<StudentMyDoubtAdapter.ViewHolder>() {
@@ -23,8 +26,13 @@ class StudentMyDoubtAdapter(
 
             if(doubtInfo.isClosed)
                 binding.studentMyDoubtStatusValue.text="Closed"
+            val millis=doubtInfo.createdOn.toLong()*1000
+            val dateInMilli = Date(millis)
+            val sdf = SimpleDateFormat("dd/MM/yy   h:mm a")
+            sdf.timeZone = TimeZone.getTimeZone("Asia/Calcutta")
+            val formattedDate = sdf.format(dateInMilli)
 
-            binding.studentMyDoubtDateValue.text=doubtInfo.createdOn
+            binding.studentMyDoubtDateValue.text=formattedDate
 
             binding.root.setOnClickListener {
                 itemClickLister.onItemClicked(doubtInfo)
@@ -55,6 +63,13 @@ class StudentMyDoubtAdapter(
     }
     interface OnRequestClickListner {
         fun onItemClicked(doubtInfo: DoubtInfo)
+    }
+    fun updateDoubtsList(listOfDoubts:ArrayList<DoubtInfo>)
+    {
+        Log.d("doubt","from adapter ${listOfDoubts.size}")
+        doubtsArray.clear()
+        doubtsArray.addAll(listOfDoubts)
+        notifyDataSetChanged()
     }
 
 
