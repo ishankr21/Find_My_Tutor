@@ -27,18 +27,28 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/tutor_details_back_button"
+            android:layout_toRightOf="@+id/tutor_details_back_button"
             android:fontFamily="@font/manrope_bold"
             android:gravity="center"
-            android:paddingEnd="24sp"
+            android:layout_toLeftOf="@+id/tutor_details_delete_button"
             android:text="Tutor Details"
             android:textColor="@color/black"
             android:textSize="30sp"
             android:textStyle="bold"
             tools:ignore="RtlSymmetry" />
 
-    </RelativeLayout>
+        <ImageButton
+            android:id="@+id/tutor_details_delete_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="8sp"
+            android:visibility="gone"
+            android:src="@drawable/ic_baseline_delete_24" />
 
+    </RelativeLayout>
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"

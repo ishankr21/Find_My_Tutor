@@ -1,6 +1,8 @@
 package com.example.findmytutor.features.profile
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -17,7 +19,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.findmytutor.R
 import com.example.findmytutor.base.BaseFragment
@@ -37,12 +38,13 @@ import com.theartofdev.edmodo.cropper.CropImageView
 class ProfileTutorFragment : BaseFragment() {
 
 
-    var imageURI: Uri? = null
-    lateinit var cameraPermission: Array<String>
-    lateinit var storagePermission: Array<String>
+    private var imageURI: Uri? = null
+    private lateinit var cameraPermission: Array<String>
+    private lateinit var storagePermission: Array<String>
     var spinnerArrayClass: Array<String> = arrayOf()
     var spinnerArrayEmployment: Array<String> = arrayOf()
     var spinnerSchoolBoards:Array<String> = arrayOf()
+    var spinnerSubjects:Array<String> = arrayOf()
     private lateinit var mProfileFragmentViewModel: ProfileViewModel
     private var _binding: FragmentProfileTutorBinding? = null
     private val binding get() = _binding!!
@@ -71,25 +73,31 @@ class ProfileTutorFragment : BaseFragment() {
         _binding = null
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mProfileFragmentViewModel =
+            ViewModelProvider(this)[ProfileViewModel::class.java]
         if (!isProfileCompleted) {
 
             (activity as MainActivity).hideBottomNavigationView()
+            //getLocation()
 
         }
         else {
 
             (activity as MainActivity).setVisibleBottomNavigationView()
+            binding.txtGetMyLocation.text="Update My Location"
         }
         spinnerArrayClass=resources.getStringArray(R.array.classes)
         spinnerArrayClass[0]="Please select your preferred class"
         spinnerArrayEmployment=resources.getStringArray(R.array.employment_status)
         spinnerSchoolBoards=resources.getStringArray(R.array.school_board)
         spinnerSchoolBoards[0]="Please select your preferred school board"
+        spinnerSubjects=resources.getStringArray(R.array.subjects)
+        spinnerSubjects[0]="Select the subject you want to teach"
         initSpinners()
-        mProfileFragmentViewModel =
-            ViewModelProvider(this)[ProfileViewModel::class.java]
+
         mView = view
 
 
@@ -129,16 +137,27 @@ class ProfileTutorFragment : BaseFragment() {
 
 
             if(it?.tutorFavouriteSubject!="")
-                binding.registerTutorFavouriteSubjectEdittext.setText(it?.tutorFavouriteSubject)
+            {
+                var position= 0
+                for (i in spinnerSubjects.indices)
+                {
+                    if(spinnerSubjects[i]==it.tutorFavouriteSubject)
+                    {
+                        position=i
+                    }
+
+                }
+                binding.spnRegisterTutorFavouriteSubject.setSelection(position)
+            }
 
             if(it?.preferredClass!="") {
                 binding.spnSelectProfileTutorClass.setSelection(it?.preferredClass?.drop(6)!!.toInt())
             }
 
 
-            if(it?.employmentStatus!="")
+            if(it.employmentStatus!="")
             {
-                when (it?.employmentStatus) {
+                when (it.employmentStatus) {
                     "Student" -> {
                         binding.spnSelectTutorEmploymentStatus.setSelection(3)
                     }
@@ -167,9 +186,9 @@ class ProfileTutorFragment : BaseFragment() {
                     }
                 }
             }
-            if(it?.desiredFees!=0.0f)
+            if(it.desiredFees!=0.0f)
             {
-                binding.registerTutorDesiredFeesEdittext.setText(it?.desiredFees.toString())
+                binding.registerTutorDesiredFeesEdittext.setText(it.desiredFees.toString())
             }
             if(it.latitude!=0.0)
             {
@@ -180,8 +199,8 @@ class ProfileTutorFragment : BaseFragment() {
             {
                 longitude=it.longitude.toString()
             }
-            if (it?.profilePicturePath != "") {
-                Glide.with(requireContext()).load(it?.profilePicturePath)
+            if (it.profilePicturePath != "") {
+                Glide.with(requireContext()).load(it.profilePicturePath)
                     .into(binding.imageViewProfileTutor)
 
                 if (isAdded) {
@@ -231,7 +250,7 @@ class ProfileTutorFragment : BaseFragment() {
                 {
                     showToast(requireContext(),"Please enter your desired fees")
                 }
-                else   if(binding.registerTutorFavouriteSubjectEdittext.text.isNullOrEmpty())
+                else   if(binding.spnRegisterTutorFavouriteSubject.selectedItemPosition==0)
                 {
                     showToast(requireContext(),"Please enter your preferred subject")
                 }
@@ -265,7 +284,7 @@ class ProfileTutorFragment : BaseFragment() {
                         age = it.age,
                         profilePicturePath = it.profilePicturePath,
                         preferredClass = binding.spnSelectProfileTutorClass.selectedItem.toString(),
-                        tutorFavouriteSubject = binding.registerTutorFavouriteSubjectEdittext.text.toString(),
+                        tutorFavouriteSubject = binding.spnRegisterTutorFavouriteSubject.selectedItem.toString(),
                         desiredFees = binding.registerTutorDesiredFeesEdittext.text.toString().toFloat(),
                         employmentStatus = binding.spnSelectTutorEmploymentStatus.selectedItem.toString(),
                         tokenId = it.tokenId,
@@ -292,11 +311,19 @@ class ProfileTutorFragment : BaseFragment() {
         }
 
         binding.profileTutorLogoutButton.setOnClickListener {
-
+            AlertDialog.Builder(requireContext())
+                .setTitle("Are you sure you want to log out?")
+                .setPositiveButton("Yes") { _, _ ->
             FirebaseMessaging.getInstance().unsubscribeFromTopic("/topics/tutors")
             FirebaseMessaging.getInstance().unsubscribeFromTopic("/topics/${FirebaseAuth.getInstance().currentUser!!.uid}")
             mProfileFragmentViewModel.signOut()
             mView.findNavController().navigate(R.id.action_profileTutorFragment_to_loginFragment)
+                }
+                .setNegativeButton("Cancel"){dialog,_->
+                    dialog.cancel()
+
+                }
+                .show()
         }
 
         binding.profileTutorBackButton.setOnClickListener {
@@ -306,12 +333,24 @@ class ProfileTutorFragment : BaseFragment() {
                 requireActivity().finishAffinity()
         }
 
+        binding.getMyLocation.setOnClickListener {
+
+            getLocation()
+        }
 
 
-        //location management
-    if(latitude=="")
+
+
+
+
+
+
+
+
+
+    }
+    private fun getLocation()
     {
-
         mProfileFragmentViewModel.getLocusCurrentLocation(requireContext())
         mProfileFragmentViewModel.addressLiveData.observe(viewLifecycleOwner)
         {
@@ -321,22 +360,11 @@ class ProfileTutorFragment : BaseFragment() {
                 longitude=it.second
 
 
-
+                showToast(requireContext(),"Location Updated Successfully")
             }
 
         }
     }
-
-
-
-
-
-
-
-
-
-    }
-
     private fun initSpinners() {
 
         val arrayAdapterClass = object : ArrayAdapter<String>(
@@ -408,6 +436,29 @@ class ProfileTutorFragment : BaseFragment() {
         }
 
         binding.spnSelectProfileTutorSchoolBoard.adapter = arrayAdapterSchoolBoard
+
+        val arrayAdapterSubject = object : ArrayAdapter<String>(
+            requireContext(),
+            android.R.layout.simple_list_item_1,
+            spinnerSubjects
+        ) {
+
+            override fun getDropDownView(
+                position: Int,
+                convertView: View?,
+                parent: ViewGroup
+            ): View {
+                val view = super.getDropDownView(position, convertView, parent)
+                val item = view as TextView
+                item.run {
+                    this.isSingleLine = false
+                }
+
+                return item
+            }
+        }
+
+        binding.spnRegisterTutorFavouriteSubject.adapter = arrayAdapterSubject
 
     }
     private fun showImportImageDialog() {

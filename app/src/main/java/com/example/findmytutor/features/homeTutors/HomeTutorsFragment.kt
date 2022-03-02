@@ -7,11 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.findmytutor.R
 import com.example.findmytutor.base.BaseFragment
+import com.example.findmytutor.dataClasses.RequestTutor
 import com.example.findmytutor.dataClasses.Student
+import com.example.findmytutor.dataClasses.Tutor
 import com.example.findmytutor.databinding.FragmentHomeStudentsBinding
 import com.example.findmytutor.databinding.FragmentHomeTutorsBinding
 import com.example.findmytutor.features.MainActivity
@@ -25,7 +28,8 @@ class HomeTutorsFragment : BaseFragment(), StudentAdapter.OnItemClickListener {
     private val binding get() = _binding!!
     private lateinit var studentAdapter: StudentAdapter
     private lateinit var mHomeTutorViewModel: HomeTutorViewModel
-
+    private var tutor= Tutor()
+    var allAcceptedStudent:ArrayList<RequestTutor> = arrayListOf()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -57,17 +61,24 @@ class HomeTutorsFragment : BaseFragment(), StudentAdapter.OnItemClickListener {
         showProgressDialog("Loading")
         mHomeTutorViewModel.getTutor()
         mHomeTutorViewModel.mTutorLiveData.observe(viewLifecycleOwner)
-        {tutor->
+        {t->
+            tutor=t
            mHomeTutorViewModel.getAllAcceptedStudents()
             mHomeTutorViewModel.getAllAcceptedStudents.observe(viewLifecycleOwner)
             {list->
+                allAcceptedStudent=list
                 dismissProgressDialog()
                 if(list.size>0)
                 {
                     binding.studentsRecyclerView.visibility=View.VISIBLE
                     binding.animEmptyTutorHome.visibility=View.GONE
                     binding.txtNoStudent.visibility=View.GONE
-                    mHomeTutorViewModel.getAllStudents(list)
+                    var listOfStudentId=ArrayList<String>()
+                    for( i in list)
+                    {
+                        listOfStudentId.add(i.studentId)
+                    }
+                    mHomeTutorViewModel.getAllStudents(listOfStudentId)
                     mHomeTutorViewModel.mListOfStudent.observe(viewLifecycleOwner)
                     {
 
@@ -91,6 +102,19 @@ class HomeTutorsFragment : BaseFragment(), StudentAdapter.OnItemClickListener {
     }
 
     override fun onItemClicked(student: Student) {
-        TODO("Not yet implemented")
+        var requestTutor= RequestTutor()
+        for(i in allAcceptedStudent)
+        {
+            if(i.studentId==student.studentId)
+                requestTutor=i
+        }
+        val bundle = Bundle()
+        bundle.putSerializable("tutor", tutor)
+        bundle.putSerializable("student", student)
+        bundle.putSerializable("requestTutor",requestTutor)
+        findNavController().navigate(
+            R.id.action_homeTutorsFragment_to_studentDetailsFragment,
+            bundle
+        )
     }
 }

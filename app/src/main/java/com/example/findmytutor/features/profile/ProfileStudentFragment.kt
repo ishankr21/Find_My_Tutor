@@ -1,6 +1,7 @@
 package com.example.findmytutor.features.profile
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -22,7 +23,6 @@ import com.example.findmytutor.R
 import com.example.findmytutor.base.BaseFragment
 import com.example.findmytutor.dataClasses.Student
 import com.example.findmytutor.databinding.FragmentProfileBinding
-import com.example.findmytutor.databinding.FragmentProfileTutorBinding
 import com.example.findmytutor.features.MainActivity
 import com.example.findmytutor.utilities.Constants
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -34,11 +34,6 @@ import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 
 
-
-
-
-
-
 class ProfileStudentFragment : BaseFragment() {
 
     var imageURI: Uri? = null
@@ -47,6 +42,7 @@ class ProfileStudentFragment : BaseFragment() {
     private lateinit var mProfileFragmentViewModel: ProfileViewModel
     private var spinnerArrayClass: Array<String> = arrayOf()
     private var spinnerArraySchoolBoard: Array<String> = arrayOf()
+    var spinnerSubjects:Array<String> = arrayOf()
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
     private lateinit var mView: View
@@ -63,6 +59,8 @@ class ProfileStudentFragment : BaseFragment() {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         spinnerArrayClass= resources.getStringArray(R.array.classes)
         spinnerArraySchoolBoard= resources.getStringArray(R.array.school_board)
+        spinnerSubjects=resources.getStringArray(R.array.subjects)
+        spinnerSubjects[0]="Select the subject you help in"
 
         val bundle=arguments
         isProfileCompleted=bundle!!.getBoolean("isProfileCompleted")
@@ -78,6 +76,8 @@ class ProfileStudentFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mProfileFragmentViewModel =
+            ViewModelProvider(this)[ProfileViewModel::class.java]
         if (!isProfileCompleted) {
 
             (activity as MainActivity).hideBottomNavigationView()
@@ -86,12 +86,12 @@ class ProfileStudentFragment : BaseFragment() {
         else {
 
             (activity as MainActivity).setVisibleBottomNavigationView()
+            binding.txtGetMyLocation.text="Update Location"
         }
         initSpinners()
 
 
-        mProfileFragmentViewModel =
-            ViewModelProvider(this)[ProfileViewModel::class.java]
+
         mView = view
 
         val callback: OnBackPressedCallback =
@@ -134,7 +134,18 @@ class ProfileStudentFragment : BaseFragment() {
 
 
             if(it?.leastFavouriteSubject!="")
-                binding.registerStudentLeastFavouriteSubjectEdittext.setText(it.leastFavouriteSubject)
+            {
+                var position= 0
+                for (i in spinnerSubjects.indices)
+                {
+                    if(spinnerSubjects[i]==it.leastFavouriteSubject)
+                    {
+                        position=i
+                    }
+
+                }
+                binding.spnRegisterStudentBadSubject.setSelection(position)
+            }
 
             if(it?.studentClass!="") {
                 binding.spnSelectProfileStudentClass.setSelection(it?.studentClass?.drop(6)!!.toInt())
@@ -218,7 +229,7 @@ class ProfileStudentFragment : BaseFragment() {
                 {
                     showToast(requireContext(),"Please enter your school's name")
                 }
-                else if(binding.registerStudentLeastFavouriteSubjectEdittext.text.isNullOrEmpty())
+                else if(binding.spnRegisterStudentBadSubject.selectedItemPosition==0)
                 {
                     showToast(requireContext(),"Please enter your weakest subject")
                 }
@@ -244,7 +255,7 @@ class ProfileStudentFragment : BaseFragment() {
                         age = student.age,
                         profilePicturePath = student.profilePicturePath,
                         studentClass = binding.spnSelectProfileStudentClass.selectedItem.toString(),
-                        leastFavouriteSubject = binding.registerStudentLeastFavouriteSubjectEdittext.text.toString(),
+                        leastFavouriteSubject = binding.spnRegisterStudentBadSubject.selectedItem.toString(),
                         schoolBoard = binding.spnSelectProfileStudentSchoolBoard.selectedItem.toString(),
                         schoolName = binding.registerStudentSchoolNameEdittext.text.toString(),
                         tokenId = student.tokenId,
@@ -269,26 +280,23 @@ class ProfileStudentFragment : BaseFragment() {
         binding.profileLogoutButton.setOnClickListener {
 
 
-            FirebaseMessaging.getInstance().unsubscribeFromTopic("/topics/${FirebaseAuth.getInstance().currentUser!!.uid}")
-            mProfileFragmentViewModel.signOut()
-            mView.findNavController().navigate(R.id.action_profileStudentFragment_to_loginFragment)
-        }
-        if(latitude=="")
-        {
+             AlertDialog.Builder(requireContext())
+                .setTitle("Are you sure you want to log out?")
+                .setPositiveButton("Yes") { _, _ ->
 
-            mProfileFragmentViewModel.getLocusCurrentLocation(requireContext())
-            mProfileFragmentViewModel.addressLiveData.observe(viewLifecycleOwner)
-            {
-                if(it.first.isNotEmpty())
-                {
-                    latitude=it.first
-                    longitude=it.second
-
-
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic("/topics/${FirebaseAuth.getInstance().currentUser!!.uid}")
+                    mProfileFragmentViewModel.signOut()
+                    mView.findNavController().navigate(R.id.action_profileStudentFragment_to_loginFragment)
+                }
+                .setNegativeButton("Cancel"){dialog,_->
+                    dialog.cancel()
 
                 }
+                .show()
 
-            }
+        }
+        binding.getMyLocation.setOnClickListener {
+            getLocation()
         }
         binding.profileBackButton.setOnClickListener {
             if(isProfileCompleted)
@@ -298,9 +306,45 @@ class ProfileStudentFragment : BaseFragment() {
         }
 
     }
+    private fun getLocation()
+    {
+        mProfileFragmentViewModel.getLocusCurrentLocation(requireContext())
+        mProfileFragmentViewModel.addressLiveData.observe(viewLifecycleOwner)
+        {
+            if(it.first.isNotEmpty())
+            {
+                latitude=it.first
+                longitude=it.second
 
+
+                showToast(requireContext(),"Location Obtained Successfully")
+            }
+
+        }
+    }
     private fun initSpinners() {
+        val arrayAdapterSubject = object : ArrayAdapter<String>(
+            requireContext(),
+            android.R.layout.simple_list_item_1,
+            spinnerSubjects
+        ) {
 
+            override fun getDropDownView(
+                position: Int,
+                convertView: View?,
+                parent: ViewGroup
+            ): View {
+                val view = super.getDropDownView(position, convertView, parent)
+                val item = view as TextView
+                item.run {
+                    this.isSingleLine = false
+                }
+
+                return item
+            }
+        }
+
+        binding.spnRegisterStudentBadSubject.adapter = arrayAdapterSubject
         val arrayAdapterClass = object : ArrayAdapter<String>(
             requireContext(),
             android.R.layout.simple_list_item_1,

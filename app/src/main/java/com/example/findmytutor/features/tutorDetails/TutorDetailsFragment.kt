@@ -38,6 +38,7 @@ class TutorDetailsFragment : BaseFragment() {
     private var tutor= Tutor()
     private lateinit var mTutorDetailsViewModel: TutorDetailsViewModel
     private var student= Student()
+    private var requestTutor=RequestTutor()
 
 
 
@@ -70,12 +71,21 @@ class TutorDetailsFragment : BaseFragment() {
         mTutorDetailsViewModel.getAllAcceptedStudents(tutor.tutorId)
         mTutorDetailsViewModel.getAllAcceptedStudents.observe(viewLifecycleOwner)
         {
-            if(it.contains(student.studentId))
+            var pos=-1
+            for(i in it)
+            {
+                if(i.studentId==student.studentId) {
+                    pos = 1
+                    requestTutor=i
+                }
+            }
+            if(pos==1)
             {
                 dismissProgressDialog()
                 binding.tutorSendRequest.visibility=View.GONE
                 binding.btnRateTutor.visibility=View.VISIBLE
                 binding.btnPayTutor.visibility=View.VISIBLE
+                binding.tutorDetailsDeleteButton.visibility=View.VISIBLE
             }
             else
             {
@@ -292,6 +302,36 @@ class TutorDetailsFragment : BaseFragment() {
 
 
         }
+
+
+        binding.tutorDetailsDeleteButton.setOnClickListener {
+            AlertDialog.Builder(requireContext())
+                .setTitle("Do you really want to remove this this tutor?")
+                .setPositiveButton("Yes") { dialog, _ ->
+                    mTutorDetailsViewModel.deleteTutor(requestTutor)
+                        mTutorDetailsViewModel.deleteSuccess.observe(viewLifecycleOwner)
+                    {
+                        if(it)
+                        {
+                            showToast(requireContext(),"Tutor Removed")
+                            dialog.dismiss()
+                            findNavController().navigate(R.id.action_tutorDetailsFragment_to_homeStudentsFragment)
+                        }
+                        else
+                        {
+                            showToast(requireContext(),"Some Error Occurred")
+                            dialog.dismiss()
+                        }
+                    }
+
+                }
+                .setNegativeButton("Cancel"){dialog,_->
+                    dialog.cancel()
+
+                }
+                .show()
+        }
+
     }
 
 
