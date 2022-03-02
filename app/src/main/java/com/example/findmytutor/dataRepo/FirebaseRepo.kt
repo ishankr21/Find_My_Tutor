@@ -1,5 +1,6 @@
 package com.example.findmytutor.dataRepo
 
+import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -14,6 +15,9 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.sql.Time
 import java.text.SimpleDateFormat
 
@@ -583,9 +587,13 @@ class FirebaseRepo: FirebaseMessagingService() {
         return success
     }
 
-    fun getAllDoubtOfCurrentStudent(): MutableLiveData<ArrayList<DoubtInfo>> {
+    fun getAllDoubtOfCurrentStudent(context:Context): MutableLiveData<ArrayList<DoubtInfo>> {
 
         val allStudentDoubts=MutableLiveData<ArrayList<DoubtInfo>>()
+        runBlocking {
+            val job = launch { LocalDataRepo(context).deleteAllDoubts() }
+            job.join()
+        }
         mFirestore.collection(COLLECTION_DOUBT)
             .whereEqualTo("studentId",FirebaseAuth.getInstance().currentUser!!.uid)
             .orderBy("createdOn",Query.Direction.DESCENDING)
@@ -599,6 +607,12 @@ class FirebaseRepo: FirebaseMessagingService() {
                         val eachRequest= snapshot.toObject(DoubtInfo::class.java)
 
                         arrayList.add(eachRequest)
+                        runBlocking {
+                            val job = this.async {
+                                LocalDataRepo(context).insertDoubts(eachRequest)
+                            }
+                            job.await()
+                        }
                     }
                     allStudentDoubts.value = arrayList
                 } else {

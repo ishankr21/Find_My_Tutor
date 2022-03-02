@@ -26,6 +26,8 @@ class StudentMyDoubtAdapter(
 
             if(doubtInfo.isClosed)
                 binding.studentMyDoubtStatusValue.text="Closed"
+            else
+                binding.studentMyDoubtStatusValue.text="Active"
             val millis=doubtInfo.createdOn.toLong()*1000
             val dateInMilli = Date(millis)
             val sdf = SimpleDateFormat("dd/MM/yy   h:mm a")
@@ -64,7 +66,7 @@ class StudentMyDoubtAdapter(
     interface OnRequestClickListner {
         fun onItemClicked(doubtInfo: DoubtInfo)
     }
-    fun updateDoubtsList(listOfDoubts:ArrayList<DoubtInfo>)
+    fun updateDoubtsList(listOfDoubts:MutableList<DoubtInfo>)
     {
         Log.d("doubt","from adapter ${listOfDoubts.size}")
         doubtsArray.clear()

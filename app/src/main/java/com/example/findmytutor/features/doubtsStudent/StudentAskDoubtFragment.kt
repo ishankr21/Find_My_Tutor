@@ -21,7 +21,6 @@ import com.example.findmytutor.features.MainActivity
 class StudentAskDoubtFragment : BaseFragment(), StudentMyDoubtAdapter.OnRequestClickListner {
     private var _binding: FragmentStudentAskDoubtBinding? = null
     private val binding get() = _binding!!
-    private var doubtsArray:ArrayList<DoubtInfo> = arrayListOf()
     lateinit var adapter :StudentMyDoubtAdapter
 
 
@@ -53,10 +52,10 @@ class StudentAskDoubtFragment : BaseFragment(), StudentMyDoubtAdapter.OnRequestC
             ViewModelProvider(this)[DoubtStudentViewModel::class.java]
         binding.studentsDoubtRecyclerView.layoutManager=LinearLayoutManager(requireContext())
         showProgressDialog("Loading")
-        mDoubtStudentViewModel.getAllStudentDoubt()
+        mDoubtStudentViewModel.getAllStudentDoubt(requireContext())
         mDoubtStudentViewModel.mAllStudentDoubts.observe(viewLifecycleOwner)
         {
-            doubtsArray=it
+
             dismissProgressDialog()
             if(it.size==0)
             {
@@ -83,48 +82,78 @@ class StudentAskDoubtFragment : BaseFragment(), StudentMyDoubtAdapter.OnRequestC
             val mAlertDialog = mBuilder.show()
             mAlertDialog.setCanceledOnTouchOutside(true)
             filterBinding.statusActive.setOnClickListener {
-
-                val tempArray= arrayListOf<DoubtInfo>()
-//                for(i in doubtsArray)
-//                {
-//                    if(!i.isClosed)
-//                        tempArray.add(i)
-//                }
-//
-//                    adapter.updateDoubtsList(tempArray)
-                mAlertDialog.dismiss()
-            }
-            filterBinding.statusClosed.setOnClickListener {
-                val tempArray= arrayListOf<DoubtInfo>()
-                for(i in doubtsArray)
+                mDoubtStudentViewModel.getAllOpenDoubts(requireContext())
+                mDoubtStudentViewModel.filterList.observe(viewLifecycleOwner)
                 {
-                    if(i.isClosed)
-                        tempArray.add(i)
+                    mAlertDialog.dismiss()
+                    adapter.updateDoubtsList(it)
+
                 }
 
-                adapter.updateDoubtsList(tempArray)
-                mAlertDialog.dismiss()
+
+
+
+            }
+            filterBinding.statusClosed.setOnClickListener {
+                mDoubtStudentViewModel.getAllClosedDoubts(requireContext())
+                mDoubtStudentViewModel.filterList.observe(viewLifecycleOwner)
+                {
+                    mAlertDialog.dismiss()
+                    adapter.updateDoubtsList(it)
+
+                }
+
+
             }
             filterBinding.dateLatestFirst.setOnClickListener {
-                val tempArray= doubtsArray
-                tempArray.sortWith(compareBy<DoubtInfo> { it.createdOn }.reversed())
+                mDoubtStudentViewModel.getLatestFirst(requireContext())
+                mDoubtStudentViewModel.filterList.observe(viewLifecycleOwner)
+                {
+                    mAlertDialog.dismiss()
+                    adapter.updateDoubtsList(it)
 
+                }
 
-                adapter.updateDoubtsList(tempArray)
-                mAlertDialog.dismiss()
+            }
+            filterBinding.nosHighToLow.setOnClickListener {
+                mDoubtStudentViewModel.getNoOfSolutionsHighToLow(requireContext())
+                mDoubtStudentViewModel.filterList.observe(viewLifecycleOwner)
+                {
+                    mAlertDialog.dismiss()
+                    adapter.updateDoubtsList(it)
+
+                }
+
+            }
+            filterBinding.nosLowToHigh.setOnClickListener {
+                mDoubtStudentViewModel.getNoOfSolutionsLowToHigh(requireContext())
+                mDoubtStudentViewModel.filterList.observe(viewLifecycleOwner)
+                {
+                    mAlertDialog.dismiss()
+                    adapter.updateDoubtsList(it)
+
+                }
+
             }
             filterBinding.dateOldestFirst.setOnClickListener {
-                val tempArray= doubtsArray
-                tempArray.sortWith(compareBy<DoubtInfo> { it.createdOn })
+                mDoubtStudentViewModel.getOldestFirst(requireContext())
+                mDoubtStudentViewModel.filterList.observe(viewLifecycleOwner)
+                {
+                    mAlertDialog.dismiss()
+                    adapter.updateDoubtsList(it)
 
+                }
 
-                adapter.updateDoubtsList(tempArray)
-                mAlertDialog.dismiss()
             }
             filterBinding.clearFilter.setOnClickListener {
+                mDoubtStudentViewModel.getLocalDbDoubts(requireContext())
+                mDoubtStudentViewModel.doubtArrayFromLocalDb.observe(viewLifecycleOwner)
+                {
+                    mAlertDialog.dismiss()
+                    adapter.updateDoubtsList(it)
 
-                adapter.updateDoubtsList(doubtsArray)
-                mAlertDialog.dismiss()
+                }
+
             }
 
         }
