@@ -2,7 +2,6 @@ package com.example.findmytutor.features.tutorDetails
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -23,7 +22,7 @@ import com.example.findmytutor.dataClasses.RequestTutor
 import com.example.findmytutor.dataClasses.Student
 import com.example.findmytutor.dataClasses.Tutor
 import com.example.findmytutor.databinding.FragmentTutorDetailsBinding
-import com.example.findmytutor.databinding.ImageDialogBinding
+
 import com.example.findmytutor.databinding.RatingDialogBinding
 import com.example.findmytutor.features.MainActivity
 import com.example.findmytutor.utilities.SendNotification
@@ -38,6 +37,7 @@ class TutorDetailsFragment : BaseFragment() {
     private val binding get() = _binding!!
     private var tutor= Tutor()
     private lateinit var mTutorDetailsViewModel: TutorDetailsViewModel
+    private var student= Student()
 
 
 
@@ -45,8 +45,8 @@ class TutorDetailsFragment : BaseFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    ): View {
+
         (activity as MainActivity).hideBottomNavigationView()
         _binding = FragmentTutorDetailsBinding.inflate(inflater, container, false)
         return binding.root
@@ -64,7 +64,24 @@ class TutorDetailsFragment : BaseFragment() {
             ViewModelProvider(this)[TutorDetailsViewModel::class.java]
         val bundle = arguments
         tutor = bundle!!.getSerializable("tutor") as Tutor
+        student = bundle.getSerializable("student") as Student
 
+        showProgressDialog("Loading")
+        mTutorDetailsViewModel.getAllAcceptedStudents(tutor.tutorId)
+        mTutorDetailsViewModel.getAllAcceptedStudents.observe(viewLifecycleOwner)
+        {
+            if(it.contains(student.studentId))
+            {
+                dismissProgressDialog()
+                binding.tutorSendRequest.visibility=View.GONE
+                binding.btnRateTutor.visibility=View.VISIBLE
+                binding.btnPayTutor.visibility=View.VISIBLE
+            }
+            else
+            {
+                dismissProgressDialog()
+            }
+        }
 
         binding.tutorDetailsTutorName.text = tutor.name
         binding.tutorDetailsTutorAge.text = "Age : " + tutor.age.toString()
@@ -113,54 +130,65 @@ class TutorDetailsFragment : BaseFragment() {
 
 
         binding.tutorSendRequest.setOnClickListener {
-            mTutorDetailsViewModel.getStudent()
-            mTutorDetailsViewModel.mStudentLiveData.observe(viewLifecycleOwner)
-            {
+            showProgressDialog("Wait")
+            mTutorDetailsViewModel.getAllAcceptedOrPendingStudent(tutor.tutorId)
+            mTutorDetailsViewModel.getAllAcceptedOrPendingStudents.observe(viewLifecycleOwner)
+            {list->
 
-                val request = RequestTutor(
-                    tutorId = tutor.tutorId,
-                    studentId = FirebaseAuth.getInstance().uid!!,
-                    timeOfRequest = Timestamp.now(),
-                    isCompleted = false,
-                    isDeclined = false,
-                    studentName = it.name,
-                    tutorName = tutor.name
-
-                )
-
-                mTutorDetailsViewModel.sendRequest(request)
-                mTutorDetailsViewModel.requestsSent.observe(viewLifecycleOwner)
-                { requestSent ->
-                    if (requestSent) {
-                        showToast(requireContext(), "Request Sent")
-
-                        val topic = "/topics/${tutor.tutorId}"
-                        val notification = JSONObject()
-                        val notificationBody = JSONObject()
-                        notificationBody.put("intentType", "approvalIntent")
-
-
-                        try {
-                            notificationBody.put("title", "You have received request from a student")
-                            notificationBody.put(
-                                "message",
-                                "Please click here to approve the student's request"
-                            )   //Enter your notification message
-                            notification.put("to", topic)
-                            notification.put("data", notificationBody)
-                            Log.e("TAG", "try")
-                        } catch (e: JSONException) {
-                            Log.e("TAG", "onCreate: " + e.message)
-                        }
-
-                        SendNotification(requireContext()).sendNotification(notification)
-
-
-                    } else
-                        showToast(requireContext(), "Some Error Occurred!")
+                dismissProgressDialog()
+                if(list.contains(student.studentId))
+                {
+                    showToast(requireContext(),"Your previous request is pending....please wait before raising new request")
                 }
+                else
+                {
+                    val request = RequestTutor(
+                        tutorId = tutor.tutorId,
+                        studentId = FirebaseAuth.getInstance().uid!!,
+                        timeOfRequest = Timestamp.now(),
+                        isCompleted = false,
+                        isDeclined = false,
+                        studentName = student.name,
+                        tutorName = tutor.name
 
+                    )
+
+                    mTutorDetailsViewModel.sendRequest(request)
+                    mTutorDetailsViewModel.requestsSent.observe(viewLifecycleOwner)
+                    { requestSent ->
+                        if (requestSent) {
+                            showToast(requireContext(), "Request Sent")
+
+                            val topic = "/topics/${tutor.tutorId}"
+                            val notification = JSONObject()
+                            val notificationBody = JSONObject()
+                            notificationBody.put("intentType", "approvalIntent")
+
+
+                            try {
+                                notificationBody.put("title", "You have received request from a student")
+                                notificationBody.put(
+                                    "message",
+                                    "Please click here to approve the student's request"
+                                )   //Enter your notification message
+                                notification.put("to", topic)
+                                notification.put("data", notificationBody)
+                                Log.e("TAG", "try")
+                            } catch (e: JSONException) {
+                                Log.e("TAG", "onCreate: " + e.message)
+                            }
+
+                            SendNotification(requireContext()).sendNotification(notification)
+
+
+                        } else
+                            showToast(requireContext(), "Some Error Occurred!")
+                    }
+
+                }
             }
+
+
 
         }
 

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.findmytutor.R
 import com.example.findmytutor.base.BaseFragment
 import com.example.findmytutor.dataClasses.FilterSearchStudent
+import com.example.findmytutor.dataClasses.Student
 import com.example.findmytutor.dataClasses.Tutor
 import com.example.findmytutor.databinding.FilterBottomSheetDialogBinding
 import com.example.findmytutor.databinding.FragmentHomeStudentsBinding
@@ -41,6 +42,7 @@ class HomeStudentsFragment : BaseFragment(), TutorAdapter.OnItemClickListener {
     var ratingArray:Array<String> = arrayOf()
     var schoolBoardArray:Array<String> = arrayOf()
     var filterSearchStudent=FilterSearchStudent()
+    var student=Student()
 
 
 
@@ -92,16 +94,23 @@ class HomeStudentsFragment : BaseFragment(), TutorAdapter.OnItemClickListener {
 
         })
 
+        showProgressDialog("Loading")
+        mHomeStudentViewModel.getCurrentStudent()
+        mHomeStudentViewModel.mStudentLiveData.observe(viewLifecycleOwner)
+        {stud->
+            student=stud
+            dismissProgressDialog()
+            mHomeStudentViewModel.getAllTutors()
+            mHomeStudentViewModel.mListOfTutors.observe(viewLifecycleOwner)
+            {
 
-        mHomeStudentViewModel.getAllTutors()
-        mHomeStudentViewModel.mListOfTutors.observe(viewLifecycleOwner)
-        {
-
-            tutorList=it
-            tutorListAdapter= TutorAdapter(it,requireContext(),this@HomeStudentsFragment)
-            binding.studentHomeRecyclerView.adapter=tutorListAdapter
-            binding.studentHomeRecyclerView.hideShimmer()
+                tutorList=it
+                tutorListAdapter= TutorAdapter(it,requireContext(),this@HomeStudentsFragment,student)
+                binding.studentHomeRecyclerView.adapter=tutorListAdapter
+                binding.studentHomeRecyclerView.hideShimmer()
+            }
         }
+
         binding.btnSelectYourFilters.setOnClickListener {
             val bottomSheetDialogBinding = FilterBottomSheetDialogBinding.inflate(
                 LayoutInflater.from(requireContext())
@@ -312,11 +321,12 @@ class HomeStudentsFragment : BaseFragment(), TutorAdapter.OnItemClickListener {
     override fun onItemClicked(tutor: Tutor) {
         val bundle = Bundle()
         bundle.putSerializable("tutor", tutor)
+        bundle.putSerializable("student", student)
         findNavController().navigate(
             R.id.action_homeStudentsFragment_to_tutorDetailsFragment,
             bundle
         )
-//        showToast(requireContext(),"${tutor.tutorId}")
+
 
     }
 

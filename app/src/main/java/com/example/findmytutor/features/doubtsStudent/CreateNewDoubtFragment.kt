@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -16,6 +17,9 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
 import com.example.findmytutor.R
 import com.example.findmytutor.base.BaseFragment
 import com.example.findmytutor.dataClasses.DoubtInfo
@@ -81,8 +85,23 @@ class CreateNewDoubtFragment : BaseFragment() {
                 Glide.with(requireContext())
                     .load(doubtInfoCame.doubtImagePath)
                     .placeholder(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_image_24))
+                    .listener(object : RequestListener<Drawable> {
+                        override fun onLoadFailed(p0: GlideException?, p1: Any?, p2: com.bumptech.glide.request.target.Target<Drawable>?, p3: Boolean): Boolean {
+                             dismissProgressDialog()
+                            return true
+                        }
+                        override fun onResourceReady(p0: Drawable?, p1: Any?, p2: com.bumptech.glide.request.target.Target<Drawable>?, p3: DataSource?, p4: Boolean): Boolean {
+
+                            dismissProgressDialog()
+
+
+                            return true
+                        }
+                    })
                     .into(binding.doubtImage)
-                dismissProgressDialog()
+
+
+
             }
             else
                 dismissProgressDialog()
@@ -151,13 +170,11 @@ class CreateNewDoubtFragment : BaseFragment() {
                 mDoubtStudentViewModel.getStudentData()
                 mDoubtStudentViewModel.mStudentLiveData.observe(viewLifecycleOwner)
                 {
-                    val date = Timestamp.now().toDate()
 
-                    val simpleDateFormat = SimpleDateFormat("dd MMM yyyy")
 
                     val doubtInfo=DoubtInfo(
                         doubtId = "FMTDBT"+ (System.currentTimeMillis()/1000).toString(),
-                        createdOn =  simpleDateFormat.format(date).toString(),
+                        createdOn =  Timestamp.now().seconds.toString(),
                         studentId = FirebaseAuth.getInstance().currentUser!!.uid,
                         studentName = it.name,
                         doubtTitle = binding.doubtTitle.text.toString(),

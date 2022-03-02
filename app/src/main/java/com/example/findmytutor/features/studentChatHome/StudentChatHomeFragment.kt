@@ -46,8 +46,20 @@ class StudentChatHomeFragment : Fragment(), ChatHomeStudentAdapter.OnChatClickLi
         mStudentChatHomeViewModel.getAllChats()
         mStudentChatHomeViewModel.mChattingHelperLiveData.observe(viewLifecycleOwner)
         {
+            if(it.size==0)
+            {
+                binding.chatHomeStudentRecyclerView.visibility=View.GONE
+                binding.animEmptyStudentHome.visibility=View.VISIBLE
+                binding.txtNoStudent.visibility=View.VISIBLE
+            }
+            else
+            {
+                binding.chatHomeStudentRecyclerView.visibility=View.VISIBLE
+                binding.animEmptyStudentHome.visibility=View.GONE
+                binding.txtNoStudent.visibility=View.GONE
+                binding.chatHomeStudentRecyclerView.adapter= ChatHomeStudentAdapter(it,requireContext(),this)
+            }
 
-            binding.chatHomeStudentRecyclerView.adapter= ChatHomeStudentAdapter(it,requireContext(),this)
         }
     }
 

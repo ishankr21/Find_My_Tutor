@@ -69,7 +69,7 @@
             app:layout_constraintTop_toBottomOf="@id/txtStudentClass"
             android:textColor="@color/black"
             android:fontFamily="@font/manrope_bold"
-            android:padding="4dp"
+            android:padding="2dp"
             android:textSize="16sp"
             android:id="@+id/txtStudentDistanceFromTutor"
             app:layout_constraintLeft_toLeftOf="parent"
