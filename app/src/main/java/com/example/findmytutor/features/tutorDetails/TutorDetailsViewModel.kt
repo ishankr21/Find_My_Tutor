@@ -9,8 +9,9 @@ import com.example.findmytutor.dataRepo.FirebaseRepo
 class TutorDetailsViewModel:ViewModel() {
     var mStudentLiveData: MutableLiveData<Student> = MutableLiveData()
     var requestsSent:MutableLiveData<Boolean> = MutableLiveData()
-    var getAllAcceptedStudents= MutableLiveData<ArrayList<String>>()
+    var getAllAcceptedStudents= MutableLiveData<ArrayList<RequestTutor>>()
     var getAllAcceptedOrPendingStudents= MutableLiveData<ArrayList<String>>()
+    var deleteSuccess= MutableLiveData<Boolean>()
 
     fun getStudent()
     {
@@ -28,12 +29,17 @@ class TutorDetailsViewModel:ViewModel() {
     }
     fun getAllAcceptedStudents(tutorId: String)
     {
-        getAllAcceptedStudents=FirebaseRepo().getListOfAllAcceptedStudents(tutorId)
+        getAllAcceptedStudents=FirebaseRepo().getListOfAllAcceptedStudentsRequestTutor(tutorId)
     }
 
     fun getAllAcceptedOrPendingStudent(tutorId: String)
     {
         getAllAcceptedOrPendingStudents=FirebaseRepo().getListOfAllAcceptedOrRequestPendingStudents(tutorId)
+    }
+
+    fun deleteTutor(requestTutor: RequestTutor)
+    {
+        deleteSuccess=FirebaseRepo().studentDeleteTutor(requestTutor)
     }
 
 }

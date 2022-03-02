@@ -51,7 +51,11 @@
         android:id="@+id/homeTutorsFragment"
         android:name="com.example.findmytutor.features.homeTutors.HomeTutorsFragment"
         android:label="fragment_homw_tutors"
-        tools:layout="@layout/fragment_home_tutors" />
+        tools:layout="@layout/fragment_home_tutors" >
+        <action
+            android:id="@+id/action_homeTutorsFragment_to_studentDetailsFragment"
+            app:destination="@id/studentDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.example.findmytutor.features.register.RegisterFragment"
@@ -123,6 +127,9 @@
         <action
             android:id="@+id/action_tutorRequestsFragment_to_homeTutorsFragment"
             app:destination="@id/homeTutorsFragment" />
+        <action
+            android:id="@+id/action_tutorRequestsFragment_to_studentDetailsFragment"
+            app:destination="@id/studentDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/tutorDetailsFragment"
@@ -132,6 +139,9 @@
         <action
             android:id="@+id/action_tutorDetailsFragment_to_chatsFragment"
             app:destination="@id/chatsFragment" />
+        <action
+            android:id="@+id/action_tutorDetailsFragment_to_homeStudentsFragment"
+            app:destination="@id/homeStudentsFragment" />
     </fragment>
     <fragment
         android:id="@+id/doubtsTutorFragment"
@@ -229,5 +239,14 @@
         <action
             android:id="@+id/action_studentChatHomeFragment_to_chatsFragment"
             app:destination="@id/chatsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/studentDetailsFragment"
+        android:name="com.example.findmytutor.features.studentDetails.StudentDetailsFragment"
+        android:label="fragment_student_details"
+        tools:layout="@layout/fragment_student_details" >
+        <action
+            android:id="@+id/action_studentDetailsFragment_to_homeTutorsFragment"
+            app:destination="@id/homeTutorsFragment" />
     </fragment>
 </navigation>

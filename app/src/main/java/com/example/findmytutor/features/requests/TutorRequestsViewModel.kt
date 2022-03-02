@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.findmytutor.dataClasses.RequestTutor
 import com.example.findmytutor.dataClasses.Student
+import com.example.findmytutor.dataClasses.Tutor
 import com.example.findmytutor.dataRepo.FirebaseRepo
 
 class TutorRequestsViewModel:ViewModel() {
@@ -11,6 +12,7 @@ class TutorRequestsViewModel:ViewModel() {
     var studentLiveData= MutableLiveData<Student>()
     var approvalRequestSuccess= MutableLiveData<Boolean>()
     var disapprovalRequestSuccess= MutableLiveData<Boolean>()
+    var mTutorLiveData=MutableLiveData<Tutor>()
 
 
     fun getAllRequests()
@@ -32,6 +34,11 @@ class TutorRequestsViewModel:ViewModel() {
     {
         disapprovalRequestSuccess=FirebaseRepo().disapproveStudentRequest(requestTutor)
 
+    }
+
+    fun getTutor()
+    {
+        mTutorLiveData=FirebaseRepo().getTutor()
     }
 
 

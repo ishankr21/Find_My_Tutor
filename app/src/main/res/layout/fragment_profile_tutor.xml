@@ -79,8 +79,7 @@
             android:id="@+id/loading_animation"
             android:layout_width="80dp"
             android:layout_height="60dp"
-            android:layout_centerInParent="true"
-            />
+            android:layout_centerInParent="true" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabEditProfilePictureTutor"
@@ -105,6 +104,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rl1"
+        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toTopOf="@+id/save_profile_Tutor_button"
         >
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -173,6 +173,7 @@
                 android:background="@color/background"
                 android:inputType="textEmailAddress"
                 android:id="@+id/register_tutor_emailID_edittext"
+
                 app:layout_constraintTop_toBottomOf="@+id/profile_tutor_gender_edittext"
                 />
             <Spinner
@@ -186,6 +187,7 @@
                 android:spinnerMode="dropdown"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
+
                 app:layout_constraintTop_toBottomOf="@+id/register_tutor_emailID_edittext" />
 
             <Spinner
@@ -199,6 +201,7 @@
                 android:spinnerMode="dropdown"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
+
                 app:layout_constraintTop_toBottomOf="@+id/spnSelectProfileTutorClass" />
             <Spinner
                 android:id="@+id/spnSelectTutorEmploymentStatus"
@@ -211,6 +214,7 @@
                 android:spinnerMode="dropdown"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
+
                 app:layout_constraintTop_toBottomOf="@+id/spnSelectProfileTutorSchoolBoard" />
 
             <EditText
@@ -223,22 +227,64 @@
                 android:inputType="numberDecimal"
                 android:textColor="@drawable/edittext_textcolor"
                 android:id="@+id/register_tutor_desired_fees_edittext"
+
                 app:layout_constraintTop_toBottomOf="@+id/spnSelectTutorEmploymentStatus"
                 />
-            <EditText
+            <Spinner
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="?attr/actionBarSize"
                 android:layout_margin="16dp"
-                android:padding="16dp"
-                android:hint="SPECIALIZATION IN(SUBJECT) "
-                android:background="@color/background"
-                android:inputType="text"
-                android:textColor="@drawable/edittext_textcolor"
-                android:id="@+id/register_tutor_favourite_subject_edittext"
+                android:padding="8dp"
+                android:background="@drawable/bg_spinner"
+                android:popupBackground="@color/white"
+                android:spinnerMode="dropdown"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:id="@+id/spn_register_tutor_favourite_subject"
                 app:layout_constraintTop_toBottomOf="@+id/register_tutor_desired_fees_edittext"
                 />
 
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_margin="16dp"
+           android:id="@+id/getMyLocation"
 
+            app:layout_constraintTop_toBottomOf="@+id/spn_register_tutor_favourite_subject"
+            >
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="8dp"
+                android:background="@color/background"
+                >
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_my_location"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:id="@+id/imgGetMyLocation"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/imgGetMyLocation"
+                    android:text="Get My Location"
+                    android:textSize="20sp"
+                    android:layout_marginLeft="16dp"
+                    android:fontFamily="@font/manrope_bold"
+                    android:id="@+id/txtGetMyLocation"
+                    />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>

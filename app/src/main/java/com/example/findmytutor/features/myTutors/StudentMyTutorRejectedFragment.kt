@@ -37,9 +37,21 @@ class StudentMyTutorRejectedFragment :  BaseFragment(), StudentMyTutorAdapter.On
         mStudentMyTutorViewModel.getAllRejectedRequests()
         mStudentMyTutorViewModel.mRejectedRequestsLiveData.observe(viewLifecycleOwner)
         {
-            val adapter=StudentMyTutorAdapter(it,requireContext(),this)
-            binding.myTutorsRejectedRecyclerView.layoutManager= LinearLayoutManager(requireContext())
-            binding.myTutorsRejectedRecyclerView.adapter=adapter
+            if(it.size>0)
+            {
+                binding.myTutorsRejectedRecyclerView.visibility=View.VISIBLE
+                binding.animNoResultsFound.visibility=View.GONE
+                binding.txtNoResultsFound.visibility=View.GONE
+                val adapter=StudentMyTutorAdapter(it,requireContext(),this)
+                binding.myTutorsRejectedRecyclerView.layoutManager= LinearLayoutManager(requireContext())
+                binding.myTutorsRejectedRecyclerView.adapter=adapter
+            }
+            else{
+                binding.myTutorsRejectedRecyclerView.visibility=View.GONE
+                binding.animNoResultsFound.visibility=View.VISIBLE
+                binding.txtNoResultsFound.visibility=View.VISIBLE
+            }
+
         }
     }
 

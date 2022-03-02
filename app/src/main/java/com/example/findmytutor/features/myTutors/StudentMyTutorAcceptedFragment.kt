@@ -1,6 +1,7 @@
 package com.example.findmytutor.features.myTutors
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -41,9 +42,23 @@ class StudentMyTutorAcceptedFragment : BaseFragment(), StudentMyTutorAdapter.OnR
         mStudentMyTutorViewModel.getAllAcceptedRequests()
         mStudentMyTutorViewModel.mAcceptedRequestsLiveData.observe(viewLifecycleOwner)
         {
-            val adapter=StudentMyTutorAdapter(it,requireContext(),this)
-            binding.myTutorsAcceptedRecyclerView.layoutManager=LinearLayoutManager(requireContext())
-            binding.myTutorsAcceptedRecyclerView.adapter=adapter
+
+            if(it.size>0)
+            {
+                binding.myTutorsAcceptedRecyclerView.visibility=View.VISIBLE
+                binding.animNoResultsFound.visibility=View.GONE
+                binding.txtNoResultsFound.visibility=View.GONE
+                val adapter=StudentMyTutorAdapter(it,requireContext(),this)
+                binding.myTutorsAcceptedRecyclerView.layoutManager=LinearLayoutManager(requireContext())
+                binding.myTutorsAcceptedRecyclerView.adapter=adapter
+            }
+            else
+            {
+                binding.myTutorsAcceptedRecyclerView.visibility=View.GONE
+                binding.animNoResultsFound.visibility=View.VISIBLE
+                binding.txtNoResultsFound.visibility=View.VISIBLE
+            }
+
         }
     }
 

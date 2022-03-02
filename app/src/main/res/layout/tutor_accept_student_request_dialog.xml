@@ -33,12 +33,13 @@
         android:text="Ram Lal"
         app:layout_constraintTop_toBottomOf="@+id/student_details_horizontal_line"
         android:id="@+id/studentDetailsStudentName"
-        android:fontFamily="@font/poppins"
+        android:fontFamily="@font/manrope_bold"
         android:textColor="@color/black"
-        android:textSize="30sp"
+        android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_margin="8dp"
+        android:textAlignment="center"
          
         />
 
@@ -52,10 +53,11 @@
         android:id="@+id/studentDetailsstudentAge"
         android:fontFamily="@font/poppins"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_margin="8dp"
+        android:textAlignment="center"
          
         />
     <TextView
@@ -66,10 +68,11 @@
         android:id="@+id/studentDetailsstudentGender"
         android:fontFamily="@font/poppins"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_margin="8dp"
+        android:textAlignment="center"
          
         />
 
@@ -82,10 +85,11 @@
 
         android:fontFamily="@font/poppins"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_margin="8dp"
+        android:textAlignment="center"
          
         />
     <TextView
@@ -96,12 +100,12 @@
         android:id="@+id/studentDetailsstudentEmailId"
         android:fontFamily="@font/poppins"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_margin="8dp"
-         
-        android:visibility="gone"
+
+        android:textAlignment="center"
         />
 
     <TextView
@@ -112,65 +116,50 @@
         android:id="@+id/studentDetailsstudentParentName"
         android:fontFamily="@font/poppins"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_margin="8dp"
-         
-        android:visibility="gone"
+
+        android:textAlignment="center"
         />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Class : Class 12"
-        app:layout_constraintTop_toBottomOf="@+id/studentDetailsstudentParentName"
-        android:id="@+id/studentDetailsstudentClass"
-        android:fontFamily="@font/poppins"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_margin="8dp"
-         
-        android:visibility="gone"
-        />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Problem in subject : Maths"
-        app:layout_constraintTop_toBottomOf="@+id/studentDetailsstudentClass"
-        android:id="@+id/studentDetailsstudentLeastFavouriteSubject"
-        android:fontFamily="@font/poppins"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_margin="8dp"
-         
-        android:visibility="gone"
-        />
+
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="School Name : "
-        app:layout_constraintTop_toBottomOf="@+id/studentDetailsstudentLeastFavouriteSubject"
+        app:layout_constraintTop_toBottomOf="@+id/studentDetailsstudentParentName"
         android:id="@+id/studentDetailsstudentSchoolName"
         android:fontFamily="@font/poppins"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_margin="8dp"
-         
-        android:visibility="gone"
+        android:textAlignment="center"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Distance From You: "
+        app:layout_constraintTop_toBottomOf="@+id/studentDetailsstudentSchoolName"
+        android:id="@+id/studentDetailsstudentDistance"
+        android:fontFamily="@font/poppins"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_margin="8dp"
+
+        android:textAlignment="center"
         />
+
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/studentDetailsstudentSchoolName"
+        app:layout_constraintTop_toBottomOf="@id/studentDetailsstudentDistance"
         android:textSize="16sp"
         android:textColor="@color/green"
         android:text="Approve ✓"
@@ -181,11 +170,12 @@
         app:layout_constraintRight_toLeftOf="@+id/txtNotApprove"
         app:layout_constraintLeft_toLeftOf="parent"
         android:textAlignment="center"
+
         />
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/studentDetailsstudentSchoolName"
+        app:layout_constraintTop_toBottomOf="@id/studentDetailsstudentDistance"
         android:textSize="16sp"
         android:layout_marginTop="16dp"
         android:textColor="@color/light_red_dark"
@@ -197,6 +187,24 @@
         android:id="@+id/txtNotApprove"
         android:textAlignment="center"
 
-        />
 
+        />
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/studentDetailsstudentDistance"
+        android:textSize="24sp"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/dodger_blue"
+        android:text="View Info"
+        android:padding="8dp"
+        android:fontFamily="@font/manrope_bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/txtViewMore"
+        android:textAlignment="center"
+        android:visibility="gone"
+
+
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

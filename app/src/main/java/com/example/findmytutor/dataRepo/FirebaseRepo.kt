@@ -428,6 +428,10 @@ class FirebaseRepo: FirebaseMessagingService() {
 
             it.update(tutorStudentsRef,"completed",true)
             it.update(studentTutorRef,"completed",true)
+            it.update(tutorStudentsRef,"declined",false)
+            it.update(studentTutorRef,"declined",false)
+            it.update(tutorStudentsRef,"timeOfAcceptance",Timestamp.now())
+            it.update(studentTutorRef,"timeOfAcceptance",Timestamp.now())
 
         }
 
@@ -440,7 +444,30 @@ class FirebaseRepo: FirebaseMessagingService() {
 
         return approvalSuccess
     }
+    fun studentDeleteTutor(requestTutor: RequestTutor):MutableLiveData<Boolean>
+    {
+        val approvalSuccess=MutableLiveData<Boolean>()
 
+        val tutorStudentsRef= mFirestore.collection(COLLECTION_TUTOR).document(requestTutor.tutorId).collection(COLLECTION_TUTOR_STUDENTS).document(requestTutor.requestId)
+        val studentTutorRef = mFirestore.collection(COLLECTION_STUDENT).document(requestTutor.studentId).collection(COLLECTION_STUDENT_TUTORS).document(requestTutor.requestId)
+
+        mFirestore.runBatch{
+
+
+            it.update(tutorStudentsRef,"deleteByStudent",true)
+            it.update(studentTutorRef,"deleteByStudent",true)
+
+        }
+
+            .addOnSuccessListener {
+                approvalSuccess.value=true
+            }
+            .addOnFailureListener {
+                approvalSuccess.value=false
+            }
+
+        return approvalSuccess
+    }
     fun disapproveStudentRequest(requestTutor: RequestTutor):MutableLiveData<Boolean>
     {
         val disapproveSuccess=MutableLiveData<Boolean>()
@@ -454,6 +481,9 @@ class FirebaseRepo: FirebaseMessagingService() {
             it.update(studentTutorRef,"completed",true)
             it.update(tutorStudentsRef,"declined",true)
             it.update(studentTutorRef,"declined",true)
+            it.update(tutorStudentsRef,"timeOfAcceptance",Timestamp.now())
+            it.update(studentTutorRef,"timeOfAcceptance",Timestamp.now())
+
 
         }
 
@@ -474,6 +504,7 @@ class FirebaseRepo: FirebaseMessagingService() {
             .collection(COLLECTION_STUDENT_TUTORS)
             .whereEqualTo("completed",true)
             .whereEqualTo("declined",false)
+            .whereEqualTo("deleteByStudent",false)
             .orderBy("timeOfRequest")
             .addSnapshotListener { value, error ->
                 if (error == null)
@@ -513,9 +544,17 @@ class FirebaseRepo: FirebaseMessagingService() {
                         val eachRequest= snapshot.toObject(RequestTutor::class.java)
                         eachRequest.requestId=snapshot.id
 
-                        if(eachRequest.isCompleted && !eachRequest.isDeclined)
-                            continue
-                        arrayList.add(eachRequest)
+                        if(eachRequest.deleteByStudent)
+                            arrayList.add(eachRequest)
+                        else
+                        {
+                            if(eachRequest.isCompleted && !eachRequest.isDeclined)
+                                continue
+                            else
+                            arrayList.add(eachRequest)
+                        }
+
+
                     }
                     tutorRequests.value = arrayList
                 } else {
@@ -897,6 +936,32 @@ class FirebaseRepo: FirebaseMessagingService() {
                     val request = snapshot.toObject(RequestTutor::class.java)
 
                     arrayList.add(request.studentId)
+                }
+
+                studentIdList.value = arrayList
+            }
+            .addOnFailureListener {
+
+                Log.d("fireStore", "student error: ${it.message}")
+
+            }
+        return studentIdList
+    }
+    fun getListOfAllAcceptedStudentsRequestTutor(tutorId: String):MutableLiveData<ArrayList<RequestTutor>>
+    {
+        val studentIdList=MutableLiveData<ArrayList<RequestTutor>>()
+        mFirestore.collection(COLLECTION_TUTOR).document(tutorId).collection(COLLECTION_TUTOR_STUDENTS)
+            .whereEqualTo("completed",true)
+            .whereEqualTo("declined",false)
+            .whereEqualTo("deleteByStudent",false)
+            .get()
+            .addOnSuccessListener {
+                val arrayList= arrayListOf<RequestTutor>()
+                for (snapshot in it!!) {
+
+                    val request = snapshot.toObject(RequestTutor::class.java)
+
+                    arrayList.add(request)
                 }
 
                 studentIdList.value = arrayList
