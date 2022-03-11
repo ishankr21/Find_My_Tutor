@@ -1,41 +1,41 @@
 package com.example.findmytutor.features.homeTutors
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.findmytutor.R
 import com.example.findmytutor.base.BaseFragment
 import com.example.findmytutor.dataClasses.RequestTutor
 import com.example.findmytutor.dataClasses.Student
 import com.example.findmytutor.dataClasses.Tutor
-import com.example.findmytutor.databinding.FragmentHomeStudentsBinding
 import com.example.findmytutor.databinding.FragmentHomeTutorsBinding
 import com.example.findmytutor.features.MainActivity
-import com.example.findmytutor.features.homeStudents.HomeStudentViewModel
-import com.example.findmytutor.features.homeStudents.TutorAdapter
+
 
 
 class HomeTutorsFragment : BaseFragment(), StudentAdapter.OnItemClickListener {
 
     private var _binding: FragmentHomeTutorsBinding? = null
     private val binding get() = _binding!!
-    private lateinit var studentAdapter: StudentAdapter
+
     private lateinit var mHomeTutorViewModel: HomeTutorViewModel
     private var tutor= Tutor()
-    var allAcceptedStudent:ArrayList<RequestTutor> = arrayListOf()
+    private var allAcceptedStudent:ArrayList<RequestTutor> = arrayListOf()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         (activity as MainActivity).setVisibleBottomNavigationView()
+        (activity as MainActivity).setNavigationDrawerVisible()
+        (activity as MainActivity).unlockDrawer()
         _binding = FragmentHomeTutorsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -63,6 +63,11 @@ class HomeTutorsFragment : BaseFragment(), StudentAdapter.OnItemClickListener {
         mHomeTutorViewModel.mTutorLiveData.observe(viewLifecycleOwner)
         {t->
             tutor=t
+            val navHeaderBinding= (activity as MainActivity).getHeader()
+            navHeaderBinding.findViewById<TextView>(R.id.drawerProfileName).text=t.name
+            Glide.with(requireContext())
+                .load(t.profilePicturePath)
+                .into(navHeaderBinding.findViewById(R.id.drawerProfileImage))
            mHomeTutorViewModel.getAllAcceptedStudents()
             mHomeTutorViewModel.getAllAcceptedStudents.observe(viewLifecycleOwner)
             {list->
@@ -73,7 +78,7 @@ class HomeTutorsFragment : BaseFragment(), StudentAdapter.OnItemClickListener {
                     binding.studentsRecyclerView.visibility=View.VISIBLE
                     binding.animEmptyTutorHome.visibility=View.GONE
                     binding.txtNoStudent.visibility=View.GONE
-                    var listOfStudentId=ArrayList<String>()
+                    val listOfStudentId=ArrayList<String>()
                     for( i in list)
                     {
                         listOfStudentId.add(i.studentId)
@@ -116,5 +121,17 @@ class HomeTutorsFragment : BaseFragment(), StudentAdapter.OnItemClickListener {
             R.id.action_homeTutorsFragment_to_studentDetailsFragment,
             bundle
         )
+    }
+
+    override fun onPause() {
+        (activity as MainActivity).setNavigationDrawerDisappear()
+        (activity as MainActivity).lockDrawer()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        (activity as MainActivity).setNavigationDrawerVisible()
+        (activity as MainActivity).unlockDrawer()
+        super.onResume()
     }
 }

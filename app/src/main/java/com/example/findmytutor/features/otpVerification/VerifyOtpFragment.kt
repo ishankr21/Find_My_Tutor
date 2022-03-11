@@ -206,7 +206,7 @@ class VerifyOtpFragment : BaseFragment() {
                             FirebaseMessaging.getInstance().subscribeToTopic("/topics/tutors")
                             FirebaseMessaging.getInstance().subscribeToTopic("/topics/${FirebaseAuth.getInstance().currentUser!!.uid}")
                             (activity as MainActivity).setBottomNavigationMenu(2)
-
+                            (activity as MainActivity).setNavigationDrawerMenu(2)
                             mOtpViewModel.getTutorWithMobileNumber(tutor.mobile)
                             mOtpViewModel.tutorData.observe(viewLifecycleOwner)
                             {
@@ -235,6 +235,7 @@ class VerifyOtpFragment : BaseFragment() {
 
                             FirebaseMessaging.getInstance().subscribeToTopic("/topics/${FirebaseAuth.getInstance().currentUser!!.uid}")
                             (activity as MainActivity).setBottomNavigationMenu(1)
+                            (activity as MainActivity).setNavigationDrawerMenu(1)
                             mOtpViewModel.getStudentWithMobileNumber(student.mobile)
                             mOtpViewModel.studentData.observe(viewLifecycleOwner)
                             {
@@ -263,6 +264,7 @@ class VerifyOtpFragment : BaseFragment() {
                             FirebaseMessaging.getInstance().subscribeToTopic("/topics/tutors")
                             FirebaseMessaging.getInstance().subscribeToTopic("/topics/${FirebaseAuth.getInstance().currentUser!!.uid}")
                             (activity as MainActivity).setBottomNavigationMenu(2)
+                            (activity as MainActivity).setNavigationDrawerMenu(2)
                             tutor.tutorId=FirebaseAuth.getInstance().currentUser!!.uid
                             mOtpViewModel.createNewTutor(tutor,FirebaseAuth.getInstance().currentUser!!.uid)
                             mOtpViewModel.mCreatedTutorLiveData.observe(viewLifecycleOwner)
@@ -282,6 +284,7 @@ class VerifyOtpFragment : BaseFragment() {
 
                             FirebaseMessaging.getInstance().subscribeToTopic("/topics/${FirebaseAuth.getInstance().currentUser!!.uid}")
                             (activity as MainActivity).setBottomNavigationMenu(1)
+                            (activity as MainActivity).setNavigationDrawerMenu(1)
                             student.studentId=FirebaseAuth.getInstance().currentUser!!.uid
                             mOtpViewModel.createNewStudent(student,FirebaseAuth.getInstance().currentUser!!.uid)
                             mOtpViewModel.mCreatedUserLiveData.observe(viewLifecycleOwner)

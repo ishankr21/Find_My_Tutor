@@ -5,6 +5,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.findmytutor.dataClasses.*
+import com.example.findmytutor.dataClasses.RatingInfo
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
@@ -18,8 +19,6 @@ import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import java.sql.Time
-import java.text.SimpleDateFormat
 
 class FirebaseRepo: FirebaseMessagingService() {
     private var mAuth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -31,6 +30,7 @@ class FirebaseRepo: FirebaseMessagingService() {
     private var COLLECTION_SOLUTIONS="solutions"
     private var COLLECTION_CHATS="chats"
     private var COLLECTION_CHATS_MESSAGES="messages"
+    private var COLLECTION_RATINGS="Ratings"
     private var mFirestore = FirebaseFirestore.getInstance()
 
     override fun onNewToken(p0: String) {
@@ -1029,6 +1029,75 @@ class FirebaseRepo: FirebaseMessagingService() {
 
         return studentList
 
+    }
+
+    fun storeReview(ratingInfo: RatingInfo)
+    {
+         mFirestore.collection(COLLECTION_RATINGS).add(ratingInfo)
+            .addOnSuccessListener {
+                Log.d("rating storage","success")
+            }
+            .addOnFailureListener {
+                Log.d("rating storage","error ${it.message}")
+            }
+    }
+
+    //get ratings given by me
+    fun getRatingsGivenByMe():MutableLiveData<ArrayList<RatingInfo>>
+    {
+        val ratingsList = MutableLiveData<ArrayList<RatingInfo>>()
+        mFirestore.collection(COLLECTION_RATINGS)
+            .whereEqualTo("ratedBy",FirebaseAuth.getInstance().currentUser!!.uid)
+            .orderBy("ratedOn")
+            .addSnapshotListener { value, error ->
+                if (error == null)
+                {
+
+                    val arrayList= arrayListOf<RatingInfo>()
+                    for (snapshot in value!!) {
+
+                        val order = snapshot.toObject(RatingInfo::class.java)
+
+
+                        arrayList.add(order)
+                    }
+                    ratingsList.value = arrayList
+                } else {
+                    Log.d("fireStore", "ratings list error: $error")
+                }
+            }
+
+
+        return ratingsList
+    }
+
+    //get ratings given by me
+    fun getRatingsReceivedByMe():MutableLiveData<ArrayList<RatingInfo>>
+    {
+        val ratingsList = MutableLiveData<ArrayList<RatingInfo>>()
+        mFirestore.collection(COLLECTION_RATINGS)
+            .whereEqualTo("ratedTo",FirebaseAuth.getInstance().currentUser!!.uid)
+            .orderBy("ratedOn")
+            .addSnapshotListener { value, error ->
+                if (error == null)
+                {
+
+                    val arrayList= arrayListOf<RatingInfo>()
+                    for (snapshot in value!!) {
+
+                        val order = snapshot.toObject(RatingInfo::class.java)
+
+
+                        arrayList.add(order)
+                    }
+                    ratingsList.value = arrayList
+                } else {
+                    Log.d("fireStore", "ratings list error: $error")
+                }
+            }
+
+
+        return ratingsList
     }
 
 }

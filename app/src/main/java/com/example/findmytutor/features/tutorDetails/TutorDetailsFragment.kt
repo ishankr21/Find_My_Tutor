@@ -21,6 +21,7 @@ import com.example.findmytutor.dataClasses.ChattingHelper
 import com.example.findmytutor.dataClasses.RequestTutor
 import com.example.findmytutor.dataClasses.Student
 import com.example.findmytutor.dataClasses.Tutor
+import com.example.findmytutor.dataClasses.RatingInfo
 import com.example.findmytutor.databinding.FragmentTutorDetailsBinding
 
 import com.example.findmytutor.databinding.RatingDialogBinding
@@ -285,17 +286,36 @@ class TutorDetailsFragment : BaseFragment() {
                 currentRating=5.0
             }
             ratingDialogBinding.btnSubmitRating.setOnClickListener {
-                val ratingArray=tutor.rating
-                ratingArray.add(currentRating.toInt())
-                mTutorDetailsViewModel.updateTutorRatings(ratingArray,tutor.tutorId)
-                showToast(requireContext(),"Tutor Rated")
-                var sum=0.0
-                for (i in tutor.rating)
-                    sum+=i
-                val rating:Double=(sum/ (tutor.rating.size))
+                if (ratingDialogBinding.etFeedback.text.isNullOrEmpty())
+                {
+                    showToast(requireContext(),"Feedback cannot be empty!")
+                }
+                else
+                {
+                    val ratingArray=tutor.rating
+                    ratingArray.add(currentRating.toInt())
+                    mTutorDetailsViewModel.updateTutorRatings(ratingArray,tutor.tutorId)
 
-                binding.tutorDetailsTutorRating.visibility = View.VISIBLE
-                binding.tutorDetailsTutorRating.text = rating.toString().subSequence(0,3)
+                    var sum=0.0
+                    for (i in tutor.rating)
+                        sum+=i
+                    val rating:Double=(sum/ (tutor.rating.size))
+                    val ratingInfo= RatingInfo(
+                        rating = currentRating.toInt(),
+                        feedback = ratingDialogBinding.etFeedback.text.toString(),
+                        ratedOn = Timestamp.now(),
+                        ratedBy = student.studentId,
+                        ratedTo = tutor.tutorId,
+                        ratedByName = student.name,
+                        ratedToName = tutor.name
+
+                    )
+                    mTutorDetailsViewModel.storeReview(ratingInfo)
+                    showToast(requireContext(),"Tutor Rated")
+                    binding.tutorDetailsTutorRating.visibility = View.VISIBLE
+                    binding.tutorDetailsTutorRating.text = rating.toString().subSequence(0,3)
+                }
+
                 mAlertDialog.dismiss()
             }
 

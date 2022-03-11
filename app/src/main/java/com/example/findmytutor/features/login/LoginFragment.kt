@@ -46,6 +46,7 @@ class LoginFragment :BaseFragment() {
             }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,callback)
         (activity as MainActivity).hideBottomNavigationView()
+
         mLoginViewModel = ViewModelProvider(this)[LoginFragmentViewModel::class.java]
 
 
