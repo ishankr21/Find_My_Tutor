@@ -58,5 +58,6 @@
         <item>4.0+</item>
 
     </string-array>
-
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 </resources>

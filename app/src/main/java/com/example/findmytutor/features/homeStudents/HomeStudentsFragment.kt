@@ -14,6 +14,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.findmytutor.R
 import com.example.findmytutor.base.BaseFragment
 import com.example.findmytutor.dataClasses.FilterSearchStudent
@@ -52,6 +53,8 @@ class HomeStudentsFragment : BaseFragment(), TutorAdapter.OnItemClickListener {
     ): View {
 
         (activity as MainActivity).setVisibleBottomNavigationView()
+        (activity as MainActivity).setNavigationDrawerVisible()
+        (activity as MainActivity).unlockDrawer()
         _binding = FragmentHomeStudentsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -98,7 +101,14 @@ class HomeStudentsFragment : BaseFragment(), TutorAdapter.OnItemClickListener {
         mHomeStudentViewModel.getCurrentStudent()
         mHomeStudentViewModel.mStudentLiveData.observe(viewLifecycleOwner)
         {stud->
+
             student=stud
+
+            val navHeaderBinding= (activity as MainActivity).getHeader()
+            navHeaderBinding.findViewById<TextView>(R.id.drawerProfileName).text=student.name
+            Glide.with(requireContext())
+                .load(student.profilePicturePath)
+                .into(navHeaderBinding.findViewById(R.id.drawerProfileImage))
             dismissProgressDialog()
             mHomeStudentViewModel.getAllTutors()
             mHomeStudentViewModel.mListOfTutors.observe(viewLifecycleOwner)
@@ -330,6 +340,16 @@ class HomeStudentsFragment : BaseFragment(), TutorAdapter.OnItemClickListener {
 
     }
 
+    override fun onPause() {
+        (activity as MainActivity).setNavigationDrawerDisappear()
+        (activity as MainActivity).lockDrawer()
+        super.onPause()
+    }
 
+    override fun onResume() {
+        (activity as MainActivity).setNavigationDrawerVisible()
+        (activity as MainActivity).unlockDrawer()
+        super.onResume()
+    }
 
 }

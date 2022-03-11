@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".features.askHelp.SendIssueMailFragment">
+
+    <RelativeLayout
+        android:id="@+id/issue_email_toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/issue_email_back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="8sp"
+            android:src="@drawable/ic_baseline_arrow_back_ios_24" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/issue_email_back_button"
+            android:fontFamily="@font/manrope_bold"
+            android:gravity="center"
+            android:paddingEnd="24sp"
+            android:text="Raise Issue"
+            android:textColor="@color/black"
+            android:id="@+id/chatting_page_title_text"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            tools:ignore="RtlSymmetry" />
+
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/issue_email_toolBar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="Send us any issue that you have faced in our app"
+        android:fontFamily="@font/poppins"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:layout_margin="8dp"
+        android:padding="8dp"
+        android:textStyle="bold"
+        android:background="@color/background"
+        android:textSize="18dp"
+        android:id="@+id/sendIssueText"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/sendIssueText"
+        app:counterEnabled="true"
+        android:background="@color/background"
+        app:counterMaxLength="30"
+        android:id="@+id/issueTitleLayout"
+        app:hintEnabled="false"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
+        android:layout_margin="16dp"
+        android:padding="8dp">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Issue title"
+            android:background="@color/background"
+            android:textSize="18sp"
+            android:fontFamily="@font/poppins"
+            android:id="@+id/issueTitleValue"
+            android:inputType="text"
+            android:minLines="1"
+            android:maxLines="1"
+            android:gravity="center_horizontal|start"
+
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/issueTitleLayout"
+        app:counterEnabled="true"
+        android:background="@color/background"
+        app:counterMaxLength="500"
+        android:id="@+id/issueDescriptionLayout"
+        app:hintEnabled="false"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
+        android:layout_margin="16dp"
+        android:padding="8dp">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Explain your issue in detail"
+            android:background="@color/background"
+            android:textSize="16sp"
+            android:fontFamily="@font/poppins"
+            android:id="@+id/issueDescriptionValue"
+            android:inputType="text|textMultiLine"
+            android:minLines="10"
+            android:maxLines="10"
+            android:gravity="center_horizontal|start"
+
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Send"
+        app:layout_constraintTop_toBottomOf="@+id/issueDescriptionLayout"
+        android:layout_margin="16dp"
+        android:padding="8dp"
+        android:id="@+id/sendIssueMail"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,22 +1,23 @@
 package com.example.findmytutor.features
 
-import android.content.Intent
+
+import android.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
-import androidx.appcompat.content.res.AppCompatResources
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.findmytutor.R
 import com.example.findmytutor.databinding.ActivityMainBinding
-import com.example.findmytutor.features.profile.ProfileViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessaging
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var mMainActivityViewModel: MainActivityViewModel
+    lateinit var toggle: ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +35,16 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        toggle= ActionBarDrawerToggle(this,binding.drawerLayout,binding.activityMainToolBar,R.string.open,R.string.close)
+        binding.drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+        setSupportActionBar(binding.activityMainToolBar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title=""
+
+        lockDrawer()
+
 
 
         
@@ -116,16 +128,78 @@ class MainActivity : AppCompatActivity() {
 
 
 
+        //handling navigation drawer clicks
+        binding.navigationView.setNavigationItemSelectedListener {
+            if(it.itemId==R.id.signOutT)
+            {
+                AlertDialog.Builder(this)
+                    .setTitle("Are you sure you want to log out?")
+                    .setPositiveButton("Yes") { _, _ ->
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic("/topics/tutors")
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic("/topics/${FirebaseAuth.getInstance().currentUser!!.uid}")
+                        mMainActivityViewModel.signOut()
+                        navController.navigate(R.id.action_profileStudentFragment_to_loginFragment)
+                    }
+                    .setNegativeButton("Cancel"){dialog,_->
+                        dialog.cancel()
+
+                    }
+                    .show()
+
+            }
+            else if(it.itemId==R.id.signOut)
+            {
+                AlertDialog.Builder(this)
+                    .setTitle("Are you sure you want to log out?")
+                    .setPositiveButton("Yes") { _, _ ->
+
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic("/topics/${FirebaseAuth.getInstance().currentUser!!.uid}")
+                        mMainActivityViewModel.signOut()
+                        navController.navigate(R.id.action_profileStudentFragment_to_loginFragment)
+                    }
+                    .setNegativeButton("Cancel"){dialog,_->
+                        dialog.cancel()
+
+                    }
+                    .show()
+            }
+            else  if(it.itemId==R.id.profileTutorFragment||it.itemId==R.id.profileStudentFragment)
+            {
+                val bundle=Bundle()
+                bundle.putSerializable("isProfileCompleted",true)
+                navController.navigate(it.itemId,bundle)
+            }
+            else
+            {
+                navController.navigate(it.itemId)
+
+            }
+              true
+        }
+
 
     }
 
+    //setting visibility of the navigation drawer
+    fun setNavigationDrawerVisible()
+    {
+        binding.activityMainToolBar.visibility=View.VISIBLE
+    }
+    fun setNavigationDrawerDisappear()
+    {
+        binding.activityMainToolBar.visibility=View.GONE
+    }
+
+    //setting visibility of bottom navigation
     fun setVisibleBottomNavigationView() {
         binding.bottomNavigation.visibility = View.VISIBLE
     }
-    //to hide bottom navigation
     fun hideBottomNavigationView() {
         binding.bottomNavigation.visibility = View.GONE
     }
+
+
+
     fun setBottomNavigationMenu(it:Int)
     {
 
@@ -142,6 +216,43 @@ class MainActivity : AppCompatActivity() {
                 bottomNavigationView.inflateMenu(R.menu.menu_student_bottom_navigation)
 
             }
+
+    }
+    fun setNavigationDrawerMenu(it:Int)
+    {
+
+        if(it==2)
+        {
+            binding.navigationView.menu.clear()
+            binding.navigationView.inflateMenu(R.menu.menu_navigation_drawer_tutor)
+
+
+        }
+        else
+        {
+            binding.navigationView.menu.clear()
+            binding.navigationView.inflateMenu(R.menu.menu_navigation_drawer_student)
+
+        }
+
+    }
+    fun lockDrawer()
+    {
+        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+    }
+    fun unlockDrawer()
+    {
+        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+    }
+    fun getHeader():View
+    {
+        return binding.navigationView.getHeaderView(0)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(toggle.onOptionsItemSelected(item))
+            return true
+        return super.onOptionsItemSelected(item)
 
     }
 

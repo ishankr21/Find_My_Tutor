@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="16dp"
+    android:layout_margin="12dp"
+
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rated by : "
+            android:fontFamily="@font/manrope_bold"
+            android:textColor="@color/black"
+            android:padding="8dp"
+            android:textSize="16sp"
+            android:id="@+id/ratedByName"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rated on : "
+            android:fontFamily="@font/manrope_bold"
+            android:textColor="@color/black"
+            android:padding="8dp"
+            android:textSize="16sp"
+            android:id="@+id/ratedOnDate"
+            app:layout_constraintTop_toBottomOf="@+id/ratedByName"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rating : 4/5"
+            android:fontFamily="@font/manrope_bold"
+            android:textColor="@color/black"
+            android:padding="8dp"
+            android:textSize="16sp"
+            android:id="@+id/ratingValue"
+            app:layout_constraintTop_toBottomOf="@+id/ratedOnDate"
+            android:drawableEnd="@drawable/ic_baseline_star_24"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View Details"
+            android:fontFamily="@font/manrope_bold"
+            android:textColor="@color/dodger_blue"
+            android:padding="8dp"
+            android:textSize="16sp"
+            android:id="@+id/ratingViewDetails"
+            android:textAlignment="center"
+            app:layout_constraintTop_toBottomOf="@+id/ratingValue"
+
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

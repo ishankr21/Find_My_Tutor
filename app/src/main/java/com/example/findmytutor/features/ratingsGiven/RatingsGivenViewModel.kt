@@ -1,18 +1,20 @@
-package com.example.findmytutor.features
+package com.example.findmytutor.features.ratingsGiven
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.findmytutor.dataClasses.RatingInfo
 import com.example.findmytutor.dataRepo.FirebaseRepo
 
-class MainActivityViewModel:ViewModel() {
-
+class RatingsGivenViewModel:ViewModel() {
+    var mRatingsGivenByMeLiveData= MutableLiveData<ArrayList<RatingInfo>>()
     var mExistingUserLiveData: MutableLiveData<Pair<Int,Boolean>> = MutableLiveData<Pair<Int,Boolean>>()
 
     fun  checkUserType() {
         mExistingUserLiveData = FirebaseRepo().checkUserType()
     }
-    fun signOut()
+
+    fun getRatingsGivenByMe()
     {
-        FirebaseRepo().userSignOut()
+        mRatingsGivenByMeLiveData=FirebaseRepo().getRatingsGivenByMe()
     }
 }

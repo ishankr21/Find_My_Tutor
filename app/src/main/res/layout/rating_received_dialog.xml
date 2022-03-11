@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@+id/etFeedback"
-            android:text="Give Rating"
+            android:text="Your Rating"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -25,13 +25,12 @@
             android:textAlignment="center"
             android:padding="4dp"
             />
-        <EditText
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/txtRateTutor"
             app:layout_constraintBottom_toTopOf="@id/star1"
             android:background="@color/background"
-            android:hint="Write feedback"
             android:id="@+id/etFeedback"
             android:textSize="18sp"
             android:fontFamily="@font/poppins"
@@ -45,7 +44,7 @@
             android:background="@color/white"
             android:id="@+id/star1"
             app:layout_constraintTop_toBottomOf="@+id/etFeedback"
-            app:layout_constraintBottom_toTopOf="@+id/btnSubmitRating"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/star2"
             android:scaleType="fitCenter"
@@ -57,7 +56,7 @@
             android:background="@color/white"
             android:id="@+id/star2"
             app:layout_constraintTop_toBottomOf="@+id/etFeedback"
-            app:layout_constraintBottom_toTopOf="@+id/btnSubmitRating"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/star1"
             app:layout_constraintRight_toLeftOf="@+id/star3"
             android:scaleType="fitCenter"
@@ -69,7 +68,7 @@
             android:background="@color/white"
             android:id="@+id/star3"
             app:layout_constraintTop_toBottomOf="@+id/etFeedback"
-            app:layout_constraintBottom_toTopOf="@+id/btnSubmitRating"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/star2"
             app:layout_constraintRight_toLeftOf="@+id/star4"
             android:scaleType="fitCenter"
@@ -81,7 +80,7 @@
             android:background="@color/white"
             android:id="@+id/star4"
             app:layout_constraintTop_toBottomOf="@+id/etFeedback"
-            app:layout_constraintBottom_toTopOf="@+id/btnSubmitRating"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/star3"
             app:layout_constraintRight_toLeftOf="@+id/star5"
             android:scaleType="fitCenter"
@@ -93,24 +92,13 @@
             android:background="@color/white"
             android:id="@+id/star5"
             app:layout_constraintTop_toBottomOf="@+id/etFeedback"
-            app:layout_constraintBottom_toTopOf="@+id/btnSubmitRating"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/star4"
             app:layout_constraintRight_toRightOf="parent"
             android:scaleType="fitCenter"
             />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Submit"
-            app:layout_constraintTop_toBottomOf="@+id/star1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:id="@+id/btnSubmitRating"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:backgroundTint="#F3D36A"
 
-            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

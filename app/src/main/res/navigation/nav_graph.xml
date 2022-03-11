@@ -249,4 +249,57 @@
             android:id="@+id/action_studentDetailsFragment_to_homeTutorsFragment"
             app:destination="@id/homeTutorsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/ratingsGivenFragment"
+        android:name="com.example.findmytutor.features.ratingsGiven.RatingsGivenFragment"
+        android:label="fragment_ratings_given"
+        tools:layout="@layout/fragment_ratings_given" >
+        <action
+            android:id="@+id/action_ratingsGivenFragment_to_homeStudentsFragment"
+            app:destination="@id/homeStudentsFragment" />
+        <action
+            android:id="@+id/action_ratingsGivenFragment_to_homeTutorsFragment"
+            app:destination="@id/homeTutorsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/sendIssueMailFragment"
+        android:name="com.example.findmytutor.features.askHelp.SendIssueMailFragment"
+        android:label="fragment_send_issue_mail"
+        tools:layout="@layout/fragment_send_issue_mail" >
+        <action
+            android:id="@+id/action_sendIssueMailFragment_to_homeStudentsFragment"
+            app:destination="@id/homeStudentsFragment" />
+        <action
+            android:id="@+id/action_sendIssueMailFragment_to_homeTutorsFragment"
+            app:destination="@id/homeTutorsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ratingsReceivedFragment"
+        android:name="com.example.findmytutor.features.ratingsReceived.RatingsReceivedFragment"
+        android:label="fragment_ratings_received"
+        tools:layout="@layout/fragment_ratings_received" >
+        <action
+            android:id="@+id/action_ratingsReceivedFragment_to_homeTutorsFragment"
+            app:destination="@id/homeTutorsFragment" />
+        <action
+            android:id="@+id/action_ratingsReceivedFragment_to_homeStudentsFragment"
+            app:destination="@id/homeStudentsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/aboutUsFragment"
+        android:name="com.example.findmytutor.features.aboutUs.AboutUsFragment"
+        android:label="fragment_about_us"
+        tools:layout="@layout/fragment_about_us" />
+    <fragment
+        android:id="@+id/transactionHistoryFragment"
+        android:name="com.example.findmytutor.features.transactionHistory.TransactionHistoryFragment"
+        android:label="fragment_transaction_history"
+        tools:layout="@layout/fragment_transaction_history" >
+        <action
+            android:id="@+id/action_transactionHistoryFragment_to_homeStudentsFragment"
+            app:destination="@id/homeStudentsFragment" />
+        <action
+            android:id="@+id/action_transactionHistoryFragment_to_homeTutorsFragment"
+            app:destination="@id/homeTutorsFragment" />
+    </fragment>
 </navigation>

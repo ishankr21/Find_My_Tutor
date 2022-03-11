@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.findmytutor.dataClasses.RequestTutor
 import com.example.findmytutor.dataClasses.Student
+import com.example.findmytutor.dataClasses.RatingInfo
 import com.example.findmytutor.dataRepo.FirebaseRepo
 
 class TutorDetailsViewModel:ViewModel() {
@@ -42,4 +43,8 @@ class TutorDetailsViewModel:ViewModel() {
         deleteSuccess=FirebaseRepo().studentDeleteTutor(requestTutor)
     }
 
+    fun storeReview(ratingInfo: RatingInfo)
+    {
+        FirebaseRepo().storeReview(ratingInfo)
+    }
 }
