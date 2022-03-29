@@ -13,7 +13,7 @@ class RatingsReceivedViewModel:ViewModel() {
         mExistingUserLiveData = FirebaseRepo().checkUserType()
     }
 
-    fun getRatingsGivenByMe()
+    fun getRatingsReceived()
     {
         mRatingsReceivedByMeLiveData= FirebaseRepo().getRatingsReceivedByMe()
     }

@@ -22,5 +22,6 @@ data class Tutor(
     var profileIsComplete:Boolean=false,
     var latitude:Double=0.0,
     var longitude:Double=0.0,
-    var preferredSchoolBoard:String=""
+    var preferredSchoolBoard:String="",
+    var upiId:String=""
 ):Serializable

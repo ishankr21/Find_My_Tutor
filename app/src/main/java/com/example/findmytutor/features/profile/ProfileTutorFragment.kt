@@ -34,7 +34,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 
-
+const val QR_CODE_SCAN = 0x0000c0de
 class ProfileTutorFragment : BaseFragment() {
 
 
@@ -52,6 +52,7 @@ class ProfileTutorFragment : BaseFragment() {
     private lateinit var mFusedLocation: FusedLocationProviderClient
     private var latitude:String=""
     private var longitude:String=""
+
 
     var isProfileCompleted=true
 
@@ -640,5 +641,7 @@ class ProfileTutorFragment : BaseFragment() {
             imageURI = Uri.parse(savedInstanceState.getString("ImageUri", ""))
         }
     }
+
+
 
 }

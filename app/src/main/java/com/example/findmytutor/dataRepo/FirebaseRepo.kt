@@ -1091,6 +1091,7 @@ class FirebaseRepo: FirebaseMessagingService() {
                         arrayList.add(order)
                     }
                     ratingsList.value = arrayList
+                    Log.d("rating","${ratingsList.value}")
                 } else {
                     Log.d("fireStore", "ratings list error: $error")
                 }

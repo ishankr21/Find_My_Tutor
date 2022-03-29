@@ -4,6 +4,7 @@ package com.example.findmytutor.features.homeStudents
 import android.annotation.SuppressLint
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -196,8 +197,9 @@ class HomeStudentsFragment : BaseFragment(), TutorAdapter.OnItemClickListener {
                     for (j in i.rating)
                         sum+=j
                     val rating:Double=(sum/ (i.rating.size))
+
                     if((filterSearchStudent.subjectIndex==0 || (filterSearchStudent.subjectIndex!=0 && i.tutorFavouriteSubject==subjectArray[filterSearchStudent.subjectIndex]))
-                        &&(filterSearchStudent.classIndex==0 || (filterSearchStudent.classIndex!=0 && i.preferredClass==subjectArray[filterSearchStudent.classIndex]))
+                        &&(filterSearchStudent.classIndex==0 || (filterSearchStudent.classIndex!=0 && i.preferredClass==classArray[filterSearchStudent.classIndex]))
                                 && (filterSearchStudent.ratingIndex==0||(filterSearchStudent.ratingIndex!=0 && rating>=ratingArray[filterSearchStudent.ratingIndex].dropLast(1).toDouble()))
                                 && (filterSearchStudent.schoolBoardIndex==0 || (filterSearchStudent.schoolBoardIndex!=0 && i.preferredSchoolBoard==subjectArray[filterSearchStudent.schoolBoardIndex]))
                         && (i.desiredFees>=filterSearchStudent.minFees && i.desiredFees<=filterSearchStudent.maxFees)
