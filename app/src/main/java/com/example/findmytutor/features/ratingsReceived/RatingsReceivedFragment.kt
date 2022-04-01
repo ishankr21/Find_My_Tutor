@@ -67,7 +67,7 @@ class RatingsReceivedFragment : BaseFragment(), RatingsReceivedAdapter.OnRatingC
                 }
             }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,callback)
-        mRatingsReceivedViewModel.getRatingsGivenByMe()
+        mRatingsReceivedViewModel.getRatingsReceived()
         mRatingsReceivedViewModel.mRatingsReceivedByMeLiveData.observe(viewLifecycleOwner)
         {
             binding.ratingsReceivedRecyclerView.layoutManager= LinearLayoutManager(requireContext())

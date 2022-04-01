@@ -40,6 +40,11 @@
             android:theme="@style/Base.Theme.AppCompat"
             android:screenOrientation="portrait" />
         <activity
+            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:screenOrientation="fullSensor"
+            tools:replace="android:screenOrientation"
+            android:stateNotNeeded="true"/>
+        <activity
             android:name=".features.MainActivity"
             android:theme="@style/MaterialTheme"
             android:exported="true"

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="8dp"
+    android:layout_margin="6dp">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Payment for the month of : "
+            android:fontFamily="@font/manrope_bold"
+            android:textColor="@color/black"
+            android:padding="8dp"
+            android:textSize="16sp"
+            android:id="@+id/txtTransactionFeesForMonth"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textAlignment="center"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Transaction Number "
+            android:fontFamily="@font/manrope_bold"
+            android:textColor="@color/black"
+            android:padding="8dp"
+            android:textSize="16sp"
+            android:id="@+id/txtTransactionId"
+            android:drawableLeft="@drawable/ic_baseline_numbers_24"
+            app:layout_constraintTop_toBottomOf="@+id/txtTransactionFeesForMonth"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Transaction Date : "
+            android:fontFamily="@font/manrope_bold"
+            android:textColor="@color/black"
+            android:padding="8dp"
+            android:textSize="16sp"
+            android:id="@+id/txtTransactionDate"
+            android:drawableLeft="@drawable/ic_baseline_calendar_month_24"
+            app:layout_constraintTop_toBottomOf="@+id/txtTransactionId"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Amount Debited : "
+            android:fontFamily="@font/manrope_bold"
+            android:textColor="@color/black"
+            android:padding="8dp"
+            android:textSize="16sp"
+            android:id="@+id/txtTransactionDebitedAmount"
+            app:layout_constraintTop_toBottomOf="@+id/txtTransactionDate"
+            android:drawableLeft="@drawable/ic_baseline_arrow_circle_down_24"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Paid To : "
+            android:fontFamily="@font/manrope_bold"
+            android:textColor="@color/black"
+            android:padding="8dp"
+            android:textSize="16sp"
+            android:id="@+id/txtPaidTo"
+            app:layout_constraintTop_toBottomOf="@+id/txtTransactionDebitedAmount"
+            android:drawableLeft="@drawable/ic_baseline_person_24"
+            />
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

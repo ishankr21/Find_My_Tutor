@@ -142,6 +142,9 @@
         <action
             android:id="@+id/action_tutorDetailsFragment_to_homeStudentsFragment"
             app:destination="@id/homeStudentsFragment" />
+        <action
+            android:id="@+id/action_tutorDetailsFragment_to_makePaymentFragment"
+            app:destination="@id/makePaymentFragment" />
     </fragment>
     <fragment
         android:id="@+id/doubtsTutorFragment"
@@ -301,5 +304,41 @@
         <action
             android:id="@+id/action_transactionHistoryFragment_to_homeTutorsFragment"
             app:destination="@id/homeTutorsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/makePaymentFragment"
+        android:name="com.example.findmytutor.features.payment.MakePaymentFragment"
+        android:label="fragment_make_payment"
+        tools:layout="@layout/fragment_make_payment" >
+        <action
+            android:id="@+id/action_makePaymentFragment_to_tutorDetailsFragment"
+            app:destination="@id/tutorDetailsFragment" />
+        <action
+            android:id="@+id/action_makePaymentFragment_to_paymentSuccessfulFragment"
+            app:destination="@id/paymentSuccessfulFragment" />
+        <action
+            android:id="@+id/action_makePaymentFragment_to_paymentFailedFragment"
+            app:destination="@id/paymentFailedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/paymentSuccessfulFragment"
+        android:name="com.example.findmytutor.features.payment.PaymentSuccessfulFragment"
+        android:label="fragment_payment_successful"
+        tools:layout="@layout/fragment_payment_successful" >
+        <action
+            android:id="@+id/action_paymentSuccessfulFragment_to_makePaymentFragment"
+            app:destination="@id/makePaymentFragment" />
+        <action
+            android:id="@+id/action_paymentSuccessfulFragment_to_homeStudentsFragment"
+            app:destination="@id/homeStudentsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/paymentFailedFragment"
+        android:name="com.example.findmytutor.features.payment.PaymentFailedFragment"
+        android:label="fragment_payment_failed"
+        tools:layout="@layout/fragment_payment_failed" >
+        <action
+            android:id="@+id/action_paymentFailedFragment_to_homeStudentsFragment"
+            app:destination="@id/homeStudentsFragment" />
     </fragment>
 </navigation>

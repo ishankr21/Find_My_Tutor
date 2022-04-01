@@ -18,6 +18,7 @@ class ProfileViewModel:ViewModel() {
     var mTutorLiveData:MutableLiveData<Tutor> = MutableLiveData()
     var mTutorDataUploaded:MutableLiveData<Boolean> = MutableLiveData()
     var addressLiveData=MutableLiveData<Pair<String,String>>()
+    var upiIdAddedSuccessfully=MutableLiveData<Boolean>()
 
 
     fun uploadPictureToFirebase(imageUri: Uri,collection:String) {
@@ -53,5 +54,11 @@ class ProfileViewModel:ViewModel() {
     fun getLocusCurrentLocation(context: Context) {
         addressLiveData = LocusLocation().getLatLongByLocus(context)
     }
+
+    fun addUpiId(upiId:String)
+    {
+        upiIdAddedSuccessfully=FirebaseRepo().addUpiId(upiId)
+    }
+
 
 }

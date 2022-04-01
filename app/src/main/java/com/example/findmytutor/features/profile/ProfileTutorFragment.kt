@@ -1,5 +1,6 @@
 package com.example.findmytutor.features.profile
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
@@ -31,10 +32,16 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessaging
+import com.google.zxing.integration.android.IntentIntegrator
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.MultiplePermissionsReport
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 
-
+const val QR_CODE_SCAN = 0x0000c0de
 class ProfileTutorFragment : BaseFragment() {
 
 
@@ -46,12 +53,14 @@ class ProfileTutorFragment : BaseFragment() {
     var spinnerSchoolBoards:Array<String> = arrayOf()
     var spinnerSubjects:Array<String> = arrayOf()
     private lateinit var mProfileFragmentViewModel: ProfileViewModel
+    private lateinit var qrCodeScanIntegrator: IntentIntegrator
     private var _binding: FragmentProfileTutorBinding? = null
     private val binding get() = _binding!!
     private lateinit var mView: View
     private lateinit var mFusedLocation: FusedLocationProviderClient
     private var latitude:String=""
     private var longitude:String=""
+
 
     var isProfileCompleted=true
 
@@ -78,6 +87,7 @@ class ProfileTutorFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         mProfileFragmentViewModel =
             ViewModelProvider(this)[ProfileViewModel::class.java]
+        setUpScanner()
         if (!isProfileCompleted) {
 
             (activity as MainActivity).hideBottomNavigationView()
@@ -198,6 +208,11 @@ class ProfileTutorFragment : BaseFragment() {
             if(it.longitude!=0.0)
             {
                 longitude=it.longitude.toString()
+            }
+            if (it.upiId!="")
+            {
+                binding.imgUpiAdded.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_check_circle_24))
+                binding.txtGetMyUPI.text="UPDATE UPI"
             }
             if (it.profilePicturePath != "") {
                 Glide.with(requireContext()).load(it.profilePicturePath)
@@ -338,6 +353,15 @@ class ProfileTutorFragment : BaseFragment() {
             getLocation()
         }
 
+
+
+        binding.getMyUpiId.setOnClickListener {
+            if(requestPermission())
+            {
+                startScan()
+                showProgressDialog("Please Wait")
+            }
+        }
 
 
 
@@ -620,6 +644,51 @@ class ProfileTutorFragment : BaseFragment() {
                         " $error"
                     )
                 }
+                QR_CODE_SCAN -> {
+                    val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+
+                    if (result == null) {
+
+                       dismissProgressDialog()
+                       showToast(
+                            requireContext(), "Some  Occurred"
+                        )
+                    } else {
+                        val content = result.contents
+                        val parts = content.split("&").toMutableList()
+                        var mc = "0000"
+                        parts[0] = parts[0].drop(10)
+                        for (i in parts) {
+                            if (i[0] == 'm' && i[1] == 'c') {
+                                mc = i.drop(3)
+                            }
+                        }
+                        if (mc == "0000") {
+                            showToast(
+                                requireContext(),
+                                "The scanned UPI ID is not a merchant account, please provide merchant account UPI ID!",
+                            )
+                            dismissProgressDialog()
+                        } else {
+                                mProfileFragmentViewModel.addUpiId(content)
+                                mProfileFragmentViewModel.upiIdAddedSuccessfully.observe(viewLifecycleOwner)
+                                {
+                                    if(it)
+                                    {
+                                        showToast(requireContext(),"UPI added successfully")
+                                        binding.imgUpiAdded.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_check_circle_24))
+                                        binding.txtGetMyUPI.text="UPDATE UPI"
+                                    }
+                                    else
+                                    {
+                                        showToast(requireContext(),"some error occurred")
+                                    }
+
+                                    dismissProgressDialog()
+                                }
+                        }
+                    }
+                }
             }
         } else {
             //can show progress bar, here make it invisible
@@ -640,5 +709,45 @@ class ProfileTutorFragment : BaseFragment() {
             imageURI = Uri.parse(savedInstanceState.getString("ImageUri", ""))
         }
     }
+
+    private fun requestPermission(): Boolean {
+        var check = false
+        Dexter.withContext(requireActivity()).withPermissions(
+            Manifest.permission.CAMERA
+        ).withListener(object : MultiplePermissionsListener {
+            override fun onPermissionsChecked(multiplePermissionsReport: MultiplePermissionsReport?) {
+                if (multiplePermissionsReport!!.areAllPermissionsGranted()) {
+                    check = true
+                } else {
+                    showToast(requireContext(),
+                        "Please provide permission to access this function",
+                    )
+                }
+            }
+            override fun onPermissionRationaleShouldBeShown(
+                p0: MutableList<PermissionRequest>?,
+                permissionToken: PermissionToken?
+            ) {
+                permissionToken!!.continuePermissionRequest()
+            }
+        }
+        ).onSameThread().check()
+
+        if (check) return true
+        return false
+    }
+
+    private fun setUpScanner() {
+        qrCodeScanIntegrator = IntentIntegrator.forSupportFragment(this)
+        qrCodeScanIntegrator.setOrientationLocked(true)
+        qrCodeScanIntegrator.setBeepEnabled(false)
+        qrCodeScanIntegrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
+        qrCodeScanIntegrator.setPrompt("Make Sure the rectangle covers the QR Code")
+    }
+
+    private fun startScan() {
+        qrCodeScanIntegrator.initiateScan()
+    }
+
 
 }

@@ -31,6 +31,7 @@ class FirebaseRepo: FirebaseMessagingService() {
     private var COLLECTION_CHATS="chats"
     private var COLLECTION_CHATS_MESSAGES="messages"
     private var COLLECTION_RATINGS="Ratings"
+    private var COLLECTION_TRANSACTIONS="Transactions"
     private var mFirestore = FirebaseFirestore.getInstance()
 
     override fun onNewToken(p0: String) {
@@ -1091,6 +1092,7 @@ class FirebaseRepo: FirebaseMessagingService() {
                         arrayList.add(order)
                     }
                     ratingsList.value = arrayList
+                    Log.d("rating","${ratingsList.value}")
                 } else {
                     Log.d("fireStore", "ratings list error: $error")
                 }
@@ -1098,6 +1100,100 @@ class FirebaseRepo: FirebaseMessagingService() {
 
 
         return ratingsList
+    }
+
+    fun addUpiId(upiId: String): MutableLiveData<Boolean> {
+        val addingSuccess=MutableLiveData<Boolean>()
+        mFirestore.collection(COLLECTION_TUTOR).document(FirebaseAuth.getInstance().currentUser!!.uid).update("upiId",upiId)
+            .addOnSuccessListener {
+                Log.d("upi update","successful")
+                addingSuccess.value=true
+            }
+            .addOnFailureListener {
+                Log.d("upi update","${it.message}")
+                addingSuccess.value=false
+            }
+
+
+        return addingSuccess
+    }
+
+    fun storeTransaction(transactionInfo: TransactionInfo): MutableLiveData<Boolean> {
+
+        val addingSuccess=MutableLiveData<Boolean>()
+        mFirestore.collection(COLLECTION_TRANSACTIONS).document(transactionInfo.transactionId).set(transactionInfo)
+            .addOnSuccessListener {
+
+                addingSuccess.value=true
+            }
+            .addOnFailureListener {
+                Log.d("storage error","${it.message}")
+                addingSuccess.value=false
+            }
+
+
+        return addingSuccess
+
+    }
+
+    fun getAllTransactionsStudent():MutableLiveData<MutableList<TransactionInfo>>
+    {
+        val transactionList=MutableLiveData<MutableList<TransactionInfo>>()
+
+        mFirestore.collection(COLLECTION_TRANSACTIONS)
+            .whereEqualTo("studentId",FirebaseAuth.getInstance().currentUser!!.uid)
+            .orderBy("completedOn")
+            .addSnapshotListener { value, error ->
+                if (error == null) {
+
+                    val arrayList = arrayListOf<TransactionInfo>()
+                    for (snapshot in value!!) {
+
+                        val order = snapshot.toObject(TransactionInfo::class.java)
+
+
+                        arrayList.add(order)
+                    }
+                    transactionList.value = arrayList
+                    Log.d("transaction", "${transactionList.value}")
+                } else {
+                    Log.d("transaction", "ratings list error: $error")
+                }
+            }
+
+        return transactionList
+
+
+    }
+
+    fun getAllTransactionsTutor():MutableLiveData<MutableList<TransactionInfo>>
+    {
+        val transactionList=MutableLiveData<MutableList<TransactionInfo>>()
+
+        mFirestore.collection(COLLECTION_TRANSACTIONS)
+            .whereEqualTo("tutorId",FirebaseAuth.getInstance().currentUser!!.uid)
+            .orderBy("completedOn")
+            .addSnapshotListener { value, error ->
+                if (error == null) {
+
+                    val arrayList = arrayListOf<TransactionInfo>()
+                    for (snapshot in value!!) {
+
+                        val order = snapshot.toObject(TransactionInfo::class.java)
+
+
+                        arrayList.add(order)
+                    }
+                    transactionList.value = arrayList
+                    Log.d("transaction", "${transactionList.value}")
+                } else {
+                    Log.d("transaction", "ratings list error: $error")
+                }
+            }
+
+        return transactionList
+
+
     }
 
 }

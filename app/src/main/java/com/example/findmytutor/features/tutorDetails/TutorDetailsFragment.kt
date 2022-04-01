@@ -351,6 +351,12 @@ class TutorDetailsFragment : BaseFragment() {
                 }
                 .show()
         }
+        binding.btnPayTutor.setOnClickListener {
+            val bundle=Bundle()
+            bundle.putSerializable("student",student)
+            bundle.putSerializable("tutor",tutor)
+            findNavController().navigate(R.id.action_tutorDetailsFragment_to_makePaymentFragment,bundle)
+        }
 
     }
 
