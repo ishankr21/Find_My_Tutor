@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.findmytutor.R
 import com.example.findmytutor.base.BaseFragment
@@ -19,6 +20,8 @@ import com.example.findmytutor.dataClasses.TransactionInfo
 import com.example.findmytutor.dataClasses.Tutor
 import com.example.findmytutor.databinding.FragmentMakePaymentBinding
 import com.example.findmytutor.features.MainActivity
+import com.example.findmytutor.features.otpVerification.OtpViewModel
+import com.google.firebase.Timestamp
 import java.util.*
 
 
@@ -29,6 +32,8 @@ class MakePaymentFragment : BaseFragment() {
     private var student= Student()
     private var spinnerArrayMonth: Array<String> = arrayOf()
     private val UPI_PAYMENT = 0
+    private lateinit var mMakePaymentViewModel: MakePaymentViewModel
+    var transactionInfo=TransactionInfo()
 
 
     override fun onCreateView(
@@ -48,6 +53,7 @@ class MakePaymentFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mMakePaymentViewModel = ViewModelProvider(this)[MakePaymentViewModel::class.java]
         val bundle = arguments
         tutor = bundle!!.getSerializable("tutor") as Tutor
         student = bundle.getSerializable("student") as Student
@@ -56,11 +62,15 @@ class MakePaymentFragment : BaseFragment() {
         initSpinners()
         val month=getMonth(Calendar.getInstance().time)+1
         binding.spnSelectFeesMonth.setSelection(month)
-
+        if(tutor.upiId=="")
+        {
+            binding.makePaymentButton.isEnabled=false
+            binding.makePaymentButton.text="UPI ID NOT ADDED PLEASE PAY BY CASH"
+        }
         binding.makePaymentButton.setOnClickListener {
             if(!binding.makePaymentTutorFees.text.isNullOrEmpty())
             {
-                val transactionInfo=TransactionInfo(
+                 transactionInfo=TransactionInfo(
                     transactionId = "FMT"+System.currentTimeMillis().toString().takeLast(5)+student.studentId.takeLast(3)+tutor.tutorId.takeLast(3),
                     paymentForMonth = binding.spnSelectFeesMonth.selectedItem.toString(),
                     tutorId = tutor.tutorId,
@@ -70,7 +80,18 @@ class MakePaymentFragment : BaseFragment() {
                     amount = binding.makePaymentTutorFees.text.toString().toDouble()
 
                 )
-                payUsingUPI("paytmqr281005050101x2ykunuhvqol@paytm", "Vishal Kumar", "Payment from find my tutor", "1.0")
+                val content = tutor.upiId
+                val parts = content.split("&").toMutableList()
+                parts[0] = parts[0].drop(13)
+                var mc = "0000"
+
+                for (i in parts) {
+                    if (i[0] == 'm' && i[1] == 'c') {
+                        mc = i.drop(3)
+                    }
+                }
+
+                payUsingUPI(parts[0], "Vishal", "Payment from find my tutor", "1.0" ,mc)
 
 
             }
@@ -114,11 +135,11 @@ class MakePaymentFragment : BaseFragment() {
 
 
     }
-    private fun payUsingUPI(upiId: String, name: String, note: String, amount: String) {
+    private fun payUsingUPI(upiId: String, name: String, note: String, amount: String,mc:String) {
         val uri = Uri.parse("upi://pay").buildUpon()
             .appendQueryParameter("pa", upiId)
             .appendQueryParameter("pn", name)
-            .appendQueryParameter("mc", "5499")
+            .appendQueryParameter("mc", mc)
             .appendQueryParameter("mode", "02")
             .appendQueryParameter("tr", "FMT"+System.currentTimeMillis())
             .appendQueryParameter("tn", note)
@@ -202,11 +223,17 @@ class MakePaymentFragment : BaseFragment() {
 
         if (status == "success") {
 
-            //TODO add to database
+                transactionInfo.completedOn= Timestamp.now()
                 val b=Bundle()
-                b.putString("approvalRefNo",approvalRefNo)
+                b.putString("approvalRefNo",transactionInfo.transactionId)
                 b.putString("amount",binding.makePaymentTutorFees.text.toString())
-            findNavController().navigate(R.id.action_makePaymentFragment_to_paymentSuccessfulFragment,b)
+                mMakePaymentViewModel.storeTransaction(transactionInfo)
+                mMakePaymentViewModel.transactionStored.observe(viewLifecycleOwner)
+                {
+                    if(it)
+                        findNavController().navigate(R.id.action_makePaymentFragment_to_paymentSuccessfulFragment,b)
+                }
+
 
 
 
@@ -214,6 +241,11 @@ class MakePaymentFragment : BaseFragment() {
             Toast.makeText(requireContext(), "Payment cancelled by user.", Toast.LENGTH_SHORT)
                 .show()
         } else {
+
+            val b=Bundle()
+            b.putString("approvalRefNo",transactionInfo.transactionId)
+            b.putString("amount",binding.makePaymentTutorFees.text.toString())
+            findNavController().navigate(R.id.action_makePaymentFragment_to_paymentFailedFragment,b)
             Toast.makeText(
                 requireContext(),
                 "Transaction failed.Please try again",

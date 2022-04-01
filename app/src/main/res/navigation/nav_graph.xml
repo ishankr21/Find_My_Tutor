@@ -316,6 +316,9 @@
         <action
             android:id="@+id/action_makePaymentFragment_to_paymentSuccessfulFragment"
             app:destination="@id/paymentSuccessfulFragment" />
+        <action
+            android:id="@+id/action_makePaymentFragment_to_paymentFailedFragment"
+            app:destination="@id/paymentFailedFragment" />
     </fragment>
     <fragment
         android:id="@+id/paymentSuccessfulFragment"
@@ -327,6 +330,15 @@
             app:destination="@id/makePaymentFragment" />
         <action
             android:id="@+id/action_paymentSuccessfulFragment_to_homeStudentsFragment"
+            app:destination="@id/homeStudentsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/paymentFailedFragment"
+        android:name="com.example.findmytutor.features.payment.PaymentFailedFragment"
+        android:label="fragment_payment_failed"
+        tools:layout="@layout/fragment_payment_failed" >
+        <action
+            android:id="@+id/action_paymentFailedFragment_to_homeStudentsFragment"
             app:destination="@id/homeStudentsFragment" />
     </fragment>
 </navigation>
