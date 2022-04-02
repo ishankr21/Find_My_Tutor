@@ -29,7 +29,8 @@
         android:padding="16dp"
         android:hint="NAME"
         android:background="@color/background"
-        android:inputType="text"
+        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+        android:inputType="textPersonName"
         android:id="@+id/register_student_name_edittext"
         app:layout_constraintTop_toBottomOf="@+id/register_student_phone_edittext"
         />
@@ -42,6 +43,8 @@
         android:hint="AGE"
         android:background="@color/background"
         android:inputType="number"
+        android:digits="0123456789"
+        android:maxLength="3"
         android:id="@+id/register_student_age_edittext"
         app:layout_constraintTop_toBottomOf="@+id/register_student_name_edittext"
          />
@@ -64,7 +67,8 @@
         android:padding="16dp"
         android:hint="PARENT NAME"
         android:background="@color/background"
-        android:inputType="text"
+        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+        android:inputType="textPersonName"
         android:id="@+id/register_student_parentName_edittext"
         app:layout_constraintTop_toBottomOf="@+id/spnSelectStudentGender"
          />

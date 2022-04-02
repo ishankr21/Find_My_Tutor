@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.findmytutor.R
 import com.example.findmytutor.base.BaseFragment
 import com.example.findmytutor.dataClasses.TransactionInfo
 import com.example.findmytutor.databinding.FragmentTransactionHistoryBinding
@@ -38,6 +41,24 @@ class TransactionHistoryFragment : BaseFragment() {
 
         mTransactionHistoryViewModel=
             ViewModelProvider(this)[TransactionHistoryViewModel::class.java]
+        val callback: OnBackPressedCallback =
+            object : OnBackPressedCallback(true /* enabled by default */) {
+                override fun handleOnBackPressed() {
+                    showProgressDialog("Wait")
+                    mTransactionHistoryViewModel.checkUserType()
+                    mTransactionHistoryViewModel.mExistingUserLiveData.observe(viewLifecycleOwner)
+                    {
+                        dismissProgressDialog()
+                        if(it.first==2)
+                            findNavController().navigate(R.id.action_ratingsGivenFragment_to_homeTutorsFragment)
+                        else
+                            findNavController().navigate(R.id.action_ratingsGivenFragment_to_homeStudentsFragment)
+                    }
+
+
+                }
+            }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,callback)
         binding.transactionHistoryRecyclerView.layoutManager=LinearLayoutManager(requireContext())
         showProgressDialog("Loading")
         mTransactionHistoryViewModel.checkUserType()

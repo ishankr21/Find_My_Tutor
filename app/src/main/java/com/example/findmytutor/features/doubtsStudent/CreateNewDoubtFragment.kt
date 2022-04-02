@@ -74,32 +74,28 @@ class CreateNewDoubtFragment : BaseFragment() {
             binding.btnAddImage.visibility=View.GONE
             binding.btnCreateDoubt.visibility=View.GONE
             binding.btnChangeImage.visibility=View.VISIBLE
-            binding.btnEndDoubt.visibility=View.VISIBLE
             binding.btnSaveEditDoubt.visibility=View.VISIBLE
             showProgressDialog("Loading")
             binding.doubtTitle.setText(doubtInfoCame.doubtTitle)
             binding.doubtDescription.setText(doubtInfoCame.doubtDescription)
+            if(doubtInfoCame.isClosed)
+            {
+                binding.btnEndDoubt.visibility=View.VISIBLE
+                binding.btnEndDoubt.text="Mark As Undone"
 
+            }
+            else
+            {
+                binding.btnEndDoubt.visibility=View.VISIBLE
+                binding.btnEndDoubt.text="Mark As Done"
+            }
             if(doubtInfoCame.doubtImagePath!="")
             {
                 Glide.with(requireContext())
                     .load(doubtInfoCame.doubtImagePath)
                     .placeholder(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_image_24))
-                    .listener(object : RequestListener<Drawable> {
-                        override fun onLoadFailed(p0: GlideException?, p1: Any?, p2: com.bumptech.glide.request.target.Target<Drawable>?, p3: Boolean): Boolean {
-                             dismissProgressDialog()
-                            return true
-                        }
-                        override fun onResourceReady(p0: Drawable?, p1: Any?, p2: com.bumptech.glide.request.target.Target<Drawable>?, p3: DataSource?, p4: Boolean): Boolean {
-
-                            dismissProgressDialog()
-
-
-                            return true
-                        }
-                    })
                     .into(binding.doubtImage)
-
+                dismissProgressDialog()
 
 
             }
@@ -265,20 +261,41 @@ class CreateNewDoubtFragment : BaseFragment() {
         }
 
         binding.btnEndDoubt.setOnClickListener {
-            mDoubtStudentViewModel.markAsDone(doubtInfoCame.doubtId)
-            mDoubtStudentViewModel.mMarkAsDoneSuccess.observe(viewLifecycleOwner)
+            if (binding.btnEndDoubt.text=="Mark As Done")
             {
-                if(it)
+                mDoubtStudentViewModel.markAsDone(doubtInfoCame.doubtId)
+                mDoubtStudentViewModel.mMarkAsDoneSuccess.observe(viewLifecycleOwner)
                 {
-                    showToast(requireContext(),"Doubt Closed")
-                    findNavController().navigate(R.id.action_createNewDoubtFragment_to_homeStudentsFragment)
-                }
-                else
-                {
-                    showToast(requireContext(),"Some error occurred!")
+                    if(it)
+                    {
+                        showToast(requireContext(),"Doubt Closed")
+                        findNavController().navigate(R.id.action_createNewDoubtFragment_to_homeStudentsFragment)
+                    }
+                    else
+                    {
+                        showToast(requireContext(),"Some error occurred!")
+                    }
                 }
             }
+            else
+            {
+                mDoubtStudentViewModel.markAsUnDone(doubtInfoCame.doubtId)
+                mDoubtStudentViewModel.mMarkAsUnDoneSuccess.observe(viewLifecycleOwner)
+                {
+                    if(it)
+                    {
+                        showToast(requireContext(),"Doubt Opened")
+                        findNavController().navigate(R.id.action_createNewDoubtFragment_to_homeStudentsFragment)
+                    }
+                    else
+                    {
+                        showToast(requireContext(),"Some error occurred!")
+                    }
+                }
+            }
+
         }
+
 
 
 

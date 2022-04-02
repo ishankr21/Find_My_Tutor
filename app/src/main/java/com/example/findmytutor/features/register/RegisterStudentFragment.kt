@@ -1,6 +1,7 @@
 package com.example.findmytutor.features.register
 
 import android.os.Bundle
+import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -69,39 +70,48 @@ class RegisterStudentFragment : BaseFragment() {
             }
 
             binding.registerStudentButton.setOnClickListener {
-                if (binding.registerStudentPhoneEdittext.text.isNullOrEmpty()||binding.registerStudentAgeEdittext.text.isNullOrEmpty()||binding.registerStudentNameEdittext.text.isNullOrEmpty()
-                    || binding.registerStudentParentNameEdittext.text.isNullOrEmpty()||binding.spnSelectStudentGender.selectedItemPosition==0)
+
+                if(binding.registerStudentPhoneEdittext.text.length==10)
                 {
-                    Toast.makeText(requireContext(),"Please fill all the details!",Toast.LENGTH_SHORT).show()
+                    if (binding.registerStudentPhoneEdittext.text.isNullOrEmpty()||binding.registerStudentAgeEdittext.text.isNullOrEmpty()||binding.registerStudentNameEdittext.text.isNullOrEmpty()
+                        || binding.registerStudentParentNameEdittext.text.isNullOrEmpty()||binding.spnSelectStudentGender.selectedItemPosition==0)
+                    {
+                        Toast.makeText(requireContext(),"Please fill all the details!",Toast.LENGTH_SHORT).show()
+                    }
+                    else
+                    {
+                        mRegisterViewModel.checkUserExists("+91"+binding.registerStudentPhoneEdittext.text.toString())
+                        mRegisterViewModel.mExistingUserLiveData.observe(viewLifecycleOwner)
+                        {
+                            if(it==0)
+                            {
+                                val student=Student(
+                                    name = binding.registerStudentNameEdittext.text.toString(),
+                                    mobile = "+91"+binding.registerStudentPhoneEdittext.text.toString(),
+                                    age = binding.registerStudentAgeEdittext.text.toString().toInt(),
+                                    gender = spinnerArrayGender[binding.spnSelectStudentGender.selectedItemPosition],
+                                    parentName = binding.registerStudentParentNameEdittext.text.toString()
+                                )
+                                val tutor=Tutor()
+                                val bundle=Bundle()
+                                bundle.putSerializable("student",student)
+                                bundle.putSerializable("tutor",tutor)
+                                bundle.putBoolean("isRegistration",true)
+                                view.findNavController().navigate(R.id.action_registerFragment_to_verifyOtpFragment2,bundle)
+                            }
+                            else
+                            {
+                                showToast(requireContext(),"Phone number already registered!")
+                            }
+                        }
+
+                    }
                 }
                 else
                 {
-                    mRegisterViewModel.checkUserExists("+91"+binding.registerStudentPhoneEdittext.text.toString())
-                    mRegisterViewModel.mExistingUserLiveData.observe(viewLifecycleOwner)
-                    {
-                        if(it==0)
-                        {
-                            val student=Student(
-                                name = binding.registerStudentNameEdittext.text.toString(),
-                                mobile = "+91"+binding.registerStudentPhoneEdittext.text.toString(),
-                                age = binding.registerStudentAgeEdittext.text.toString().toInt(),
-                                gender = spinnerArrayGender[binding.spnSelectStudentGender.selectedItemPosition],
-                                parentName = binding.registerStudentParentNameEdittext.text.toString()
-                            )
-                            val tutor=Tutor()
-                            val bundle=Bundle()
-                            bundle.putSerializable("student",student)
-                            bundle.putSerializable("tutor",tutor)
-                            bundle.putBoolean("isRegistration",true)
-                            view.findNavController().navigate(R.id.action_registerFragment_to_verifyOtpFragment2,bundle)
-                        }
-                        else
-                        {
-                            showToast(requireContext(),"Phone number already registered!")
-                        }
-                    }
-
+                    showToast(requireContext(),"Incorrect phone number! Please enter again")
                 }
+
             }
 
     }
@@ -133,5 +143,7 @@ class RegisterStudentFragment : BaseFragment() {
         binding.spnSelectStudentGender.adapter = arrayAdapterGender
 
     }
+
+
 
 }
