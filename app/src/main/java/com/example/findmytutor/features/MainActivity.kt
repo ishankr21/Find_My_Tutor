@@ -138,7 +138,7 @@ class MainActivity : AppCompatActivity() {
                         FirebaseMessaging.getInstance().unsubscribeFromTopic("/topics/tutors")
                         FirebaseMessaging.getInstance().unsubscribeFromTopic("/topics/${FirebaseAuth.getInstance().currentUser!!.uid}")
                         mMainActivityViewModel.signOut()
-                        navController.navigate(R.id.action_profileStudentFragment_to_loginFragment)
+                        navController.navigate(R.id.action_homeTutorsFragment_to_loginFragment)
                     }
                     .setNegativeButton("Cancel"){dialog,_->
                         dialog.cancel()
@@ -155,7 +155,7 @@ class MainActivity : AppCompatActivity() {
 
                         FirebaseMessaging.getInstance().unsubscribeFromTopic("/topics/${FirebaseAuth.getInstance().currentUser!!.uid}")
                         mMainActivityViewModel.signOut()
-                        navController.navigate(R.id.action_profileStudentFragment_to_loginFragment)
+                        navController.navigate(R.id.action_homeStudentsFragment_to_loginFragment)
                     }
                     .setNegativeButton("Cancel"){dialog,_->
                         dialog.cancel()

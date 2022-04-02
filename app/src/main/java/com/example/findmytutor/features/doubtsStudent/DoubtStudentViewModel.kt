@@ -21,6 +21,7 @@ class DoubtStudentViewModel:ViewModel() {
     var mDoubtStorageSuccess=MutableLiveData<Boolean>()
     var mAllStudentDoubts=MutableLiveData<ArrayList<DoubtInfo>>()
     var mMarkAsDoneSuccess=MutableLiveData<Boolean>()
+    var mMarkAsUnDoneSuccess=MutableLiveData<Boolean>()
     var mAllStudentSolutions=MutableLiveData<ArrayList<SolutionInfo>>()
     var mTutorData = MutableLiveData<Tutor>()
     var doubtArrayFromLocalDb:LiveData<MutableList<DoubtInfo>> = MutableLiveData()
@@ -57,6 +58,11 @@ class DoubtStudentViewModel:ViewModel() {
     fun markAsDone(doubtId:String)
     {
         mMarkAsDoneSuccess=FirebaseRepo().markDoubtAsDone(doubtId)
+    }
+
+    fun markAsUnDone(doubtId:String)
+    {
+        mMarkAsUnDoneSuccess=FirebaseRepo().markDoubtAsUnDone(doubtId)
     }
 
     fun getLocalDbDoubts(context: Context)

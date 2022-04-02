@@ -84,19 +84,7 @@ class HomeStudentsFragment : BaseFragment(), TutorAdapter.OnItemClickListener {
         binding.studentHomeRecyclerView.showShimmer()
         binding.studentHomeRecyclerView.setHasFixedSize(true)
 
-        binding.homeStudentSearchAutoCompleteTextView.setOnQueryTextListener(object : SearchView.OnQueryTextListener
-        {
-            override fun onQueryTextSubmit(p0: String?): Boolean {
-                return false
-            }
 
-            override fun onQueryTextChange(p0: String?): Boolean {
-
-                tutorListAdapter.filter.filter(p0)
-                return false
-            }
-
-        })
 
         showProgressDialog("Loading")
         mHomeStudentViewModel.getCurrentStudent()
@@ -111,17 +99,44 @@ class HomeStudentsFragment : BaseFragment(), TutorAdapter.OnItemClickListener {
                 .load(student.profilePicturePath)
                 .into(navHeaderBinding.findViewById(R.id.drawerProfileImage))
             dismissProgressDialog()
+
             mHomeStudentViewModel.getAllTutors()
             mHomeStudentViewModel.mListOfTutors.observe(viewLifecycleOwner)
             {
 
-                tutorList=it
-                tutorListAdapter= TutorAdapter(it,requireContext(),this@HomeStudentsFragment,student)
-                binding.studentHomeRecyclerView.adapter=tutorListAdapter
-                binding.studentHomeRecyclerView.hideShimmer()
+                if (it.size==0)
+                {
+                    binding.animNoResultsFound.visibility=View.VISIBLE
+                    binding.studentHomeRecyclerView.visibility=View.GONE
+                    binding.txtNoResultsFound.visibility=View.VISIBLE
+                }
+                else
+                {
+                    tutorList=it
+                    tutorListAdapter= TutorAdapter(it,requireContext(),this@HomeStudentsFragment,student)
+                    binding.studentHomeRecyclerView.adapter=tutorListAdapter
+                    binding.studentHomeRecyclerView.hideShimmer()
+                    binding.animNoResultsFound.visibility=View.GONE
+                    binding.txtNoResultsFound.visibility=View.GONE
+                    binding.studentHomeRecyclerView.visibility=View.VISIBLE
+                }
+
             }
         }
 
+        binding.homeStudentSearchAutoCompleteTextView.setOnQueryTextListener(object : SearchView.OnQueryTextListener
+        {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+
+                tutorListAdapter.filter.filter(p0)
+                return false
+            }
+
+        })
         binding.btnSelectYourFilters.setOnClickListener {
             val bottomSheetDialogBinding = FilterBottomSheetDialogBinding.inflate(
                 LayoutInflater.from(requireContext())

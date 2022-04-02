@@ -46,6 +46,9 @@
         <action
             android:id="@+id/action_homeStudentsFragment_to_tutorDetailsFragment"
             app:destination="@id/tutorDetailsFragment" />
+        <action
+            android:id="@+id/action_homeStudentsFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/homeTutorsFragment"
@@ -55,6 +58,9 @@
         <action
             android:id="@+id/action_homeTutorsFragment_to_studentDetailsFragment"
             app:destination="@id/studentDetailsFragment" />
+        <action
+            android:id="@+id/action_homeTutorsFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
@@ -251,6 +257,9 @@
         <action
             android:id="@+id/action_studentDetailsFragment_to_homeTutorsFragment"
             app:destination="@id/homeTutorsFragment" />
+        <action
+            android:id="@+id/action_studentDetailsFragment_to_chatsFragment"
+            app:destination="@id/chatsFragment" />
     </fragment>
     <fragment
         android:id="@+id/ratingsGivenFragment"

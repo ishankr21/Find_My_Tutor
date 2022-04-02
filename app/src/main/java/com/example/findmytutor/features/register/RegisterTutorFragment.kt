@@ -65,38 +65,46 @@ class RegisterTutorFragment : BaseFragment() {
             }
 
         binding.registerTutorButton.setOnClickListener {
-            if (binding.registerTutorPhoneEdittext.text.isNullOrEmpty()||binding.registerTutorAgeEdittext.text.isNullOrEmpty()||binding.registerTutorNameEdittext.text.isNullOrEmpty()
-                ||binding.spnSelectTutorGender.selectedItemPosition==0)
-            {
-                Toast.makeText(requireContext(),"Please fill all the details!", Toast.LENGTH_SHORT).show()
+            if(binding.registerTutorPhoneEdittext.text.length==10) {
+                if (binding.registerTutorPhoneEdittext.text.isNullOrEmpty() || binding.registerTutorAgeEdittext.text.isNullOrEmpty() || binding.registerTutorNameEdittext.text.isNullOrEmpty()
+                    || binding.spnSelectTutorGender.selectedItemPosition == 0
+                ) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Please fill all the details!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+
+                    mRegisterViewModel.checkUserExists("+91" + binding.registerTutorPhoneEdittext.text.toString())
+                    mRegisterViewModel.mExistingUserLiveData.observe(viewLifecycleOwner)
+                    {
+                        if (it == 0) {
+                            val tutor = Tutor(
+                                name = binding.registerTutorNameEdittext.text.toString(),
+                                mobile = "+91" + binding.registerTutorPhoneEdittext.text.toString(),
+                                age = binding.registerTutorAgeEdittext.text.toString().toInt(),
+                                gender = spinnerArrayGender[binding.spnSelectTutorGender.selectedItemPosition]
+
+                            )
+                            val student = Student()
+                            val bundle = Bundle()
+                            bundle.putSerializable("student", student)
+                            bundle.putSerializable("tutor", tutor)
+                            bundle.putBoolean("isRegistration", true)
+                            view.findNavController().navigate(
+                                R.id.action_registerFragment_to_verifyOtpFragment2,
+                                bundle
+                            )
+                        } else {
+                            showToast(requireContext(), "Phone number already registered!")
+                        }
+                    }
+                }
             }
             else
             {
-
-                mRegisterViewModel.checkUserExists("+91"+binding.registerTutorPhoneEdittext.text.toString())
-                mRegisterViewModel.mExistingUserLiveData.observe(viewLifecycleOwner)
-                {
-                    if(it==0)
-                    {
-                val tutor= Tutor(
-                    name = binding.registerTutorNameEdittext.text.toString(),
-                    mobile = "+91"+binding.registerTutorPhoneEdittext.text.toString(),
-                    age = binding.registerTutorAgeEdittext.text.toString().toInt(),
-                    gender = spinnerArrayGender[binding.spnSelectTutorGender.selectedItemPosition]
-
-                )
-                val student=Student()
-                val bundle=Bundle()
-                bundle.putSerializable("student",student)
-                bundle.putSerializable("tutor",tutor)
-                bundle.putBoolean("isRegistration",true)
-                view.findNavController().navigate(R.id.action_registerFragment_to_verifyOtpFragment2,bundle)
-                    }
-                    else
-                    {
-                        showToast(requireContext(),"Phone number already registered!")
-                    }
-                }
+                showToast(requireContext(),"Incorrect Phone Number")
             }
         }
 

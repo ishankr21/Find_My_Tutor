@@ -1,6 +1,7 @@
 package com.example.findmytutor.features.homeTutors
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -83,6 +84,7 @@ class HomeTutorsFragment : BaseFragment(), StudentAdapter.OnItemClickListener {
                     {
                         listOfStudentId.add(i.studentId)
                     }
+                    Log.d("anshu","${listOfStudentId}")
                     mHomeTutorViewModel.getAllStudents(listOfStudentId)
                     mHomeTutorViewModel.mListOfStudent.observe(viewLifecycleOwner)
                     {

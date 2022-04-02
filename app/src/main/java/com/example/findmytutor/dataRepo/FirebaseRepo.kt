@@ -966,6 +966,7 @@ class FirebaseRepo: FirebaseMessagingService() {
                 }
 
                 studentIdList.value = arrayList
+                Log.d("fireStore", "${arrayList}")
             }
             .addOnFailureListener {
 
@@ -978,14 +979,13 @@ class FirebaseRepo: FirebaseMessagingService() {
     {
         val studentIdList=MutableLiveData<ArrayList<String>>()
         mFirestore.collection(COLLECTION_TUTOR).document(tutorId).collection(COLLECTION_TUTOR_STUDENTS)
-            .whereEqualTo("declined",false)
             .get()
             .addOnSuccessListener {
                 val arrayList= arrayListOf<String>()
                 for (snapshot in it!!) {
 
                     val request = snapshot.toObject(RequestTutor::class.java)
-
+                    if(!request.isDeclined && !request.deleteByStudent)
                     arrayList.add(request.studentId)
                 }
 
@@ -1022,6 +1022,7 @@ class FirebaseRepo: FirebaseMessagingService() {
                         arrayList.add(order)
                     }
                     studentList.value = arrayList
+                    Log.d("anshu","${arrayList}")
                 } else {
                     Log.d("fireStore", "student error: $error")
                 }

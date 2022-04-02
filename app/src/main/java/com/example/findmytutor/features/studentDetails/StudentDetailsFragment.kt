@@ -91,7 +91,7 @@ class StudentDetailsFragment :  BaseFragment() {
         binding.studentMessageButton.setOnClickListener {
 
             val chattingHelper = ChattingHelper(
-                studentId = FirebaseAuth.getInstance().currentUser!!.uid,
+                studentId =student.studentId,
                 tutorId = tutor.tutorId,
                 studentName = student.name,
                 tutorName = tutor.name,
@@ -102,7 +102,7 @@ class StudentDetailsFragment :  BaseFragment() {
             bundle.putBoolean("isStudent", false)
             bundle.putSerializable("chattingHelper", chattingHelper)
             findNavController().navigate(
-                R.id.action_tutorDetailsFragment_to_chatsFragment,
+                R.id.action_studentDetailsFragment_to_chatsFragment,
                 bundle
             )
 
