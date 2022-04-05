@@ -67,8 +67,21 @@ class RatingsGivenFragment : BaseFragment(), RatingsAdapter.OnRatingClickedListn
         mRatingsGivenViewModel.getRatingsGivenByMe()
         mRatingsGivenViewModel.mRatingsGivenByMeLiveData.observe(viewLifecycleOwner)
         {
+            if(it.size==0)
+            {
+                binding.ratingsGivenRecyclerView.visibility=View.GONE
+                binding.animNoResultsFound.visibility=View.VISIBLE
+                binding.txtNoResultsFound.visibility=View.VISIBLE
+            }
+            else
+            {
+
+            binding.ratingsGivenRecyclerView.visibility=View.VISIBLE
+                binding.animNoResultsFound.visibility=View.GONE
+                binding.txtNoResultsFound.visibility=View.GONE
             binding.ratingsGivenRecyclerView.layoutManager=LinearLayoutManager(requireContext())
             binding.ratingsGivenRecyclerView.adapter=RatingsAdapter(it,requireContext(),this)
+            }
         }
         binding.ratingsGivenBackButton.setOnClickListener {
             showProgressDialog("Wait")

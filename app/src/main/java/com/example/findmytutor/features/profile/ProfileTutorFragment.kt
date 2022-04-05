@@ -11,6 +11,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -252,6 +253,10 @@ class ProfileTutorFragment : BaseFragment() {
                 {
                     showToast(requireContext(),"Email Id cannot be empty")
                 }
+                else if(!binding.registerTutorEmailIDEdittext.text.toString().isValidEmail())
+                {
+                    showToast(requireContext(),"Email Id invalid")
+                }
                 else if(binding.spnSelectProfileTutorClass.selectedItemPosition==0)
                 {
                     showToast(requireContext(),"Please provide us your preferred class.")
@@ -264,6 +269,10 @@ class ProfileTutorFragment : BaseFragment() {
                 else   if(binding.registerTutorDesiredFeesEdittext.text.isNullOrEmpty())
                 {
                     showToast(requireContext(),"Please enter your desired fees")
+                }
+                else   if(binding.registerTutorDesiredFeesEdittext.text.toString().toDouble()>10000.0)
+                {
+                    showToast(requireContext(),"Please fees cannot be greater that Rs. 10000!")
                 }
                 else   if(binding.spnRegisterTutorFavouriteSubject.selectedItemPosition==0)
                 {
@@ -749,5 +758,6 @@ class ProfileTutorFragment : BaseFragment() {
         qrCodeScanIntegrator.initiateScan()
     }
 
+    fun CharSequence?.isValidEmail() = !isNullOrEmpty() && Patterns.EMAIL_ADDRESS.matcher(this).matches()
 
 }

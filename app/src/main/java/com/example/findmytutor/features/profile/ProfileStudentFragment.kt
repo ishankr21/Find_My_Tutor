@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -215,6 +216,10 @@ class ProfileStudentFragment : BaseFragment() {
                 if(binding.registerStudentEmailIDEdittext.text.isNullOrEmpty())
                 {
                     showToast(requireContext(),"Email Id cannot be empty")
+                }
+                else  if(binding.registerStudentEmailIDEdittext.text.isValidEmail())
+                {
+                    showToast(requireContext(),"Email Id invalid!")
                 }
                 else if(binding.spnSelectProfileStudentClass.selectedItemPosition==0)
                 {
@@ -575,5 +580,8 @@ class ProfileStudentFragment : BaseFragment() {
             imageURI = Uri.parse(savedInstanceState.getString("ImageUri", ""))
         }
     }
+
+    fun CharSequence?.isValidEmail() = !isNullOrEmpty() && Patterns.EMAIL_ADDRESS.matcher(this).matches()
+
 
 }

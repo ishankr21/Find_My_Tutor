@@ -70,8 +70,22 @@ class RatingsReceivedFragment : BaseFragment(), RatingsReceivedAdapter.OnRatingC
         mRatingsReceivedViewModel.getRatingsReceived()
         mRatingsReceivedViewModel.mRatingsReceivedByMeLiveData.observe(viewLifecycleOwner)
         {
-            binding.ratingsReceivedRecyclerView.layoutManager= LinearLayoutManager(requireContext())
-            binding.ratingsReceivedRecyclerView.adapter= RatingsReceivedAdapter(it,requireContext(),this)
+            if(it.size==0)
+            {
+                binding.ratingsReceivedRecyclerView.visibility=View.GONE
+                binding.animNoResultsFound.visibility=View.VISIBLE
+                binding.txtNoResultsFound.visibility=View.VISIBLE
+            }
+            else
+            {
+
+                binding.ratingsReceivedRecyclerView.visibility=View.VISIBLE
+                binding.animNoResultsFound.visibility=View.GONE
+                binding.txtNoResultsFound.visibility=View.GONE
+                binding.ratingsReceivedRecyclerView.layoutManager= LinearLayoutManager(requireContext())
+                binding.ratingsReceivedRecyclerView.adapter= RatingsReceivedAdapter(it,requireContext(),this)
+            }
+
         }
         binding.ratingsReceivedBackButton.setOnClickListener {
             showProgressDialog("Wait")

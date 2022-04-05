@@ -124,6 +124,9 @@
         <action
             android:id="@+id/action_studentMyTutorsFragment_to_tutorDetailsFragment"
             app:destination="@id/tutorDetailsFragment" />
+        <action
+            android:id="@+id/action_studentMyTutorsFragment_to_homeStudentsFragment"
+            app:destination="@id/homeStudentsFragment" />
     </fragment>
     <fragment
         android:id="@+id/tutorRequestsFragment"
@@ -178,6 +181,9 @@
         <action
             android:id="@+id/action_doubtsStudentFragment_to_studentSeesSolutionInDetailsFragment"
             app:destination="@id/studentSeesSolutionInDetailsFragment" />
+        <action
+            android:id="@+id/action_doubtsStudentFragment_to_homeStudentsFragment"
+            app:destination="@id/homeStudentsFragment" />
     </fragment>
     <fragment
         android:id="@+id/createNewDoubtFragment"
@@ -185,8 +191,8 @@
         android:label="fragment_create_new_doubt"
         tools:layout="@layout/fragment_create_new_doubt" >
         <action
-            android:id="@+id/action_createNewDoubtFragment_to_homeStudentsFragment"
-            app:destination="@id/homeStudentsFragment" />
+            android:id="@+id/action_createNewDoubtFragment_to_doubtsStudentFragment"
+            app:destination="@id/doubtsStudentFragment" />
     </fragment>
     <fragment
         android:id="@+id/tutorSeesDoubtInDetailFragment"
@@ -248,6 +254,9 @@
         <action
             android:id="@+id/action_studentChatHomeFragment_to_chatsFragment"
             app:destination="@id/chatsFragment" />
+        <action
+            android:id="@+id/action_studentChatHomeFragment_to_homeStudentsFragment"
+            app:destination="@id/homeStudentsFragment" />
     </fragment>
     <fragment
         android:id="@+id/studentDetailsFragment"

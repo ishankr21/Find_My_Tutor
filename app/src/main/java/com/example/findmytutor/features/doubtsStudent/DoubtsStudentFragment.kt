@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.findmytutor.R
 import com.example.findmytutor.databinding.FragmentDoubtsStudentBinding
 import com.example.findmytutor.databinding.FragmentRegisterBinding
@@ -35,6 +38,18 @@ class DoubtsStudentFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val callback: OnBackPressedCallback =
+            object : OnBackPressedCallback(true /* enabled by default */) {
+                override fun handleOnBackPressed() {
+
+                      findNavController().navigate(R.id.action_doubtsStudentFragment_to_homeStudentsFragment)
+
+
+                }
+            }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+
         val viewPager2Adapter = ViewPagerAdapter(childFragmentManager, lifecycle)
         viewPager2Adapter.addFragment(StudentAskDoubtFragment(), "Your Doubts")
         viewPager2Adapter.addFragment(StudentSeeAllSolutionsProvidedFragment(), "Solutions")
@@ -58,5 +73,10 @@ class DoubtsStudentFragment : Fragment() {
                 }.attach()
             }
         }
+
+        binding.doubtStudentBackButton.setOnClickListener {
+            findNavController().navigate(R.id.action_doubtsStudentFragment_to_homeStudentsFragment)
+        }
+
     }
 }

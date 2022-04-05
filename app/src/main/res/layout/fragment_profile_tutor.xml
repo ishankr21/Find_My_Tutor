@@ -134,7 +134,7 @@
                 android:hint="NAME"
                 android:textColor="@drawable/edittext_textcolor"
                 android:background="@drawable/round_corners_profile"
-                android:inputType="text"
+
                 android:id="@+id/profile_tutor_name_edittext"
                 app:layout_constraintTop_toBottomOf="@+id/profile_tutor_phone_edittext"
                 />
@@ -222,9 +222,10 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:padding="16dp"
-                android:hint="DESIRED FEES"
+                android:hint="DESIRED FEES (Rs. 10000 max)"
                 android:background="@drawable/round_corners_profile"
                 android:inputType="numberDecimal"
+                android:maxLength="8"
                 android:textColor="@drawable/edittext_textcolor"
                 android:id="@+id/register_tutor_desired_fees_edittext"
 

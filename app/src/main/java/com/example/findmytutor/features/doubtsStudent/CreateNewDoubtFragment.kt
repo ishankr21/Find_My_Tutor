@@ -13,6 +13,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -65,6 +66,19 @@ class CreateNewDoubtFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val callback: OnBackPressedCallback =
+            object : OnBackPressedCallback(true /* enabled by default */) {
+                override fun handleOnBackPressed() {
+
+                    findNavController().navigate(R.id.action_createNewDoubtFragment_to_doubtsStudentFragment)
+
+
+                }
+            }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+        binding.doubtCreateBackButton.setOnClickListener {
+            findNavController().navigate(R.id.action_createNewDoubtFragment_to_doubtsStudentFragment)
+        }
             val bundle=arguments
             doubtInfoCame=bundle!!.getSerializable("doubtInfo") as DoubtInfo
 
@@ -204,7 +218,7 @@ class CreateNewDoubtFragment : BaseFragment() {
                             }
 
                             SendNotification(requireContext()).sendNotification(notification)
-                            findNavController().navigate(R.id.action_createNewDoubtFragment_to_homeStudentsFragment)
+                            findNavController().navigate(R.id.action_createNewDoubtFragment_to_doubtsStudentFragment)
                         }
                         else {
                             dismissProgressDialog()
@@ -250,7 +264,7 @@ class CreateNewDoubtFragment : BaseFragment() {
                         if (storageSuccess) {
                             dismissProgressDialog()
                             showToast(requireContext(), "Data stored successfully")
-                            findNavController().navigate(R.id.action_createNewDoubtFragment_to_homeStudentsFragment)
+                            findNavController().navigate(R.id.action_createNewDoubtFragment_to_doubtsStudentFragment)
                         } else {
                             dismissProgressDialog()
                             showToast(requireContext(), "Some error occurred!")
@@ -269,7 +283,7 @@ class CreateNewDoubtFragment : BaseFragment() {
                     if(it)
                     {
                         showToast(requireContext(),"Doubt Closed")
-                        findNavController().navigate(R.id.action_createNewDoubtFragment_to_homeStudentsFragment)
+                        findNavController().navigate(R.id.action_createNewDoubtFragment_to_doubtsStudentFragment)
                     }
                     else
                     {
@@ -285,7 +299,7 @@ class CreateNewDoubtFragment : BaseFragment() {
                     if(it)
                     {
                         showToast(requireContext(),"Doubt Opened")
-                        findNavController().navigate(R.id.action_createNewDoubtFragment_to_homeStudentsFragment)
+                        findNavController().navigate(R.id.action_createNewDoubtFragment_to_doubtsStudentFragment)
                     }
                     else
                     {
