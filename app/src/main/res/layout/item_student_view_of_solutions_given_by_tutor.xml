@@ -36,6 +36,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:textAlignment="viewEnd"
+            android:maxLines="1"
             android:layout_margin="4dp"
             android:padding="4dp"
             />

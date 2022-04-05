@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -61,7 +62,19 @@ class TutorDetailsFragment : BaseFragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val callback: OnBackPressedCallback =
+            object : OnBackPressedCallback(true /* enabled by default */) {
+                override fun handleOnBackPressed() {
 
+                    findNavController().navigate(R.id.action_tutorDetailsFragment_to_homeStudentsFragment)
+
+
+                }
+            }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+        binding.tutorDetailsBackButton.setOnClickListener {
+            findNavController().navigate(R.id.action_tutorDetailsFragment_to_homeStudentsFragment)
+        }
         mTutorDetailsViewModel =
             ViewModelProvider(this)[TutorDetailsViewModel::class.java]
         val bundle = arguments

@@ -1,12 +1,12 @@
 package com.example.findmytutor.features.askHelp
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.findmytutor.R
@@ -65,17 +65,20 @@ class SendIssueMailFragment : BaseFragment() {
             }
             else
             {
-                val email = Intent(Intent.ACTION_SEND)
-                email.putExtra(Intent.EXTRA_EMAIL, arrayOf<String>("kumarishaan01@gmail.com"))
-                email.putExtra(Intent.EXTRA_SUBJECT, binding.issueTitleValue.text)
-                email.putExtra(Intent.EXTRA_TEXT, binding.issueDescriptionValue.text)
+                val emailIntent = Intent(Intent.ACTION_SEND)
+                val TO = arrayOf("kumarishaan01@gmail.com,anshumali.1132000@gmail.com")
+                emailIntent.data = Uri.parse("mailto:")
+                emailIntent.type = "text/plain"
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, TO)
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, binding.issueTitleValue.text.toString())
+                emailIntent.putExtra(Intent.EXTRA_TEXT, binding.issueDescriptionValue.text.toString())
 
 
+                startActivity(Intent.createChooser(emailIntent, "Choose an Email client :"))
 
-                email.type = "message/rfc822"
 
-                startActivity(Intent.createChooser(email, "Choose an Email client :"))
-                findNavController().navigate(R.id.action_sendIssueMailFragment_to_homeTutorsFragment)
+                binding.issueEmailBackButton.performClick()
+
             }
 
         }

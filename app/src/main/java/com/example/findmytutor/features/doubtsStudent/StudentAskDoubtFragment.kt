@@ -75,88 +75,88 @@ class StudentAskDoubtFragment : BaseFragment(), StudentMyDoubtAdapter.OnRequestC
 
         }
 
-        binding.btnFilter.setOnClickListener {
-            val filterBinding= DoubtsFilterDialogBinding.inflate(LayoutInflater.from(requireContext()))
-            val mBuilder = AlertDialog.Builder(requireContext())
-                .setView(filterBinding.root)
-            val mAlertDialog = mBuilder.show()
-            mAlertDialog.setCanceledOnTouchOutside(true)
-            filterBinding.statusActive.setOnClickListener {
-                mDoubtStudentViewModel.getAllOpenDoubts(requireContext())
-                mDoubtStudentViewModel.filterList.observe(viewLifecycleOwner)
-                {
-                    mAlertDialog.dismiss()
-                    adapter.updateDoubtsList(it)
-
-                }
-
-
-
-
-            }
-            filterBinding.statusClosed.setOnClickListener {
-                mDoubtStudentViewModel.getAllClosedDoubts(requireContext())
-                mDoubtStudentViewModel.filterList.observe(viewLifecycleOwner)
-                {
-                    mAlertDialog.dismiss()
-                    adapter.updateDoubtsList(it)
-
-                }
-
-
-            }
-            filterBinding.dateLatestFirst.setOnClickListener {
-                mDoubtStudentViewModel.getLatestFirst(requireContext())
-                mDoubtStudentViewModel.filterList.observe(viewLifecycleOwner)
-                {
-                    mAlertDialog.dismiss()
-                    adapter.updateDoubtsList(it)
-
-                }
-
-            }
-            filterBinding.nosHighToLow.setOnClickListener {
-                mDoubtStudentViewModel.getNoOfSolutionsHighToLow(requireContext())
-                mDoubtStudentViewModel.filterList.observe(viewLifecycleOwner)
-                {
-                    mAlertDialog.dismiss()
-                    adapter.updateDoubtsList(it)
-
-                }
-
-            }
-            filterBinding.nosLowToHigh.setOnClickListener {
-                mDoubtStudentViewModel.getNoOfSolutionsLowToHigh(requireContext())
-                mDoubtStudentViewModel.filterList.observe(viewLifecycleOwner)
-                {
-                    mAlertDialog.dismiss()
-                    adapter.updateDoubtsList(it)
-
-                }
-
-            }
-            filterBinding.dateOldestFirst.setOnClickListener {
-                mDoubtStudentViewModel.getOldestFirst(requireContext())
-                mDoubtStudentViewModel.filterList.observe(viewLifecycleOwner)
-                {
-                    mAlertDialog.dismiss()
-                    adapter.updateDoubtsList(it)
-
-                }
-
-            }
-            filterBinding.clearFilter.setOnClickListener {
-                mDoubtStudentViewModel.getLocalDbDoubts(requireContext())
-                mDoubtStudentViewModel.doubtArrayFromLocalDb.observe(viewLifecycleOwner)
-                {
-                    mAlertDialog.dismiss()
-                    adapter.updateDoubtsList(it)
-
-                }
-
-            }
-
-        }
+//        binding.btnFilter.setOnClickListener {
+//            val filterBinding= DoubtsFilterDialogBinding.inflate(LayoutInflater.from(requireContext()))
+//            val mBuilder = AlertDialog.Builder(requireContext())
+//                .setView(filterBinding.root)
+//            val mAlertDialog = mBuilder.show()
+//            mAlertDialog.setCanceledOnTouchOutside(true)
+//            filterBinding.statusActive.setOnClickListener {
+//                mDoubtStudentViewModel.getAllOpenDoubts(requireContext())
+//                mDoubtStudentViewModel.filterList.observe(viewLifecycleOwner)
+//                {
+//                    mAlertDialog.dismiss()
+//                    adapter.updateDoubtsList(it)
+//
+//                }
+//
+//
+//
+//
+//            }
+//            filterBinding.statusClosed.setOnClickListener {
+//                mDoubtStudentViewModel.getAllClosedDoubts(requireContext())
+//                mDoubtStudentViewModel.filterList.observe(viewLifecycleOwner)
+//                {
+//                    mAlertDialog.dismiss()
+//                    adapter.updateDoubtsList(it)
+//
+//                }
+//
+//
+//            }
+//            filterBinding.dateLatestFirst.setOnClickListener {
+//                mDoubtStudentViewModel.getLatestFirst(requireContext())
+//                mDoubtStudentViewModel.filterList.observe(viewLifecycleOwner)
+//                {
+//                    mAlertDialog.dismiss()
+//                    adapter.updateDoubtsList(it)
+//
+//                }
+//
+//            }
+//            filterBinding.nosHighToLow.setOnClickListener {
+//                mDoubtStudentViewModel.getNoOfSolutionsHighToLow(requireContext())
+//                mDoubtStudentViewModel.filterList.observe(viewLifecycleOwner)
+//                {
+//                    mAlertDialog.dismiss()
+//                    adapter.updateDoubtsList(it)
+//
+//                }
+//
+//            }
+//            filterBinding.nosLowToHigh.setOnClickListener {
+//                mDoubtStudentViewModel.getNoOfSolutionsLowToHigh(requireContext())
+//                mDoubtStudentViewModel.filterList.observe(viewLifecycleOwner)
+//                {
+//                    mAlertDialog.dismiss()
+//                    adapter.updateDoubtsList(it)
+//
+//                }
+//
+//            }
+//            filterBinding.dateOldestFirst.setOnClickListener {
+//                mDoubtStudentViewModel.getOldestFirst(requireContext())
+//                mDoubtStudentViewModel.filterList.observe(viewLifecycleOwner)
+//                {
+//                    mAlertDialog.dismiss()
+//                    adapter.updateDoubtsList(it)
+//
+//                }
+//
+//            }
+//            filterBinding.clearFilter.setOnClickListener {
+//                mDoubtStudentViewModel.getLocalDbDoubts(requireContext())
+//                mDoubtStudentViewModel.doubtArrayFromLocalDb.observe(viewLifecycleOwner)
+//                {
+//                    mAlertDialog.dismiss()
+//                    adapter.updateDoubtsList(it)
+//
+//                }
+//
+//            }
+//
+//        }
 
     }
 

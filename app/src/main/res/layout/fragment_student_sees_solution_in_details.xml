@@ -102,7 +102,7 @@
 
             <com.jsibbold.zoomage.ZoomageView
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
+                android:layout_height="300dp"
                 android:id="@+id/solution_seen_by_student_image"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"

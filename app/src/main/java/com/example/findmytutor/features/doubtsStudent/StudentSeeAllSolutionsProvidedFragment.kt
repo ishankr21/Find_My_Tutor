@@ -61,6 +61,8 @@ class StudentSeeAllSolutionsProvidedFragment : Fragment(),
             }
 
         }
+
+
     }
 
     override fun onItemClicked(solutionInfo: SolutionInfo) {

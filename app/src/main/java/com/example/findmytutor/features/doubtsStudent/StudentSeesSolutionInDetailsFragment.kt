@@ -58,11 +58,23 @@ class StudentSeesSolutionInDetailsFragment : BaseFragment() {
             mDoubtStudentViewModel.getAllTutorId(solutionInfo.tutorId)
             mDoubtStudentViewModel.mTutorData.observe(viewLifecycleOwner)
             {
-                dismissProgressDialog()
-                val bundle=Bundle()
-                bundle.putSerializable("tutor",it)
-                findNavController().navigate(R.id.action_studentSeesSolutionInDetailsFragment_to_tutorDetailsFragment,bundle)
+                mDoubtStudentViewModel.getStudentData()
+                mDoubtStudentViewModel.mStudentLiveData.observe(viewLifecycleOwner)
+                {student->
+                    dismissProgressDialog()
+                    val bundle=Bundle()
+                    bundle.putSerializable("tutor",it)
+                    bundle.putSerializable("student",student)
+
+                    findNavController().navigate(R.id.action_studentSeesSolutionInDetailsFragment_to_tutorDetailsFragment,bundle)
+                }
+
+
             }
+        }
+
+        binding.solutionSeenByStudentBackButton.setOnClickListener {
+
         }
     }
 

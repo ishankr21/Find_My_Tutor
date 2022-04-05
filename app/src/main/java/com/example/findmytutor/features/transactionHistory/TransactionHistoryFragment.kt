@@ -50,9 +50,9 @@ class TransactionHistoryFragment : BaseFragment() {
                     {
                         dismissProgressDialog()
                         if(it.first==2)
-                            findNavController().navigate(R.id.action_ratingsGivenFragment_to_homeTutorsFragment)
+                            findNavController().navigate(R.id.action_transactionHistoryFragment_to_homeTutorsFragment)
                         else
-                            findNavController().navigate(R.id.action_ratingsGivenFragment_to_homeStudentsFragment)
+                            findNavController().navigate(R.id.action_transactionHistoryFragment_to_homeStudentsFragment)
                     }
 
 
@@ -69,7 +69,20 @@ class TransactionHistoryFragment : BaseFragment() {
                 mTransactionHistoryViewModel.studentTransactions()
                 mTransactionHistoryViewModel.studentTransactionLiveData.observe(viewLifecycleOwner)
                 {
-                    binding.transactionHistoryRecyclerView.adapter=TransactionHistoryAdapter(it as ArrayList<TransactionInfo>,requireContext(),FirebaseAuth.getInstance().currentUser!!.uid)
+                    if(it.size==0)
+                    {
+                        binding.transactionHistoryRecyclerView.visibility=View.GONE
+                        binding.animNoResultsFound.visibility=View.VISIBLE
+                        binding.txtNoResultsFound.visibility=View.VISIBLE
+                    }
+                    else
+                    {
+                        binding.transactionHistoryRecyclerView.visibility=View.VISIBLE
+                        binding.animNoResultsFound.visibility=View.GONE
+                        binding.txtNoResultsFound.visibility=View.GONE
+                        binding.transactionHistoryRecyclerView.adapter=TransactionHistoryAdapter(it as ArrayList<TransactionInfo>,requireContext(),FirebaseAuth.getInstance().currentUser!!.uid)
+
+                    }
                 }
             }
             else
@@ -77,12 +90,38 @@ class TransactionHistoryFragment : BaseFragment() {
                 mTransactionHistoryViewModel.tutorTransactions()
                 mTransactionHistoryViewModel.tutorTransactionLiveData.observe(viewLifecycleOwner)
                 {
-                    binding.transactionHistoryRecyclerView.adapter=TransactionHistoryAdapter(it as ArrayList<TransactionInfo>,requireContext(),FirebaseAuth.getInstance().currentUser!!.uid)
+                    if(it.size==0)
+                    {
+                        binding.transactionHistoryRecyclerView.visibility=View.GONE
+                        binding.animNoResultsFound.visibility=View.VISIBLE
+                        binding.txtNoResultsFound.visibility=View.VISIBLE
+                    }
+                    else
+                    {
+                        binding.transactionHistoryRecyclerView.visibility=View.VISIBLE
+                        binding.animNoResultsFound.visibility=View.GONE
+                        binding.txtNoResultsFound.visibility=View.GONE
+                        binding.transactionHistoryRecyclerView.adapter=TransactionHistoryAdapter(it as ArrayList<TransactionInfo>,requireContext(),FirebaseAuth.getInstance().currentUser!!.uid)
+
+                    }
 
                 }
             }
 
             dismissProgressDialog()
+        }
+
+        binding.transactionHistoryBackButton.setOnClickListener {
+            showProgressDialog("Wait")
+            mTransactionHistoryViewModel.checkUserType()
+            mTransactionHistoryViewModel.mExistingUserLiveData.observe(viewLifecycleOwner)
+            {
+                dismissProgressDialog()
+                if(it.first==2)
+                    findNavController().navigate(R.id.action_transactionHistoryFragment_to_homeTutorsFragment)
+                else
+                    findNavController().navigate(R.id.action_transactionHistoryFragment_to_homeStudentsFragment)
+            }
         }
 
     }
