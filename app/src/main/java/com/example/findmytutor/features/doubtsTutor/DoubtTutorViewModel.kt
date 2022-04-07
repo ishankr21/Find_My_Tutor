@@ -17,6 +17,7 @@ class DoubtTutorViewModel: ViewModel() {
     var mSolutionStorageSuccess = MutableLiveData<Boolean>()
     var mTutorLiveDetails = MutableLiveData<Tutor>()
     var mAllTutorSolutions=MutableLiveData<ArrayList<SolutionInfo>>()
+    var doubtInfo=MutableLiveData<DoubtInfo>()
 
 
     fun getAllDoubts() {
@@ -35,5 +36,10 @@ class DoubtTutorViewModel: ViewModel() {
     fun getTutorSolutions()
     {
         mAllTutorSolutions=FirebaseRepo().getMySolutions()
+    }
+
+    fun getDoubt(doubtId:String)
+    {
+        doubtInfo=FirebaseRepo().getDoubt(doubtId)
     }
 }

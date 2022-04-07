@@ -43,11 +43,13 @@ class TutorCreateSolutionFragment : BaseFragment() {
     private var _binding: FragmentTutorCreateSolutionBinding? = null
     private val binding get() = _binding!!
     private var solutionInfoCame=SolutionInfo()
+    private var doubtInfoCame=DoubtInfo()
     var imageURI: Uri? = null
     lateinit var cameraPermission: Array<String>
     lateinit var storagePermission: Array<String>
     private lateinit var mDoubtTutorViewModel: DoubtTutorViewModel
     var resultUri: Uri?=null
+    var f:Int=0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -64,14 +66,25 @@ class TutorCreateSolutionFragment : BaseFragment() {
     @SuppressLint("SimpleDateFormat")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+
         val bundle=arguments
         solutionInfoCame=bundle!!.getSerializable("solutionInfo") as SolutionInfo
+        doubtInfoCame=bundle.getSerializable("doubtInfo") as DoubtInfo
+
+
+
+
+
+
         mDoubtTutorViewModel =
             ViewModelProvider(this)[DoubtTutorViewModel::class.java]
 
 
         if (solutionInfoCame.solutionId!="")
         {
+            f++
             if(solutionInfoCame.solutionImagePath!="")
             binding.tutorCreateSolutionBtnAddImage.text = "Change Image"
             binding.tutorCreateSolutionDoubtDescription.setText(solutionInfoCame.solutionDescription)
@@ -178,7 +191,46 @@ class TutorCreateSolutionFragment : BaseFragment() {
             }
         }
 
+        val callback: OnBackPressedCallback =
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if(f==0) {
+                        val b = Bundle()
+                        b.putSerializable("doubtInfo", doubtInfoCame)
+                        findNavController().navigate(
+                            R.id.action_tutorCreateSolutionFragment_to_tutorSeesDoubtInDetailFragment,
+                            b
+                        )
+                    }
+                    else
+                    {
+                        findNavController().navigate(
+                            R.id.action_tutorCreateSolutionFragment_to_doubtsTutorFragment
+                        )
+                    }
 
+
+                }
+            }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+
+        binding.tutorCreateSolutionBackButton.setOnClickListener {
+            if(f==0) {
+                val b = Bundle()
+                b.putSerializable("doubtInfo", doubtInfoCame)
+                findNavController().navigate(
+                    R.id.action_tutorCreateSolutionFragment_to_tutorSeesDoubtInDetailFragment,
+                    b
+                )
+            }
+            else
+            {
+                findNavController().navigate(
+                    R.id.action_tutorCreateSolutionFragment_to_doubtsTutorFragment
+                )
+            }
+
+        }
         binding.tutorCreateSolutionSolutionImage.setOnClickListener {
             if(resultUri!=null)
             {

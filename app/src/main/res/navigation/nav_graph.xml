@@ -205,6 +205,9 @@
         <action
             android:id="@+id/action_tutorSeesDoubtInDetailFragment_to_tutorCreateSolutionFragment"
             app:destination="@id/tutorCreateSolutionFragment" />
+        <action
+            android:id="@+id/action_tutorSeesDoubtInDetailFragment_to_doubtsTutorFragment2"
+            app:destination="@id/doubtsTutorFragment" />
     </fragment>
     <fragment
         android:id="@+id/tutorCreateSolutionFragment"
@@ -231,12 +234,22 @@
         <action
             android:id="@+id/action_studentSeesSolutionInDetailsFragment_to_tutorDetailsFragment"
             app:destination="@id/tutorDetailsFragment" />
+        <action
+            android:id="@+id/action_studentSeesSolutionInDetailsFragment_to_doubtsStudentFragment"
+            app:destination="@id/doubtsStudentFragment" />
     </fragment>
     <fragment
         android:id="@+id/chatsFragment"
         android:name="com.example.findmytutor.features.chats.ChatsFragment"
         android:label="fragment_chats"
-        tools:layout="@layout/fragment_chats" />
+        tools:layout="@layout/fragment_chats" >
+        <action
+            android:id="@+id/action_chatsFragment_to_studentChatHomeFragment"
+            app:destination="@id/studentChatHomeFragment" />
+        <action
+            android:id="@+id/action_chatsFragment_to_tutorChatHomeFragment"
+            app:destination="@id/tutorChatHomeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/tutorChatHomeFragment"
         android:name="com.example.findmytutor.features.tutorChatHome.TutorChatHomeFragment"

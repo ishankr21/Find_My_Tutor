@@ -690,6 +690,24 @@ class FirebaseRepo: FirebaseMessagingService() {
 
     }
 
+    fun getDoubt(doubtId:String): MutableLiveData<DoubtInfo> {
+
+        val allDoubt=MutableLiveData<DoubtInfo>()
+        mFirestore.collection(COLLECTION_DOUBT).document(doubtId)
+
+            .get()
+            .addOnSuccessListener {
+                allDoubt.value = it.toObject(DoubtInfo::class.java)
+            }
+            .addOnFailureListener {
+                allDoubt.value=DoubtInfo()
+                Log.d("doubt","${it.message}")
+            }
+
+        return allDoubt
+
+    }
+
     fun markDoubtAsDone(doubtId:String):MutableLiveData<Boolean>
     {
         val success=MutableLiveData<Boolean>()
