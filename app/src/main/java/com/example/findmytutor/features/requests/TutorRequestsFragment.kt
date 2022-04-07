@@ -69,7 +69,9 @@ class TutorRequestsFragment : BaseFragment(), TutorRequestsAdapter.OnRequestClic
             }
 
         }
-
+        binding.tutorApproveRequestsBackButton.setOnClickListener {
+            findNavController().navigate(R.id.action_tutorRequestsFragment_to_homeTutorsFragment)
+        }
     }
 
     @SuppressLint("SetTextI18n")

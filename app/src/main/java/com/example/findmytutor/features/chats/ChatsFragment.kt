@@ -7,8 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.findmytutor.R
 import com.example.findmytutor.dataClasses.ChattingHelper
 import com.example.findmytutor.dataClasses.Messages
 import com.example.findmytutor.databinding.FragmentChatsBinding
@@ -44,9 +47,36 @@ class ChatsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+
         val bundle=arguments
         chattingHelper=bundle!!.getSerializable("chattingHelper") as ChattingHelper
         isStudent=bundle.getBoolean("isStudent")
+
+
+        val callback: OnBackPressedCallback =
+            object : OnBackPressedCallback(true /* enabled by default */) {
+                override fun handleOnBackPressed() {
+
+
+
+                        if(isStudent)
+                            findNavController().navigate(R.id.action_chatsFragment_to_studentChatHomeFragment)
+                        else
+                            findNavController().navigate(R.id.action_chatsFragment_to_tutorChatHomeFragment)
+
+
+
+                }
+            }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,callback)
+        binding.chattingPageBackButton.setOnClickListener {
+            if(isStudent)
+                findNavController().navigate(R.id.action_chatsFragment_to_studentChatHomeFragment)
+            else
+                findNavController().navigate(R.id.action_chatsFragment_to_tutorChatHomeFragment)
+        }
         mChatsViewModel =
             ViewModelProvider(this)[ChatViewModel::class.java]
 

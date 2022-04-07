@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.findmytutor.R
@@ -39,6 +40,23 @@ class TutorSeesDoubtInDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val callback: OnBackPressedCallback =
+            object : OnBackPressedCallback(true /* enabled by default */) {
+                override fun handleOnBackPressed() {
+
+                    findNavController().navigate(R.id.action_tutorSeesDoubtInDetailFragment_to_doubtsTutorFragment)
+
+
+                }
+            }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+
+        binding.doubtSeenByTutorBackButton.setOnClickListener {
+            findNavController().navigate(R.id.action_tutorSeesDoubtInDetailFragment_to_doubtsTutorFragment)
+        }
+
+
         val bundle=arguments
         doubtInfoCame=bundle!!.getSerializable("doubtInfo") as DoubtInfo
         binding.txtTitleValue.text=doubtInfoCame.doubtTitle
@@ -74,6 +92,7 @@ class TutorSeesDoubtInDetailFragment : Fragment() {
                 studentId = doubtInfoCame.studentId
             )
             bundle.putSerializable("solutionInfo",solutionInfo)
+            bundle.putSerializable("doubtInfo",doubtInfoCame)
             findNavController().navigate(R.id.action_tutorSeesDoubtInDetailFragment_to_tutorCreateSolutionFragment,bundle)
         }
     }

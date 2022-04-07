@@ -69,9 +69,17 @@ class TutorSeeAllSolutionGivenByHimFragment : BaseFragment(),
     }
 
     override fun onItemClicked(solutionInfo: SolutionInfo) {
-        val bundle=Bundle()
-        bundle.putSerializable("solutionInfo",solutionInfo)
-        findNavController().navigate(R.id.action_doubtsTutorFragment_to_tutorCreateSolutionFragment,bundle)
+        showProgressDialog("Loading")
+        mDoubtTutorViewModel.getDoubt(solutionInfo.doubtId)
+        mDoubtTutorViewModel.doubtInfo.observe(viewLifecycleOwner)
+        {
+            dismissProgressDialog()
+            val bundle=Bundle()
+            bundle.putSerializable("doubtInfo",it)
+            bundle.putSerializable("solutionInfo",solutionInfo)
+            findNavController().navigate(R.id.action_doubtsTutorFragment_to_tutorCreateSolutionFragment,bundle)
+        }
+
     }
 
 

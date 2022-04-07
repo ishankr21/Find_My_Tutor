@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -72,9 +73,18 @@ class StudentSeesSolutionInDetailsFragment : BaseFragment() {
 
             }
         }
+        val callback: OnBackPressedCallback =
+            object : OnBackPressedCallback(true /* enabled by default */) {
+                override fun handleOnBackPressed() {
 
+                    findNavController().navigate(R.id.action_studentSeesSolutionInDetailsFragment_to_doubtsStudentFragment)
+
+
+                }
+            }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
         binding.solutionSeenByStudentBackButton.setOnClickListener {
-
+            findNavController().navigate(R.id.action_studentSeesSolutionInDetailsFragment_to_doubtsStudentFragment)
         }
     }
 

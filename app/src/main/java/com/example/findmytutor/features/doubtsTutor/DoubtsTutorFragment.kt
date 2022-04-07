@@ -9,10 +9,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.navigation.findNavController
 import com.example.findmytutor.R
 import com.example.findmytutor.databinding.FragmentDoubtsTutorBinding
-import com.example.findmytutor.databinding.FragmentRegisterBinding
 import com.example.findmytutor.features.MainActivity
-import com.example.findmytutor.features.doubtsStudent.StudentAskDoubtFragment
-import com.example.findmytutor.features.doubtsStudent.StudentSeeAllSolutionsProvidedFragment
 import com.example.findmytutor.utilities.ViewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -53,7 +50,7 @@ class DoubtsTutorFragment : Fragment() {
         binding.doubtTutorPageViewPager2.adapter = viewPager2Adapter
 
         binding.doubtTutorPageTabLayout.let {
-            binding.doubtTutorPageViewPager2?.let { it1 ->
+            binding.doubtTutorPageViewPager2.let { it1 ->
                 TabLayoutMediator(
                     it, it1
                 ) { tab, position ->
@@ -70,15 +67,8 @@ class DoubtsTutorFragment : Fragment() {
             }
         }
         binding.doubtTutorBackButton.setOnClickListener {
-            val callback: OnBackPressedCallback =
-                object : OnBackPressedCallback(true /* enabled by default */) {
-                    override fun handleOnBackPressed() {
+            view.findNavController().navigate(R.id.action_doubtsTutorFragment_to_homeTutorsFragment)
 
-                        view.findNavController().navigate(R.id.action_doubtsTutorFragment_to_homeTutorsFragment)
-
-                    }
-                }
-            requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
         }
         
     }
