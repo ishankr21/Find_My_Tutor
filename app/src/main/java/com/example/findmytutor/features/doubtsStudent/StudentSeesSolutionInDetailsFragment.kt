@@ -1,7 +1,6 @@
 package com.example.findmytutor.features.doubtsStudent
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,6 @@ import com.bumptech.glide.Glide
 import com.example.findmytutor.R
 import com.example.findmytutor.base.BaseFragment
 import com.example.findmytutor.dataClasses.SolutionInfo
-import com.example.findmytutor.databinding.FragmentStudentSeeAllSolutionsProvidedBinding
 import com.example.findmytutor.databinding.FragmentStudentSeesSolutionInDetailsBinding
 import com.example.findmytutor.features.MainActivity
 
@@ -28,7 +26,7 @@ class StudentSeesSolutionInDetailsFragment : BaseFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         (activity as MainActivity).hideBottomNavigationView()
         _binding = FragmentStudentSeesSolutionInDetailsBinding.inflate(inflater, container, false)

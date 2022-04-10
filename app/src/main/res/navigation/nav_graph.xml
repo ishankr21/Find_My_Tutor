@@ -258,6 +258,9 @@
         <action
             android:id="@+id/action_tutorChatHomeFragment_to_chatsFragment"
             app:destination="@id/chatsFragment" />
+        <action
+            android:id="@+id/action_tutorChatHomeFragment_to_homeTutorsFragment"
+            app:destination="@id/homeTutorsFragment" />
     </fragment>
     <fragment
         android:id="@+id/studentChatHomeFragment"
@@ -282,6 +285,9 @@
         <action
             android:id="@+id/action_studentDetailsFragment_to_chatsFragment"
             app:destination="@id/chatsFragment" />
+        <action
+            android:id="@+id/action_studentDetailsFragment_to_homeTutorsFragment2"
+            app:destination="@id/homeTutorsFragment" />
     </fragment>
     <fragment
         android:id="@+id/ratingsGivenFragment"
@@ -357,9 +363,6 @@
         android:label="fragment_payment_successful"
         tools:layout="@layout/fragment_payment_successful" >
         <action
-            android:id="@+id/action_paymentSuccessfulFragment_to_makePaymentFragment"
-            app:destination="@id/makePaymentFragment" />
-        <action
             android:id="@+id/action_paymentSuccessfulFragment_to_homeStudentsFragment"
             app:destination="@id/homeStudentsFragment" />
     </fragment>
@@ -371,5 +374,8 @@
         <action
             android:id="@+id/action_paymentFailedFragment_to_homeStudentsFragment"
             app:destination="@id/homeStudentsFragment" />
+        <action
+            android:id="@+id/action_paymentFailedFragment_to_tutorDetailsFragment"
+            app:destination="@id/tutorDetailsFragment" />
     </fragment>
 </navigation>

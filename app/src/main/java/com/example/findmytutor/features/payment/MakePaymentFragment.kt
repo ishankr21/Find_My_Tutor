@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.findmytutor.R
@@ -57,6 +58,25 @@ class MakePaymentFragment : BaseFragment() {
         val bundle = arguments
         tutor = bundle!!.getSerializable("tutor") as Tutor
         student = bundle.getSerializable("student") as Student
+
+
+
+        val callback: OnBackPressedCallback =
+            object : OnBackPressedCallback(true /* enabled by default */) {
+                override fun handleOnBackPressed() {
+
+                    findNavController().navigate(R.id.action_makePaymentFragment_to_tutorDetailsFragment,bundle)
+
+
+                }
+            }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+        binding.makePaymentBackButton.setOnClickListener {
+            findNavController().navigate(R.id.action_makePaymentFragment_to_tutorDetailsFragment,bundle)
+        }
+
+
+
         binding.makePaymentTutorName.text=tutor.name
         binding.makePaymentTutorFees.setText(tutor.desiredFees.toString())
         initSpinners()

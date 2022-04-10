@@ -61,6 +61,7 @@ class ProfileTutorFragment : BaseFragment() {
     private lateinit var mFusedLocation: FusedLocationProviderClient
     private var latitude:String=""
     private var longitude:String=""
+    private var upiId:String=""
 
 
     var isProfileCompleted=true
@@ -317,7 +318,8 @@ class ProfileTutorFragment : BaseFragment() {
                         longitude = longitude.toDouble(),
                         profileIsComplete = true,
                         rating = it.rating,
-                        preferredSchoolBoard = binding.spnSelectProfileTutorSchoolBoard.selectedItem.toString()
+                        preferredSchoolBoard = binding.spnSelectProfileTutorSchoolBoard.selectedItem.toString(),
+                        upiId = upiId
                     )
                     mProfileFragmentViewModel.storeTutor(tutorFinalData)
                     mProfileFragmentViewModel.mTutorDataUploaded.observe(viewLifecycleOwner)
@@ -682,6 +684,7 @@ class ProfileTutorFragment : BaseFragment() {
                                 mProfileFragmentViewModel.addUpiId(content)
                                 mProfileFragmentViewModel.upiIdAddedSuccessfully.observe(viewLifecycleOwner)
                                 {
+                                    upiId=content
                                     if(it)
                                     {
                                         showToast(requireContext(),"UPI added successfully")

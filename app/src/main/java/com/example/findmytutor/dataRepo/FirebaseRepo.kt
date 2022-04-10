@@ -906,7 +906,7 @@ class FirebaseRepo: FirebaseMessagingService() {
     {
         val peopleChattedWith=MutableLiveData<ArrayList<ChattingHelper>>()
         mFirestore.collection(COLLECTION_CHATS)
-            .orderBy("lastContact")
+            .orderBy("lastContact",Query.Direction.DESCENDING)
             .addSnapshotListener{ value, error ->
                 if (error == null)
                 {
