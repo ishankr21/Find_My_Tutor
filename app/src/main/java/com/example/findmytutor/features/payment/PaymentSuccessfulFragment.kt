@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
 import com.example.findmytutor.R
 import com.example.findmytutor.databinding.FragmentPaymentSuccessfulBinding
@@ -34,6 +35,18 @@ class PaymentSuccessfulFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+        val callback: OnBackPressedCallback =
+            object : OnBackPressedCallback(true /* enabled by default */) {
+                override fun handleOnBackPressed() {
+
+                    findNavController().navigate(R.id.action_paymentSuccessfulFragment_to_homeStudentsFragment)
+
+
+                }
+            }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
         val bundle = arguments
         val transactionId = bundle!!.getSerializable("approvalRefNo") as String
         val amount = bundle.getSerializable("amount") as String

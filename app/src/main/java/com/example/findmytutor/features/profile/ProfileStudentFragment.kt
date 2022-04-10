@@ -217,7 +217,7 @@ class ProfileStudentFragment : BaseFragment() {
                 {
                     showToast(requireContext(),"Email Id cannot be empty")
                 }
-                else  if(binding.registerStudentEmailIDEdittext.text.isValidEmail())
+                else  if(!binding.registerStudentEmailIDEdittext.text.isValidEmail())
                 {
                     showToast(requireContext(),"Email Id invalid!")
                 }

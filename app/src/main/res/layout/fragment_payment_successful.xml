@@ -14,27 +14,18 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageButton
-            android:id="@+id/payment_successful_backButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="8sp"
-            android:src="@drawable/ic_baseline_arrow_back_ios_24" />
+
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintLeft_toRightOf="@+id/payment_successful_backButton"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:fontFamily="@font/manrope_bold"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:gravity="center"
-            android:paddingEnd="24sp"
+
             android:text="Payment Successful"
             android:textColor="@color/black"
             android:id="@+id/textProfileToolbar"

@@ -2,6 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -98,9 +99,29 @@
             android:text="Select range of fees"
             android:textColor="@color/black"
             android:textAlignment="center"
+
             android:fontFamily="@font/manrope_bold"
 
             />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/txtSelectRangeOfFees"
+            app:layout_constraintBottom_toTopOf="@+id/btnApplySeletedFilters"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:id="@+id/txtClearFilter"
+            android:text="Clear Filter"
+            android:layout_margin="8dp"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:padding="8dp"
+            android:background="@color/dodger_blue"
+            android:fontFamily="@font/manrope_bold"
+
+            />
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

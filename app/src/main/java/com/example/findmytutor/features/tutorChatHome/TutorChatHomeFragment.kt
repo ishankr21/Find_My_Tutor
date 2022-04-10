@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -38,6 +39,23 @@ class TutorChatHomeFragment : Fragment(), ChatHomeTutorAdapter.OnChatClickListne
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+        val callback: OnBackPressedCallback =
+            object : OnBackPressedCallback(true /* enabled by default */) {
+                override fun handleOnBackPressed() {
+
+                    findNavController().navigate(R.id.action_tutorChatHomeFragment_to_homeTutorsFragment)
+
+
+                }
+            }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+        binding.chatHomeTutorPageBackButton.setOnClickListener {
+            findNavController().navigate(R.id.action_tutorChatHomeFragment_to_homeTutorsFragment)
+        }
+
+
         mTutorChatHomeViewModel =
             ViewModelProvider(this)[TutorChatHomeViewModel::class.java]
         binding.chatHomeTutorRecyclerView.layoutManager= LinearLayoutManager(requireContext())

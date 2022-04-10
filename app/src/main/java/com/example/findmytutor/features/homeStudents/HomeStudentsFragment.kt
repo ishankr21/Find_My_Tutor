@@ -92,7 +92,14 @@ class HomeStudentsFragment : BaseFragment(), TutorAdapter.OnItemClickListener {
         {stud->
 
             student=stud
+            if(filterSearchStudent.default==0)
+            {
 
+                filterSearchStudent.classIndex= classArray.indexOf(student.studentClass)
+                filterSearchStudent.subjectIndex=subjectArray.indexOf(student.leastFavouriteSubject)
+                filterSearchStudent.schoolBoardIndex=schoolBoardArray.indexOf(student.schoolBoard)
+
+            }
             val navHeaderBinding= (activity as MainActivity).getHeader()
             navHeaderBinding.findViewById<TextView>(R.id.drawerProfileName).text=student.name
             Glide.with(requireContext())
@@ -138,9 +145,18 @@ class HomeStudentsFragment : BaseFragment(), TutorAdapter.OnItemClickListener {
 
         })
         binding.btnSelectYourFilters.setOnClickListener {
+
             val bottomSheetDialogBinding = FilterBottomSheetDialogBinding.inflate(
                 LayoutInflater.from(requireContext())
             )
+            if(filterSearchStudent.default==0)
+            {
+
+                filterSearchStudent.classIndex= classArray.indexOf(student.studentClass)
+                filterSearchStudent.subjectIndex=subjectArray.indexOf(student.leastFavouriteSubject)
+                filterSearchStudent.schoolBoardIndex=schoolBoardArray.indexOf(student.schoolBoard)
+
+            }
             val bottomSheetDialog=BottomSheetDialog(requireContext())
             bottomSheetDialog.setCancelable(true)
             bottomSheetDialog.setContentView(bottomSheetDialogBinding.root)
@@ -192,6 +208,16 @@ class HomeStudentsFragment : BaseFragment(), TutorAdapter.OnItemClickListener {
 
             bottomSheetDialog.show()
 
+            bottomSheetDialogBinding.txtClearFilter.setOnClickListener {
+                bottomSheetDialogBinding.spnSelectClass.setSelection(0)
+                bottomSheetDialogBinding.spnSelectSubject.setSelection(0)
+                bottomSheetDialogBinding.spnSelectSchoolBoard.setSelection(0)
+                bottomSheetDialogBinding.spnSelectRating.setSelection(0)
+                val initialList:MutableList<Float> = mutableListOf(0.0F,10000.0F)
+
+                bottomSheetDialogBinding.tutorFeeFilterSlider.values = initialList
+                filterSearchStudent=FilterSearchStudent()
+            }
 
             bottomSheetDialogBinding.btnApplySeletedFilters.setOnClickListener {
                 filterSearchStudent=FilterSearchStudent(
@@ -200,7 +226,8 @@ class HomeStudentsFragment : BaseFragment(), TutorAdapter.OnItemClickListener {
                     bottomSheetDialogBinding.spnSelectRating.selectedItemPosition,
                     bottomSheetDialogBinding.spnSelectSchoolBoard.selectedItemPosition,
                     minFees = minFee.toDouble(),
-                    maxFees = maxFee.toDouble()
+                    maxFees = maxFee.toDouble(),
+                    default = 1
                 )
 
 
