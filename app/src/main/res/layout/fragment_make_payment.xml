@@ -64,6 +64,8 @@
         android:layout_margin="16dp"
         android:padding="16dp"
         android:textSize="18sp"
+        android:inputType="numberDecimal"
+        android:maxLength="8"
         android:background="@drawable/round_corners_profile"
         android:textColor="@drawable/edittext_textcolor"
         android:id="@+id/make_payment_tutor_fees"

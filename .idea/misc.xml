@@ -42,7 +42,7 @@
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_home_students.xml" value="0.2949438202247191" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_home_tutors.xml" value="0.26854219948849106" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_homw_tutors.xml" value="0.3625" />
-        <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_login.xml" value="0.3625" />
+        <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_login.xml" value="0.26573426573426573" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_make_payment.xml" value="0.33177083333333335" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_payment_failed.xml" value="0.33177083333333335" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_payment_options.xml" value="0.1" />
@@ -59,7 +59,7 @@
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_splash_screen.xml" value="0.2526041666666667" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_student_ask_doubt.xml" value="0.34626436781609193" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_student_chat_home.xml" value="0.3625" />
-        <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_student_details.xml" value="0.33055555555555555" />
+        <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_student_details.xml" value="0.1" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_student_my_tutor_accepted.xml" value="0.3625" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_student_my_tutor_rejected.xml" value="0.3625" />
         <entry key="..\:/Users/kumar/AndroidStudioProjects/FindMyTutor/app/src/main/res/layout/fragment_student_my_tutors.xml" value="0.3625" />

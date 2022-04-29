@@ -74,6 +74,7 @@ class HomeTutorsFragment : BaseFragment(), StudentAdapter.OnItemClickListener {
             {list->
                 allAcceptedStudent=list
                 dismissProgressDialog()
+                Log.d("ishan","${list}")
                 if(list.size>0)
                 {
                     binding.studentsRecyclerView.visibility=View.VISIBLE
@@ -95,6 +96,7 @@ class HomeTutorsFragment : BaseFragment(), StudentAdapter.OnItemClickListener {
                 }
                 else
                 {
+
                     binding.studentsRecyclerView.visibility=View.GONE
                     binding.animEmptyTutorHome.visibility=View.VISIBLE
                     binding.txtNoStudent.visibility=View.VISIBLE

@@ -88,7 +88,7 @@ class MakePaymentFragment : BaseFragment() {
             binding.makePaymentButton.text="UPI ID NOT ADDED PLEASE PAY BY CASH"
         }
         binding.makePaymentButton.setOnClickListener {
-            if(!binding.makePaymentTutorFees.text.isNullOrEmpty())
+            if(!binding.makePaymentTutorFees.text.isNullOrEmpty() && binding.spnSelectFeesMonth.selectedItemPosition!=0)
             {
                  transactionInfo=TransactionInfo(
                     transactionId = "FMT"+System.currentTimeMillis().toString().takeLast(5)+student.studentId.takeLast(3)+tutor.tutorId.takeLast(3),
@@ -116,7 +116,7 @@ class MakePaymentFragment : BaseFragment() {
 
             }
             else
-                showToast(requireContext(),"Please enter a valid amount")
+                showToast(requireContext(),"Please enter al the details!")
 
         }
 

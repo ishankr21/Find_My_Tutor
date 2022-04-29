@@ -145,6 +145,7 @@
                 android:layout_margin="16dp"
                 android:padding="16dp"
                 android:hint="AGE"
+                android:maxLength="3"
                 android:textColor="@drawable/edittext_textcolor"
                 android:background="@drawable/round_corners_profile"
                 android:inputType="number"
