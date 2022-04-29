@@ -2,7 +2,6 @@ package com.example.findmytutor.features.register
 
 import android.os.Bundle
 import android.util.Patterns
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,9 +15,8 @@ import com.example.findmytutor.R
 import com.example.findmytutor.base.BaseFragment
 import com.example.findmytutor.dataClasses.Student
 import com.example.findmytutor.dataClasses.Tutor
-import com.example.findmytutor.databinding.FragmentRegisterBinding
 import com.example.findmytutor.databinding.FragmentRegisterStudentBinding
-import com.example.findmytutor.features.profile.ProfileViewModel
+import java.util.regex.Pattern
 
 
 class RegisterStudentFragment : BaseFragment() {
@@ -70,13 +68,25 @@ class RegisterStudentFragment : BaseFragment() {
             }
 
             binding.registerStudentButton.setOnClickListener {
-
-                if(binding.registerStudentPhoneEdittext.text.length==10)
+                var array= arrayListOf<String>("1111111111","2222222222","3333333333","44444444444","5555555555")
+                if(array.contains(binding.registerStudentPhoneEdittext.text.toString())||isValidPhoneNumber(binding.registerStudentPhoneEdittext.text.toString()))
                 {
                     if (binding.registerStudentPhoneEdittext.text.isNullOrEmpty()||binding.registerStudentAgeEdittext.text.isNullOrEmpty()||binding.registerStudentNameEdittext.text.isNullOrEmpty()
-                        || binding.registerStudentParentNameEdittext.text.isNullOrEmpty()||binding.spnSelectStudentGender.selectedItemPosition==0)
-                    {
-                        Toast.makeText(requireContext(),"Please fill all the details!",Toast.LENGTH_SHORT).show()
+                        || binding.registerStudentParentNameEdittext.text.isNullOrEmpty()||binding.spnSelectStudentGender.selectedItemPosition==0||binding.registerStudentNameEdittext.text.trim().length==0
+                        ||binding.registerStudentParentNameEdittext.text.trim().length==0
+                    ) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Please fill all the details!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    else if(binding.registerStudentAgeEdittext.text.toString().toInt()>100 || binding.registerStudentAgeEdittext.text.toString().toInt()<5) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Age must be between 6 to 99",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                     else
                     {
@@ -142,6 +152,12 @@ class RegisterStudentFragment : BaseFragment() {
 
         binding.spnSelectStudentGender.adapter = arrayAdapterGender
 
+    }
+
+    private fun isValidPhoneNumber(number:String) : Boolean {
+        val patterns =  Pattern.compile("[6-9][0-9]{9}")
+        val matcher=patterns.matcher(number)
+        return matcher.matches()
     }
 
 

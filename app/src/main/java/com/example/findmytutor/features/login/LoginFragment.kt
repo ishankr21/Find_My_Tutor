@@ -1,6 +1,8 @@
 package com.example.findmytutor.features.login
 
 import android.os.Bundle
+import android.text.TextUtils
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +16,7 @@ import com.example.findmytutor.dataClasses.Tutor
 import com.example.findmytutor.databinding.FragmentLoginBinding
 import com.example.findmytutor.features.MainActivity
 import com.example.findmytutor.utilities.Utils
+import java.util.regex.Pattern
 
 
 class LoginFragment :BaseFragment() {
@@ -62,7 +65,9 @@ class LoginFragment :BaseFragment() {
 
                 Utils.hideKeyboard(requireActivity())
                 binding.loginProgressBarLoadingAnimation.visibility=View.VISIBLE
-            if (binding.loginPhoneEdittext.text.length==10) {
+
+            var array= arrayListOf<String>("1111111111","2222222222","3333333333","4444444444","5555555555")
+            if(array.contains(binding.loginPhoneEdittext.text.toString())||isValidPhoneNumber(binding.loginPhoneEdittext.text.toString())) {
                 val phone = "+91" + binding.loginPhoneEdittext.text.toString().trim()
                 mLoginViewModel.checkUserExists(phone)
                 mLoginViewModel.mExistingUserLiveData.observe(viewLifecycleOwner)
@@ -113,6 +118,12 @@ class LoginFragment :BaseFragment() {
 
             }
 
+    }
+
+    private fun isValidPhoneNumber(number:String) : Boolean {
+        val patterns =  Pattern.compile("[6-9][0-9]{9}")
+        val matcher=patterns.matcher(number)
+        return matcher.matches()
     }
 
 }

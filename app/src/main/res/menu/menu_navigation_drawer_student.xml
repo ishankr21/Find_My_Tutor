@@ -62,13 +62,7 @@
         android:title="Help"
 
         />
-    <item
-        android:id="@+id/aboutUsFragment"
-        android:icon="@drawable/ic_baseline_info_24"
 
-        android:title="About Us"
-
-        />
     <item
         android:id="@+id/signOut"
         android:icon="@drawable/ic_baseline_logout_24"

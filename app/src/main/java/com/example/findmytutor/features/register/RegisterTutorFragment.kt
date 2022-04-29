@@ -1,6 +1,7 @@
 package com.example.findmytutor.features.register
 
 import android.os.Bundle
+import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +14,7 @@ import com.example.findmytutor.base.BaseFragment
 import com.example.findmytutor.dataClasses.Student
 import com.example.findmytutor.dataClasses.Tutor
 import com.example.findmytutor.databinding.FragmentRegisterTutorBinding
-
+import java.util.regex.Pattern
 
 
 class RegisterTutorFragment : BaseFragment() {
@@ -65,16 +66,25 @@ class RegisterTutorFragment : BaseFragment() {
             }
 
         binding.registerTutorButton.setOnClickListener {
-            if(binding.registerTutorPhoneEdittext.text.length==10) {
+            var array= arrayListOf<String>("1111111111","2222222222","3333333333","44444444444","5555555555")
+            if(array.contains(binding.registerTutorPhoneEdittext.text.toString())||isValidPhoneNumber(binding.registerTutorPhoneEdittext.text.toString())) {
                 if (binding.registerTutorPhoneEdittext.text.isNullOrEmpty() || binding.registerTutorAgeEdittext.text.isNullOrEmpty() || binding.registerTutorNameEdittext.text.isNullOrEmpty()
-                    || binding.spnSelectTutorGender.selectedItemPosition == 0
+                    || binding.spnSelectTutorGender.selectedItemPosition == 0||binding.registerTutorNameEdittext.text.trim().length==0
                 ) {
                     Toast.makeText(
                         requireContext(),
                         "Please fill all the details!",
                         Toast.LENGTH_SHORT
                     ).show()
-                } else {
+                }
+                else if(binding.registerTutorAgeEdittext.text.toString().toInt()>100 || binding.registerTutorAgeEdittext.text.toString().toInt()<18) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Age must be between 18 to 99",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                else {
 
                     mRegisterViewModel.checkUserExists("+91" + binding.registerTutorPhoneEdittext.text.toString())
                     mRegisterViewModel.mExistingUserLiveData.observe(viewLifecycleOwner)
@@ -137,6 +147,10 @@ class RegisterTutorFragment : BaseFragment() {
         binding.spnSelectTutorGender.adapter = arrayAdapterGender
 
     }
-
+    private fun isValidPhoneNumber(number:String) : Boolean {
+        val patterns =  Pattern.compile("[6-9][0-9]{9}")
+        val matcher=patterns.matcher(number)
+        return matcher.matches()
+    }
 }
     

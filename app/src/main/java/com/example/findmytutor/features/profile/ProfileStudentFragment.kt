@@ -15,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -115,7 +116,7 @@ class ProfileStudentFragment : BaseFragment() {
 
         binding.profileStudentPhoneEdittext.isEnabled=false
         binding.profileStudentNameEdittext.isEnabled=false
-        binding.profileStudentAgeEdittext.isEnabled=false
+
         binding.profileStudentGenderEdittext.isEnabled=false
         binding.registerStudentParentNameEdittext.isEnabled=false
         showProgressDialog("Loading")
@@ -238,6 +239,17 @@ class ProfileStudentFragment : BaseFragment() {
                 {
                     showToast(requireContext(),"Please enter your weakest subject")
                 }
+                else if(binding.profileStudentAgeEdittext.text.isNullOrEmpty())
+                {
+                    showToast(requireContext(),"Age cannot be empty")
+                }
+                else if(binding.profileStudentAgeEdittext.text.toString().toInt()>100 || binding.profileStudentAgeEdittext.text.toString().toInt()<=5) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Age must be between 6 to 99",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
                 else   if(latitude=="")
                 {
                     mProfileFragmentViewModel.getLocusCurrentLocation(requireContext())
@@ -257,7 +269,7 @@ class ProfileStudentFragment : BaseFragment() {
                         gender = student.gender,
                         emailId = binding.registerStudentEmailIDEdittext.text.toString(),
                         parentName = student.parentName,
-                        age = student.age,
+                        age = binding.profileStudentAgeEdittext.text.toString().toInt(),
                         profilePicturePath = student.profilePicturePath,
                         studentClass = binding.spnSelectProfileStudentClass.selectedItem.toString(),
                         leastFavouriteSubject = binding.spnRegisterStudentBadSubject.selectedItem.toString(),

@@ -17,6 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -129,7 +130,7 @@ class ProfileTutorFragment : BaseFragment() {
 
         binding.profileTutorPhoneEdittext.isEnabled=false
         binding.profileTutorNameEdittext.isEnabled=false
-        binding.profileTutorAgeEdittext.isEnabled=false
+
         binding.profileTutorGenderEdittext.isEnabled=false
 
 
@@ -213,6 +214,7 @@ class ProfileTutorFragment : BaseFragment() {
             }
             if (it.upiId!="")
             {
+                upiId=it.upiId
                 binding.imgUpiAdded.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_check_circle_24))
                 binding.txtGetMyUPI.text="UPDATE UPI"
             }
@@ -283,6 +285,20 @@ class ProfileTutorFragment : BaseFragment() {
                 {
                     showToast(requireContext(),"Please select your preferred school board")
                 }
+                else if(binding.profileTutorAgeEdittext.text.isNullOrEmpty()) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Age cannot be empty",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                else if(binding.profileTutorAgeEdittext.text.toString().toInt()>100 || binding.profileTutorAgeEdittext.text.toString().toInt()<18) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Age must be between 18 to 99",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
                 else   if(latitude=="")
                 {
                     mProfileFragmentViewModel.getLocusCurrentLocation(requireContext())
@@ -306,7 +322,7 @@ class ProfileTutorFragment : BaseFragment() {
                         name = it.name,
                         gender = it.gender,
                         emailId = binding.registerTutorEmailIDEdittext.text.toString(),
-                        age = it.age,
+                        age = binding.profileTutorAgeEdittext.text.toString().toInt(),
                         profilePicturePath = it.profilePicturePath,
                         preferredClass = binding.spnSelectProfileTutorClass.selectedItem.toString(),
                         tutorFavouriteSubject = binding.spnRegisterTutorFavouriteSubject.selectedItem.toString(),
@@ -371,6 +387,7 @@ class ProfileTutorFragment : BaseFragment() {
             {
                 startScan()
                 showProgressDialog("Please Wait")
+                dismissProgressDialog()
             }
         }
 
@@ -699,6 +716,7 @@ class ProfileTutorFragment : BaseFragment() {
                                     dismissProgressDialog()
                                 }
                         }
+
                     }
                 }
             }
