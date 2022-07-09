@@ -49,6 +49,7 @@ class CreateNewDoubtFragment : BaseFragment() {
     private val binding get() = _binding!!
     private var doubtInfoCame=DoubtInfo()
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
