@@ -1,0 +1,140 @@
+package com.ishankumar.findmytutor.features.ratingsReceived
+
+import android.app.AlertDialog
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.ishankumar.findmytutor.R
+import com.ishankumar.findmytutor.base.BaseFragment
+import com.ishankumar.findmytutor.dataClasses.RatingInfo
+import com.ishankumar.findmytutor.databinding.FragmentRatingsReceivedBinding
+import com.ishankumar.findmytutor.databinding.RatingReceivedDialogBinding
+import com.ishankumar.findmytutor.features.MainActivity
+
+
+class RatingsReceivedFragment : BaseFragment(), RatingsReceivedAdapter.OnRatingClickedListner {
+
+
+    private var _binding: FragmentRatingsReceivedBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var mRatingsReceivedViewModel: RatingsReceivedViewModel
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        (activity as MainActivity).hideBottomNavigationView()
+        _binding = FragmentRatingsReceivedBinding.inflate(inflater, container, false)
+
+        return binding.root
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mRatingsReceivedViewModel =
+            ViewModelProvider(this)[RatingsReceivedViewModel::class.java]
+        val callback: OnBackPressedCallback =
+            object : OnBackPressedCallback(true /* enabled by default */) {
+                override fun handleOnBackPressed() {
+                    showProgressDialog("Wait")
+                    mRatingsReceivedViewModel.checkUserType()
+                    mRatingsReceivedViewModel.mExistingUserLiveData.observe(viewLifecycleOwner)
+                    {
+                        dismissProgressDialog()
+                        if(it.first==2)
+                            findNavController().navigate(R.id.action_ratingsReceivedFragment_to_homeTutorsFragment)
+                        else
+                            findNavController().navigate(R.id.action_ratingsReceivedFragment_to_homeStudentsFragment)
+                    }
+
+
+                }
+            }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,callback)
+        mRatingsReceivedViewModel.getRatingsReceived()
+        mRatingsReceivedViewModel.mRatingsReceivedByMeLiveData.observe(viewLifecycleOwner)
+        {
+            if(it.size==0)
+            {
+                binding.ratingsReceivedRecyclerView.visibility=View.GONE
+                binding.animNoResultsFound.visibility=View.VISIBLE
+                binding.txtNoResultsFound.visibility=View.VISIBLE
+            }
+            else
+            {
+
+                binding.ratingsReceivedRecyclerView.visibility=View.VISIBLE
+                binding.animNoResultsFound.visibility=View.GONE
+                binding.txtNoResultsFound.visibility=View.GONE
+                binding.ratingsReceivedRecyclerView.layoutManager= LinearLayoutManager(requireContext())
+                binding.ratingsReceivedRecyclerView.adapter= RatingsReceivedAdapter(it,requireContext(),this)
+            }
+
+        }
+        binding.ratingsReceivedBackButton.setOnClickListener {
+            showProgressDialog("Wait")
+            mRatingsReceivedViewModel.checkUserType()
+            mRatingsReceivedViewModel.mExistingUserLiveData.observe(viewLifecycleOwner)
+            {
+                dismissProgressDialog()
+                if(it.first==2)
+                    findNavController().navigate(R.id.action_ratingsReceivedFragment_to_homeTutorsFragment)
+                else
+                    findNavController().navigate(R.id.action_ratingsReceivedFragment_to_homeStudentsFragment)
+            }
+        }
+    }
+
+    override fun onItemClicked(ratingInfo: RatingInfo) {
+        val ratingDialogBinding = RatingReceivedDialogBinding.inflate(
+            LayoutInflater.from(requireContext())
+        )
+        val mBuilder = AlertDialog.Builder(requireContext())
+            .setView(ratingDialogBinding.root)
+        val mAlertDialog = mBuilder.show()
+        mAlertDialog.setCanceledOnTouchOutside(true)
+        ratingDialogBinding.etFeedback.text=ratingInfo.feedback
+        val rating=ratingInfo.rating
+        if(rating==1)
+            ratingDialogBinding.star1.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_24))
+        else if(rating==2)
+        {
+            ratingDialogBinding.star1.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_24))
+            ratingDialogBinding.star2.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_24))
+        }
+        else if(rating==3)
+        {
+
+            ratingDialogBinding.star1.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_24))
+            ratingDialogBinding.star2.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_24))
+            ratingDialogBinding.star3.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_24))
+        }
+        else if(rating==4)
+        {
+            ratingDialogBinding.star1.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_24))
+            ratingDialogBinding.star2.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_24))
+            ratingDialogBinding.star3.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_24))
+            ratingDialogBinding.star4.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_24))
+        }
+        else if(rating==5)
+        {
+            ratingDialogBinding.star1.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_24))
+            ratingDialogBinding.star2.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_24))
+            ratingDialogBinding.star3.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_24))
+            ratingDialogBinding.star4.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_24))
+            ratingDialogBinding.star5.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_baseline_star_24))
+
+        }
+
+    }
+
+}
