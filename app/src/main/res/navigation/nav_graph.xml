@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/splashScreenFragment"
-        android:name="com.example.findmytutor.features.splashScreen.SplashScreenFragment"
+        android:name="com.ishankumar.findmytutor.features.splashScreen.SplashScreenFragment"
         android:label="fragment_splash_screen"
         tools:layout="@layout/fragment_splash_screen" >
         <action
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.findmytutor.features.login.LoginFragment"
+        android:name="com.ishankumar.findmytutor.features.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeStudentsFragment"
-        android:name="com.example.findmytutor.features.homeStudents.HomeStudentsFragment"
+        android:name="com.ishankumar.findmytutor.features.homeStudents.HomeStudentsFragment"
         android:label="fragment_home_students"
         tools:layout="@layout/fragment_home_students" >
         <action
@@ -52,7 +52,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeTutorsFragment"
-        android:name="com.example.findmytutor.features.homeTutors.HomeTutorsFragment"
+        android:name="com.ishankumar.findmytutor.features.homeTutors.HomeTutorsFragment"
         android:label="fragment_homw_tutors"
         tools:layout="@layout/fragment_home_tutors" >
         <action
@@ -64,7 +64,7 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.example.findmytutor.features.register.RegisterFragment"
+        android:name="com.ishankumar.findmytutor.features.register.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action
@@ -76,7 +76,7 @@
     </fragment>
     <fragment
         android:id="@+id/verifyOtpFragment"
-        android:name="com.example.findmytutor.features.otpVerification.VerifyOtpFragment"
+        android:name="com.ishankumar.findmytutor.features.otpVerification.VerifyOtpFragment"
         android:label="fragment_verify_otp"
         tools:layout="@layout/fragment_verify_otp" >
         <action
@@ -94,7 +94,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileStudentFragment"
-        android:name="com.example.findmytutor.features.profile.ProfileStudentFragment"
+        android:name="com.ishankumar.findmytutor.features.profile.ProfileStudentFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
@@ -106,7 +106,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileTutorFragment"
-        android:name="com.example.findmytutor.features.profile.ProfileTutorFragment"
+        android:name="com.ishankumar.findmytutor.features.profile.ProfileTutorFragment"
         android:label="fragment_profile_tutor"
         tools:layout="@layout/fragment_profile_tutor" >
         <action
@@ -118,7 +118,7 @@
     </fragment>
     <fragment
         android:id="@+id/studentMyTutorsFragment"
-        android:name="com.example.findmytutor.features.myTutors.StudentMyTutorsFragment"
+        android:name="com.ishankumar.findmytutor.features.myTutors.StudentMyTutorsFragment"
         android:label="fragment_student_my_tutors"
         tools:layout="@layout/fragment_student_my_tutors" >
         <action
@@ -130,7 +130,7 @@
     </fragment>
     <fragment
         android:id="@+id/tutorRequestsFragment"
-        android:name="com.example.findmytutor.features.requests.TutorRequestsFragment"
+        android:name="com.ishankumar.findmytutor.features.requests.TutorRequestsFragment"
         android:label="fragment_tutor_requests"
         tools:layout="@layout/fragment_tutor_requests" >
         <action
@@ -142,7 +142,7 @@
     </fragment>
     <fragment
         android:id="@+id/tutorDetailsFragment"
-        android:name="com.example.findmytutor.features.tutorDetails.TutorDetailsFragment"
+        android:name="com.ishankumar.findmytutor.features.tutorDetails.TutorDetailsFragment"
         android:label="fragment_tutor_details"
         tools:layout="@layout/fragment_tutor_details" >
         <action
@@ -157,7 +157,7 @@
     </fragment>
     <fragment
         android:id="@+id/doubtsTutorFragment"
-        android:name="com.example.findmytutor.features.doubtsTutor.DoubtsTutorFragment"
+        android:name="com.ishankumar.findmytutor.features.doubtsTutor.DoubtsTutorFragment"
         android:label="fragment_doubts_tutor"
         tools:layout="@layout/fragment_doubts_tutor" >
         <action
@@ -172,7 +172,7 @@
     </fragment>
     <fragment
         android:id="@+id/doubtsStudentFragment"
-        android:name="com.example.findmytutor.features.doubtsStudent.DoubtsStudentFragment"
+        android:name="com.ishankumar.findmytutor.features.doubtsStudent.DoubtsStudentFragment"
         android:label="fragment_doubts_student"
         tools:layout="@layout/fragment_doubts_student" >
         <action
@@ -187,7 +187,7 @@
     </fragment>
     <fragment
         android:id="@+id/createNewDoubtFragment"
-        android:name="com.example.findmytutor.features.doubtsStudent.CreateNewDoubtFragment"
+        android:name="com.ishankumar.findmytutor.features.doubtsStudent.CreateNewDoubtFragment"
         android:label="fragment_create_new_doubt"
         tools:layout="@layout/fragment_create_new_doubt" >
         <action
@@ -196,7 +196,7 @@
     </fragment>
     <fragment
         android:id="@+id/tutorSeesDoubtInDetailFragment"
-        android:name="com.example.findmytutor.features.doubtsTutor.TutorSeesDoubtInDetailFragment"
+        android:name="com.ishankumar.findmytutor.features.doubtsTutor.TutorSeesDoubtInDetailFragment"
         android:label="fragment_tutor_sees_doubt_in_detail"
         tools:layout="@layout/fragment_tutor_sees_doubt_in_detail" >
         <action
@@ -211,7 +211,7 @@
     </fragment>
     <fragment
         android:id="@+id/tutorCreateSolutionFragment"
-        android:name="com.example.findmytutor.features.doubtsTutor.TutorCreateSolutionFragment"
+        android:name="com.ishankumar.findmytutor.features.doubtsTutor.TutorCreateSolutionFragment"
         android:label="fragment_tutor_create_solution"
         tools:layout="@layout/fragment_tutor_create_solution" >
         <action
@@ -223,12 +223,12 @@
     </fragment>
     <fragment
         android:id="@+id/studentSeeAllSolutionsProvidedFragment"
-        android:name="com.example.findmytutor.features.doubtsStudent.StudentSeeAllSolutionsProvidedFragment"
+        android:name="com.ishankumar.findmytutor.features.doubtsStudent.StudentSeeAllSolutionsProvidedFragment"
         android:label="fragment_student_see_all_solutions_provided"
         tools:layout="@layout/fragment_student_see_all_solutions_provided" />
     <fragment
         android:id="@+id/studentSeesSolutionInDetailsFragment"
-        android:name="com.example.findmytutor.features.doubtsStudent.StudentSeesSolutionInDetailsFragment"
+        android:name="com.ishankumar.findmytutor.features.doubtsStudent.StudentSeesSolutionInDetailsFragment"
         android:label="fragment_student_sees_solution_in_details"
         tools:layout="@layout/fragment_student_sees_solution_in_details" >
         <action
@@ -240,7 +240,7 @@
     </fragment>
     <fragment
         android:id="@+id/chatsFragment"
-        android:name="com.example.findmytutor.features.chats.ChatsFragment"
+        android:name="com.ishankumar.findmytutor.features.chats.ChatsFragment"
         android:label="fragment_chats"
         tools:layout="@layout/fragment_chats" >
         <action
@@ -252,7 +252,7 @@
     </fragment>
     <fragment
         android:id="@+id/tutorChatHomeFragment"
-        android:name="com.example.findmytutor.features.tutorChatHome.TutorChatHomeFragment"
+        android:name="com.ishankumar.findmytutor.features.tutorChatHome.TutorChatHomeFragment"
         android:label="fragment_tutor_chat_home"
         tools:layout="@layout/fragment_tutor_chat_home" >
         <action
@@ -264,7 +264,7 @@
     </fragment>
     <fragment
         android:id="@+id/studentChatHomeFragment"
-        android:name="com.example.findmytutor.features.studentChatHome.StudentChatHomeFragment"
+        android:name="com.ishankumar.findmytutor.features.studentChatHome.StudentChatHomeFragment"
         android:label="fragment_student_chat_home"
         tools:layout="@layout/fragment_student_chat_home" >
         <action
@@ -276,7 +276,7 @@
     </fragment>
     <fragment
         android:id="@+id/studentDetailsFragment"
-        android:name="com.example.findmytutor.features.studentDetails.StudentDetailsFragment"
+        android:name="com.ishankumar.findmytutor.features.studentDetails.StudentDetailsFragment"
         android:label="fragment_student_details"
         tools:layout="@layout/fragment_student_details" >
         <action
@@ -291,7 +291,7 @@
     </fragment>
     <fragment
         android:id="@+id/ratingsGivenFragment"
-        android:name="com.example.findmytutor.features.ratingsGiven.RatingsGivenFragment"
+        android:name="com.ishankumar.findmytutor.features.ratingsGiven.RatingsGivenFragment"
         android:label="fragment_ratings_given"
         tools:layout="@layout/fragment_ratings_given" >
         <action
@@ -303,7 +303,7 @@
     </fragment>
     <fragment
         android:id="@+id/sendIssueMailFragment"
-        android:name="com.example.findmytutor.features.askHelp.SendIssueMailFragment"
+        android:name="com.ishankumar.findmytutor.features.askHelp.SendIssueMailFragment"
         android:label="fragment_send_issue_mail"
         tools:layout="@layout/fragment_send_issue_mail" >
         <action
@@ -315,7 +315,7 @@
     </fragment>
     <fragment
         android:id="@+id/ratingsReceivedFragment"
-        android:name="com.example.findmytutor.features.ratingsReceived.RatingsReceivedFragment"
+        android:name="com.ishankumar.findmytutor.features.ratingsReceived.RatingsReceivedFragment"
         android:label="fragment_ratings_received"
         tools:layout="@layout/fragment_ratings_received" >
         <action
@@ -327,12 +327,12 @@
     </fragment>
     <fragment
         android:id="@+id/aboutUsFragment"
-        android:name="com.example.findmytutor.features.aboutUs.AboutUsFragment"
+        android:name="com.ishankumar.findmytutor.features.aboutUs.AboutUsFragment"
         android:label="fragment_about_us"
         tools:layout="@layout/fragment_about_us" />
     <fragment
         android:id="@+id/transactionHistoryFragment"
-        android:name="com.example.findmytutor.features.transactionHistory.TransactionHistoryFragment"
+        android:name="com.ishankumar.findmytutor.features.transactionHistory.TransactionHistoryFragment"
         android:label="fragment_transaction_history"
         tools:layout="@layout/fragment_transaction_history" >
         <action
@@ -344,7 +344,7 @@
     </fragment>
     <fragment
         android:id="@+id/makePaymentFragment"
-        android:name="com.example.findmytutor.features.payment.MakePaymentFragment"
+        android:name="com.ishankumar.findmytutor.features.payment.MakePaymentFragment"
         android:label="fragment_make_payment"
         tools:layout="@layout/fragment_make_payment" >
         <action
@@ -359,7 +359,7 @@
     </fragment>
     <fragment
         android:id="@+id/paymentSuccessfulFragment"
-        android:name="com.example.findmytutor.features.payment.PaymentSuccessfulFragment"
+        android:name="com.ishankumar.findmytutor.features.payment.PaymentSuccessfulFragment"
         android:label="fragment_payment_successful"
         tools:layout="@layout/fragment_payment_successful" >
         <action
@@ -368,7 +368,7 @@
     </fragment>
     <fragment
         android:id="@+id/paymentFailedFragment"
-        android:name="com.example.findmytutor.features.payment.PaymentFailedFragment"
+        android:name="com.ishankumar.findmytutor.features.payment.PaymentFailedFragment"
         android:label="fragment_payment_failed"
         tools:layout="@layout/fragment_payment_failed" >
         <action

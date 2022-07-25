@@ -7,17 +7,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:412688341160:android:557840a9f4aa1834ae4a9d",
+        "mobilesdk_app_id": "1:412688341160:android:710f66fa2ffbc3a8ae4a9d",
         "android_client_info": {
-          "package_name": "com.example.findmytutor"
+          "package_name": "com.ishankumar.findmytutor"
         }
       },
       "oauth_client": [
         {
-          "client_id": "412688341160-n3gs4mjl5rcafn4kg00ds6eigbmf9scq.apps.googleusercontent.com",
+          "client_id": "412688341160-o1c42f4c3cg4ir66edb2ockvojli2n1n.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.findmytutor",
+            "package_name": "com.ishankumar.findmytutor",
             "certificate_hash": "efb7f0ccda52e606461cf2926c3edc06904dcdf0"
           }
         },
